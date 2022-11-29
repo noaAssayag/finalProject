@@ -3,16 +3,12 @@ package com.example.solmatch;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity {
-    ImageView image;
+public class loginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        image=findViewById(R.id.logoImageView);
+        setContentView(R.layout.activity_login);
     }
 }
