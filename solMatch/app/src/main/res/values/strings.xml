@@ -1,5 +1,0 @@
-<resources>
-    <string name="app_name">SolMatch</string>
-    <string name="default_notification_channel_id">solMachFC</string>
-    <string name="fcm_message">FCMmessage</string>
-</resources>
