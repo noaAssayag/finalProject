@@ -9,25 +9,81 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c10949e-7c96-4125-9361-31b795378ae8" name="Changes" comment="update project" />
+    <list default="true" id="6c10949e-7c96-4125-9361-31b795378ae8" name="Changes" comment="update project">
+      <change afterPath="$PROJECT_DIR$/../SolMatch.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/proguard-rules.pro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/androidTest/java/com/example/finalproject/ExampleInstrumentedTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/java/com/example/finalproject/MainActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-hdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-mdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/values-night/themes.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/values/themes.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/xml/backup_rules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/main/res/xml/data_extraction_rules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/app/src/test/java/com/example/finalproject/ExampleUnitTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../finalProject/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../solMatch/app/src/main/java/com/example/solmatch/MyFirebaseMessagingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../solMatch/app/src/main/java/com/example/solmatch/MyWorker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../solMatch/app/src/main/java/com/example/solmatch/Users.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/java/com/example/solmatchfinalproject/LoginActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/java/com/example/solmatchfinalproject/RegisterActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/res/drawable/input.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/res/layout/activity_login.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/res/layout/activity_register.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../solMatchFinalProject/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/java/com/example/solmatchfinalproject/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/java/com/example/solmatchfinalproject/MainActivity.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\noaas\.android\avd\Nexus_5_API_32.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\noaas\.android\avd\Galaxy_Nexus_API_33_2.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2I60WLKTziYRMcaATNMmAJq5Us5" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -37,7 +93,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="cidr.known.project.marker" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../finalProject" />
   </component>
   <component name="RecentsManager">
     <key name="android.template.2094737457">
@@ -46,7 +102,6 @@
   </component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
-      <module name="SolMatchProject.app.main" />
       <option name="DEPLOY" value="true" />
       <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
       <option name="DEPLOY_AS_INSTANT" value="false" />
@@ -100,9 +155,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
