@@ -9,20 +9,28 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c10949e-7c96-4125-9361-31b795378ae8" name="Changes" comment="update project" />
+    <list default="true" id="6c10949e-7c96-4125-9361-31b795378ae8" name="Changes" comment="update project">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../solMatch/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../solMatch/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../solMatchFinalProject/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/java/com/example/solmatchfinalproject/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/java/com/example/solmatchfinalproject/LoginActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/java/com/example/solmatchfinalproject/RegisterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/java/com/example/solmatchfinalproject/RegisterActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/res/layout/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/res/layout/activity_login.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/res/layout/activity_register.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../solMatchFinalProject/app/src/main/res/layout/activity_register.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\noaas\.android\avd\Nexus_5_API_32.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\noaas\.android\avd\Galaxy_Nexus_API_33_2_1.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -37,7 +45,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="cidr.known.project.marker" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../finalProject" />
   </component>
   <component name="RecentsManager">
     <key name="android.template.2094737457">
@@ -100,9 +108,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
