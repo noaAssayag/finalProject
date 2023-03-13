@@ -1,13 +1,10 @@
 package com.example.solmatchfinalproject;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -25,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView btn;
     EditText inputEmail,inputpassword;
     Button btnLogin;
+    Button google;
     private FirebaseAuth mAuth;
     private ProgressDialog mLoadingBar;
     @Override
@@ -35,6 +33,8 @@ public class LoginActivity extends AppCompatActivity {
         inputEmail=findViewById(R.id.inputEmail);
         inputpassword=findViewById(R.id.inputpassword);
         btnLogin=findViewById(R.id.btnLogin);
+        google = findViewById(R.id.button5);
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,8 +51,19 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
            }
         });
+
+
         mAuth= FirebaseAuth.getInstance();
         mLoadingBar=new ProgressDialog(LoginActivity.this);
+
+
+        google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,googleSignIn.class);
+                startActivity(intent);
+            }
+        });
     }
     private void checkCredentials() {
         String email=inputEmail.getText().toString();
