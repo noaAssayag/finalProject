@@ -71,6 +71,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/btn"
         android:backgroundTint="#404040"
+        android:drawableStart="@drawable/common_google_signin_btn_icon_dark_focused"
         android:text="Login"
         app:layout_constraintEnd_toEndOf="@+id/inputpassword"
         app:layout_constraintHorizontal_bias="1.0"
