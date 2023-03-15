@@ -135,34 +135,9 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void checkSecond()
-    {
-        // add checks of date and host/user
-        mLoadingBar.setTitle("Registeration");
-        mLoadingBar.setMessage("please wait,while check your credentials");
-        mLoadingBar.setCanceledOnTouchOutside(false);
-        mLoadingBar.show();
 
-        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful())
-                {
-                    Toast.makeText(RegisterActivity.this,"Successfuly registration",Toast.LENGTH_SHORT).show();
 
-                    mLoadingBar.dismiss();
-                    Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-                else
-                {
-                    Toast.makeText(RegisterActivity.this,task.getException().toString(),Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
-    }
 
     private static void showError(EditText input, String s) {
         input.setError(s);

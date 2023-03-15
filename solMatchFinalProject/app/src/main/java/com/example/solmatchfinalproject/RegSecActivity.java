@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,10 +25,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegSecActivity extends AppCompatActivity {
     Spinner type,gender;
@@ -36,6 +42,14 @@ public class RegSecActivity extends AppCompatActivity {
 
     public String getDate() {
         return Date;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getEmail() {
+        return Email;
     }
 
     @Override
@@ -54,10 +68,41 @@ public class RegSecActivity extends AppCompatActivity {
         fin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String gen = gender.getSelectedItem().toString();
-                String host = type.getSelectedItem().toString();
-                registerUser(Email,intent.getStringExtra("pass"));
-            }
+                if(checkDate() == true) {
+                    String gen = gender.getSelectedItem().toString();
+                    String host = type.getSelectedItem().toString();
+                    registerUser(Email, intent.getStringExtra("pass"));
+                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                    DatabaseReference parentRef = rootRef.child(userName);
+                    Map<String, Object> attributes = new HashMap<>();
+                    attributes.put("username", userName);
+                    attributes.put("birthDate", Date);
+                    attributes.put("gender", gen);
+                    attributes.put("type", host);
+                    parentRef.setValue(attributes)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d(TAG, "Data added successfully.");
+                                    } else {
+                                        Log.e(TAG, "Error adding data to database.", task.getException());
+                                    }
+                                }
+                            });
+
+
+
+
+
+
+
+
+
+
+
+                }
+                }
         });
 
         setDate(dateCal);
@@ -68,11 +113,12 @@ public class RegSecActivity extends AppCompatActivity {
                 int day = calnedar.get(Calendar.DAY_OF_MONTH);
                 int month = calnedar.get(Calendar.MONTH);
                 int year = calnedar.get(Calendar.YEAR);
-                Date = Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year);
+
                 DatePickerDialog pickerDialog = new DatePickerDialog(RegSecActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                         dateCal.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                        Date = Integer.toString(dayOfMonth) + "/" + Integer.toString(monthOfYear) + "/" + Integer.toString(year);
                     }
                 }, year, month, day);
                 pickerDialog.show();
@@ -108,5 +154,20 @@ public class RegSecActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    public boolean checkDate()
+    {
+        ProgressDialog mLoadingBar = new ProgressDialog(RegSecActivity.this);
+        String[] splitDate = getDate().split("/");
+        String year = splitDate[2];
+        if(Integer.parseInt(year) > 2015)
+        {
+            mLoadingBar.setTitle("Register");
+            mLoadingBar.setMessage("You are to young to register to the service");
+            return false;
+        }
+        return true;
+    }
+
 
 }
