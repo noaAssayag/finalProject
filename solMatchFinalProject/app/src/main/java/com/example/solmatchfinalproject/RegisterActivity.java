@@ -70,45 +70,24 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_register);
-        btn=findViewById(id.label);
-        inputUserName=findViewById(id.inputUserName);
-        inputEmail=findViewById(id.inputEmail);
-        inputPassword =findViewById(id.inputPassword);
-        inputRePassword =findViewById(id.inputRePassword);
-        mAuth=FirebaseAuth.getInstance();
-        mLoadingBar=new ProgressDialog(RegisterActivity.this);
-        btnRegister=findViewById(id.btnRegister);
+        btn = findViewById(id.label);
+        inputUserName = findViewById(id.inputUserName);
+        inputEmail = findViewById(id.inputEmail);
+        inputPassword = findViewById(id.inputPassword);
+        inputRePassword = findViewById(id.inputRePassword);
+        mAuth = FirebaseAuth.getInstance();
+        mLoadingBar = new ProgressDialog(RegisterActivity.this);
+        btnRegister = findViewById(id.btnRegister);
 
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                setContentView(layout.activity_register2);
-                checkCredentials();
-                btnFinish = findViewById(id.btnRegisterFinish);
-                Spinner = findViewById(id.hostType);
-                age = findViewById(id.age);
-
-                btnFinish.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        checkCredentials();
-                    }
-                });
-            }
-        });
-
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View view) {
-                Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
-                startActivity(intent);
-                finish();
+                checkCredentials();
+
             }
         });
     }
-
     private void checkCredentials() {
         this.userName=inputUserName.getText().toString();
         this.email=inputEmail.getText().toString();
@@ -143,7 +122,9 @@ public class RegisterActivity extends AppCompatActivity {
         }
         else
         {
-
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -151,9 +132,9 @@ public class RegisterActivity extends AppCompatActivity {
     {
         // add checks of date and host/user
         mLoadingBar.setTitle("Registeration");
-           mLoadingBar.setMessage("please wait,while check your credentials");
-           mLoadingBar.setCanceledOnTouchOutside(false);
-           mLoadingBar.show();
+        mLoadingBar.setMessage("please wait,while check your credentials");
+        mLoadingBar.setCanceledOnTouchOutside(false);
+        mLoadingBar.show();
 
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
