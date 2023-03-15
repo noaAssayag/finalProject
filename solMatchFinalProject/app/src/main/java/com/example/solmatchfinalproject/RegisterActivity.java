@@ -33,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String email;
     private String password;
     private String rePassword;
+    private String Password;
 
     public String getUserName() {
         return userName;
@@ -84,6 +85,12 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkCredentials();
+                Intent intent = new Intent(RegisterActivity.this, RegSecActivity.class);
+                intent.putExtra("userName",getUserName());
+                intent.putExtra("Email",getEmail());
+                intent.putExtra("pass", getPassword());
+                startActivity(intent);
+                setContentView(layout.activity_reg_sec);
 
             }
         });
@@ -161,4 +168,5 @@ public class RegisterActivity extends AppCompatActivity {
         input.setError(s);
         input.requestFocus();
     }
+
 }
