@@ -11,5 +11,8 @@
         <item>Soldier</item>
         <item>professional</item>
     </string-array>
+    <string name="facebook_app_id">162580503315220</string>
+    <string name="facebook_client_token">8d9b490db2f6a60a1e9b73ee7eb01c6c</string>
+
 
 </resources>

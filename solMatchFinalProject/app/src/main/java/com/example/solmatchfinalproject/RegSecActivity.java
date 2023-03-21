@@ -38,6 +38,17 @@ public class RegSecActivity extends AppCompatActivity {
     Spinner type,gender;
     TextView dateCal;
     Button fin;
+    String UID;
+    Intent intent;
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
+
     private String userName,Email,Date;
 
     public String getDate() {
@@ -56,7 +67,7 @@ public class RegSecActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg_sec);
-        Intent intent = getIntent();
+        intent = getIntent();
         userName = intent.getStringExtra("userName");
         Email = intent.getStringExtra("Email");
         type = findViewById(R.id.type);
@@ -66,30 +77,39 @@ public class RegSecActivity extends AppCompatActivity {
 
 
         fin.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 if(checkDate() == true) {
+
                     String gen = gender.getSelectedItem().toString();
                     String host = type.getSelectedItem().toString();
                     registerUser(Email, intent.getStringExtra("pass"));
-                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                    DatabaseReference parentRef = rootRef.child(userName);
-                    Map<String, Object> attributes = new HashMap<>();
-                    attributes.put("username", userName);
-                    attributes.put("birthDate", Date);
-                    attributes.put("gender", gen);
-                    attributes.put("type", host);
-                    parentRef.setValue(attributes)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Log.d(TAG, "Data added successfully.");
-                                    } else {
-                                        Log.e(TAG, "Error adding data to database.", task.getException());
+                    if(UID != null) {
+                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference parentRef = rootRef.child(UID);
+                        Map<String, Object> attributes = new HashMap<>();
+                        attributes.put("username", userName);
+                        attributes.put("birthDate", Date);
+                        attributes.put("gender", gen);
+                        attributes.put("type", host);
+                        parentRef.setValue(attributes)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "Data added successfully.");
+
+
+                                        } else {
+                                            Log.e(TAG, "Error adding data to database.", task.getException());
+                                        }
                                     }
-                                }
-                            });
+                                });
+                        intent = new Intent(RegSecActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        setContentView(R.layout.activity_login);
+                    }
 
 
 
@@ -135,6 +155,7 @@ public class RegSecActivity extends AppCompatActivity {
         return date;
     }
     private void registerUser(String email, String password) {
+
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -143,7 +164,10 @@ public class RegSecActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            Intent intent = getIntent();
+                            intent.putExtra("UID",mAuth.getCurrentUser().getUid());
+
+
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -151,8 +175,11 @@ public class RegSecActivity extends AppCompatActivity {
                             Toast.makeText(RegSecActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
+
                     }
+
                 });
+        UID = mAuth.getUid();
     }
 
     public boolean checkDate()

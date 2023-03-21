@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText inputEmail,inputpassword;
     Button btnLogin;
     Button google;
+    LoginButton facebook;
     private FirebaseAuth mAuth;
     private ProgressDialog mLoadingBar;
     @Override
@@ -33,7 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         inputEmail=findViewById(R.id.inputEmail);
         inputpassword=findViewById(R.id.inputpassword);
         btnLogin=findViewById(R.id.btnLogin);
-        google = findViewById(R.id.button5);
+        google = findViewById(R.id.button);
+        facebook = findViewById(R.id.button5);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +58,13 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth= FirebaseAuth.getInstance();
         mLoadingBar=new ProgressDialog(LoginActivity.this);
-
+        facebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,facebookSignIn.class);
+                startActivity(intent);
+            }
+        });
 
         google.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +100,9 @@ public class LoginActivity extends AppCompatActivity {
                     if(task.isSuccessful())
                     {
                         mLoadingBar.dismiss();
-                        Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                        String UID = mAuth.getUid();
+                        Intent intent=new Intent(LoginActivity.this,profileActivity.class);
+                        intent.putExtra("UID", UID);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
