@@ -2,6 +2,7 @@ package com.example.solmatchfinalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,24 +18,31 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class LoginActivity extends AppCompatActivity {
     TextView btn;
-    EditText inputEmail,inputpassword;
+    EditText inputUserName,inputpassword;
     Button btnLogin;
     Button google;
     LoginButton facebook;
     private FirebaseAuth mAuth;
     private ProgressDialog mLoadingBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         btn=(TextView)findViewById(R.id.textViewSignUp);
-        inputEmail=findViewById(R.id.inputEmail);
-        inputpassword=findViewById(R.id.inputpassword);
-        btnLogin=findViewById(R.id.btnLogin);
+        inputUserName=(EditText) findViewById(R.id.inputname);
+        inputpassword=(EditText) findViewById(R.id.inputpassword);
+        btnLogin=(Button) findViewById(R.id.btnLogin);
         google = findViewById(R.id.button);
         facebook = findViewById(R.id.button5);
 
@@ -42,6 +50,42 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 checkCredentials();
+                FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+                DatabaseReference databaseReference=firebaseDatabase.getReference("Users");
+
+                Query check_email=databaseReference.orderByChild("userName").equalTo(inputUserName.getText().toString());
+                check_email.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            inputUserName.setError(null);
+                            String passwordcheck=snapshot.child(inputUserName.getText().toString()).child("password").getValue(String.class);
+                            if(passwordcheck.equals(inputpassword.getText().toString())){
+                                Toast.makeText(getApplicationContext(),"Login Successful",Toast.LENGTH_SHORT).show();
+
+                                Intent newIntent = new Intent(LoginActivity.this,profileActivity.class);
+                                newIntent.putExtra("userName",inputUserName.getText().toString());
+                                startActivity(newIntent);
+                                setContentView(R.layout.activity_register);
+
+                            }
+                            else
+                            {
+                                inputpassword.setError("Wrong Password");
+                            }
+                        }
+                        else
+                        {
+                            inputUserName.setError("User doesnt exist");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
             }
         });
 
@@ -49,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
            @Override
            public  void onClick(View v)
            {
+
                 Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(intent);
                 finish();
@@ -75,44 +120,20 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     private void checkCredentials() {
-        String email=inputEmail.getText().toString();
-        String password=inputpassword.getText().toString();
+        String username = inputUserName.getText().toString();
+        String password = inputpassword.getText().toString();
 
-        if(email.isEmpty() || !email.contains("@"))
-        {
-            showError(inputEmail,"Email in not valid!");
-        }
-        else if(password.isEmpty() || password.length()<7)
-        {
-            showError(inputpassword,"password must be 7 character");
-        }
-
-        else
-        {
+        if (username.isEmpty() || (username.length() <7)) {
+            showError(inputUserName, "Email in not valid!");
+        } else if (password.isEmpty() || password.length() < 7) {
+            showError(inputpassword, "password must be 7 character");
+        } else {
             mLoadingBar.setTitle("Login");
             mLoadingBar.setMessage("please wait,while check your credentials");
             mLoadingBar.setCanceledOnTouchOutside(false);
             mLoadingBar.show();
 
-            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful())
-                    {
-                        mLoadingBar.dismiss();
-                        String UID = mAuth.getUid();
-                        Intent intent=new Intent(LoginActivity.this,profileActivity.class);
-                        intent.putExtra("UID", UID);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-                    else
-                    {
-                        Toast.makeText(LoginActivity.this,task.getException().toString(),Toast.LENGTH_SHORT).show();
-                    }
 
-                }
-            });
         }
     }
 

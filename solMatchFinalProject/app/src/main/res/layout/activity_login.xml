@@ -24,10 +24,10 @@
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
         android:password="false"
-        app:layout_constraintEnd_toEndOf="@+id/inputEmail"
+        app:layout_constraintEnd_toEndOf="@+id/inputname"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/inputEmail"
-        app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+        app:layout_constraintStart_toStartOf="@+id/inputname"
+        app:layout_constraintTop_toBottomOf="@+id/inputname" />
 
     <TextView
         android:id="@+id/logo"
@@ -45,17 +45,17 @@
         app:layout_constraintVertical_bias="0.120000005" />
 
     <EditText
-        android:id="@+id/inputEmail"
+        android:id="@+id/inputname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/input"
-        android:drawableLeft="@drawable/ic_baseline_email"
+        android:drawableLeft="@drawable/ic_baseline_person"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="UserName"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:paddingLeft="20dp"

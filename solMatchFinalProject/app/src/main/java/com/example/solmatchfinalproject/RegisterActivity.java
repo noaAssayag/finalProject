@@ -2,29 +2,19 @@ package com.example.solmatchfinalproject;
 
 import static com.example.solmatchfinalproject.R.*;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import org.w3c.dom.Text;
 
 public class RegisterActivity extends AppCompatActivity {
     private TextView btn;
@@ -47,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(layout.activity_register);
         btn = (TextView) findViewById(R.id.label);
         inputUserName =(EditText) findViewById(R.id.inputUserName);
-        inputEmail =(EditText) findViewById(R.id.inputEmail);
+        inputEmail =(EditText) findViewById(R.id.inputname);
         inputPassword = (EditText)findViewById(R.id.inputPassword);
         inputRePassword = (EditText) findViewById(R.id.inputRePassword);
         mAuth = FirebaseAuth.getInstance();

@@ -91,8 +91,11 @@ public class RegSecActivity extends AppCompatActivity {
                     if(gender!=null&&gender.getSelectedItem()!=null) {
                         if (type != null && type.getSelectedItem() != null) {
                             UserStorageData storageData = new UserStorageData(getUserName(), getEmail(), gen, getDate(), host);
-                            reference.child(getEmail()).setValue(storageData);
+                            reference.child(getUserName()).setValue(storageData);
                             Toast.makeText(getApplicationContext(),"Register Successfully",Toast.LENGTH_SHORT).show();
+                            Intent newIntent = new Intent(RegSecActivity.this,LoginActivity.class);
+                            startActivity(newIntent);
+                            setContentView(R.layout.activity_login);
                         }
                         else
                         {
@@ -143,29 +146,6 @@ public class RegSecActivity extends AppCompatActivity {
         String date=format.format(hrini);
         dateCal.setText(date);
         return date;
-    }
-    private void registerUser(String email, String password) {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            Intent intent = getIntent();
-                            intent.putExtra("UID",mAuth.getCurrentUser().getUid());
-                        }
-                        else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegSecActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                });
-        UID = mAuth.getUid();
     }
 
     public boolean checkDate()
