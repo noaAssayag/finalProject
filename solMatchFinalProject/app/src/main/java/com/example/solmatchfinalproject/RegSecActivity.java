@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -40,6 +41,7 @@ public class RegSecActivity extends AppCompatActivity {
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference reference;
+    FirebaseAuth auth;
 
      @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,18 +86,38 @@ public class RegSecActivity extends AppCompatActivity {
                 if (checkDate() == true) {
                     String gen = gender.getSelectedItem().toString();
                     String host = type.getSelectedItem().toString();
-
-                    firebaseDatabase=FirebaseDatabase.getInstance();
-                    reference=firebaseDatabase.getReference("Users");
-
+                    // creating a user in the fireBase auth, and then getting that users
+                    // unique id to save as key in database
+                    auth = FirebaseAuth.getInstance();
+                   // first we check inputs are correct
                     if(gender!=null&&gender.getSelectedItem()!=null) {
-                        if (type != null && type.getSelectedItem() != null) {
-                            UserStorageData storageData = new UserStorageData(getUserName(), getEmail(), gen, getDate(), host);
-                            reference.child(getUserName()).setValue(storageData);
-                            Toast.makeText(getApplicationContext(),"Register Successfully",Toast.LENGTH_SHORT).show();
-                            Intent newIntent = new Intent(RegSecActivity.this,LoginActivity.class);
-                            startActivity(newIntent);
-                            setContentView(R.layout.activity_login);
+                        if (type != null && type.getSelectedItem() != null && checkDate()!= false) {
+                            // @ Func createUserWithEmailAndPassword
+                            // @ Parms email (users email) password (users password)
+                            // function takes parms and adds then to the firebase authenticator
+                            // after the user was added we take the UID that was created by the auth and
+                            // adding that as the key of the user on the realtime Database.
+                            auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(RegSecActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task)
+                                {
+                                    if (task.isSuccessful())
+                                    {
+                                        // after adding user to authenticator, we add his data to the realTime dataBase
+                                        FirebaseUser user = auth.getCurrentUser();
+                                        UID = user.getUid();
+                                        firebaseDatabase=FirebaseDatabase.getInstance();
+                                        reference=firebaseDatabase.getReference("Users");
+                                        UserStorageData storageData = new UserStorageData(getUserName(), getEmail(), gen, getDate(), host,UID);
+                                        reference.child(UID).setValue(storageData);
+                                        Toast.makeText(getApplicationContext(),"Register Successfully",Toast.LENGTH_SHORT).show();
+                                        Intent newIntent = new Intent(RegSecActivity.this,LoginActivity.class);
+                                        startActivity(newIntent);
+                                        setContentView(R.layout.activity_login);
+
+                                    }
+                                }
+                            });
                         }
                         else
                         {
@@ -137,7 +159,7 @@ public class RegSecActivity extends AppCompatActivity {
     }
 
     public void setPassword(String password) {
-        password = password;
+        this.password = password;
     }
 
     private String setDate(TextView dateCal) {

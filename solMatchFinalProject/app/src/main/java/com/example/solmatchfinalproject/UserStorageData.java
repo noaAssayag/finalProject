@@ -1,20 +1,30 @@
 package com.example.solmatchfinalproject;
 
 public class UserStorageData {
+    private String UID;
     private String userName;
     private String email;
     private String gen;
     private String birthday;
     private String type;
 
-    public UserStorageData( String userName, String email, String gen, String birthday, String type) {
+    public UserStorageData( String userName, String email, String gen, String birthday, String type,String UID) {
         this.userName = userName;
         this.email = email;
         this.gen = gen;
         this.birthday = birthday;
         this.type = type;
+        this.UID = UID;
     }
 
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
 
     public String getUserName() {
         return userName;

@@ -37,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(layout.activity_register);
         btn = (TextView) findViewById(R.id.label);
         inputUserName =(EditText) findViewById(R.id.inputUserName);
-        inputEmail =(EditText) findViewById(R.id.inputname);
+        inputEmail =(EditText) findViewById(R.id.inputEmail);
         inputPassword = (EditText)findViewById(R.id.inputPassword);
         inputRePassword = (EditText) findViewById(R.id.inputRePassword);
         mAuth = FirebaseAuth.getInstance();
@@ -50,11 +50,12 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                checkCredentials();
+
                 userName=inputUserName.getText().toString();
                 email=inputEmail.getText().toString();
                 password=inputPassword.getText().toString();
                 rePassword=inputRePassword.getText().toString();
+                checkCredentials();
 
                 if (email.matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"))
                 {
