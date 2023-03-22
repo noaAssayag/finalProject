@@ -106,10 +106,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void checkCredentials() {
-        this.userName=inputUserName.getText().toString();
-        this.email=inputEmail.getText().toString();
-        this.password=inputPassword.getText().toString();
-        this.rePassword=inputRePassword.getText().toString();
         if(userName.isEmpty() || userName.length()<7)
         {
             showError(inputUserName,"Your username is not valid!");
