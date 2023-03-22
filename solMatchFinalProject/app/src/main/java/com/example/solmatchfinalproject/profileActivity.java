@@ -13,7 +13,7 @@ public class profileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intent = getIntent();
-       name = findViewById(R.id.textView14);
+        name =(TextView) findViewById(R.id.profName);
         setContentView(R.layout.activity_profile);
         String UID = intent.getStringExtra("UID");
         System.out.println("the UID is"+ UID);

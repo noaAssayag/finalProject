@@ -18,10 +18,12 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:minHeight="48dp"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
+        android:password="false"
         app:layout_constraintEnd_toEndOf="@+id/inputEmail"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/inputEmail"
@@ -119,38 +121,31 @@
 
     </LinearLayout>
 
-
-
     <com.facebook.login.widget.LoginButton
         android:id="@+id/button5"
-        android:layout_width="150dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="43dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="224dp"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="28dp"
+        android:height="48dp"
         android:background="@drawable/btn"
-        android:text="FaceBook"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintHorizontal_bias="0.255"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.443" />
+        tools:ignore="TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:layout_marginEnd="103dp"
-        android:layout_marginBottom="219dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/white"
         android:drawableLeft="@drawable/common_google_signin_btn_icon_dark"
         android:text="google"
         android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
         app:rippleColor="#FFEB3B" />
 

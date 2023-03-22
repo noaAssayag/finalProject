@@ -7,18 +7,14 @@
     tools:context=".RegSecActivity">
 
     <Button
-        android:id="@+id/btnRegister2"
-        android:layout_width="0dp"
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="147dp"
-        android:layout_marginBottom="218dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/btn"
-        android:text="finish"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="Submit"
+        app:layout_constraintEnd_toEndOf="@+id/dateCal"
+        app:layout_constraintStart_toStartOf="@+id/dateCal"
         app:layout_constraintTop_toBottomOf="@+id/dateCal" />
 
     <TextView

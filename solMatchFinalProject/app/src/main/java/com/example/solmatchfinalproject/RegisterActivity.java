@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -20,21 +21,68 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 public class RegisterActivity extends AppCompatActivity {
-    TextView btn;
+    private TextView btn;
     private Spinner Spinner;
     private EditText inputUserName,inputEmail,inputPassword,inputRePassword;
     private Button btnRegister,btnFinish;
     private FirebaseAuth mAuth;
     private ProgressDialog mLoadingBar;
     private DatePicker age;
+
     private String userName;
     private String email;
     private String password;
     private String rePassword;
     private String Password;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(layout.activity_register);
+        btn = (TextView) findViewById(R.id.label);
+        inputUserName =(EditText) findViewById(R.id.inputUserName);
+        inputEmail =(EditText) findViewById(R.id.inputEmail);
+        inputPassword = (EditText)findViewById(R.id.inputPassword);
+        inputRePassword = (EditText) findViewById(R.id.inputRePassword);
+        mAuth = FirebaseAuth.getInstance();
+        mLoadingBar = new ProgressDialog(RegisterActivity.this);
+        btnRegister = findViewById(id.btnRegister);
+
+
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                checkCredentials();
+                userName=inputUserName.getText().toString();
+                email=inputEmail.getText().toString();
+                password=inputPassword.getText().toString();
+                rePassword=inputRePassword.getText().toString();
+
+                if (email.matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"))
+                {
+                    Intent intent = new Intent(RegisterActivity.this, RegSecActivity.class);
+                    intent.putExtra("userName", getUserName());
+                    intent.putExtra("email", getEmail());
+                    intent.putExtra("password",getPassword());
+
+                    startActivity(intent);
+                    setContentView(layout.activity_reg_sec);
+                }
+                else
+                {
+                    inputEmail.setError("Invalid Email");
+                }
+            }
+        });
+    }
     public String getUserName() {
         return userName;
     }
@@ -67,77 +115,29 @@ public class RegisterActivity extends AppCompatActivity {
         this.rePassword = rePassword;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(layout.activity_register);
-        btn = findViewById(id.label);
-        inputUserName = findViewById(id.inputUserName);
-        inputEmail = findViewById(id.inputEmail);
-        inputPassword = findViewById(id.inputPassword);
-        inputRePassword = findViewById(id.inputRePassword);
-        mAuth = FirebaseAuth.getInstance();
-        mLoadingBar = new ProgressDialog(RegisterActivity.this);
-        btnRegister = findViewById(id.btnRegister);
-
-
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkCredentials();
-                Intent intent = new Intent(RegisterActivity.this, RegSecActivity.class);
-                intent.putExtra("userName",getUserName());
-                intent.putExtra("Email",getEmail());
-                intent.putExtra("pass", getPassword());
-                startActivity(intent);
-                setContentView(layout.activity_reg_sec);
-
-            }
-        });
-    }
     private void checkCredentials() {
         this.userName=inputUserName.getText().toString();
         this.email=inputEmail.getText().toString();
         this.password=inputPassword.getText().toString();
         this.rePassword=inputRePassword.getText().toString();
-
-
         if(userName.isEmpty() || userName.length()<7)
         {
-
             showError(inputUserName,"Your username is not valid!");
-
-
         }
         else if(email.isEmpty() || !email.contains("@"))
         {
-
             showError(inputEmail,"Email in not valid!");
-
         }
         else if(password.isEmpty() || password.length()<7)
         {
-
             showError(inputPassword,"password must be 7 character");
-
         }
         else if(rePassword.isEmpty() || !rePassword.equals(password))
         {
-
             showError(inputRePassword,"Password not match!");
+        }
 
-        }
-        else
-        {
-            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
     }
-
-
-
-
 
     private static void showError(EditText input, String s) {
         input.setError(s);
