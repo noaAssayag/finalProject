@@ -3,13 +3,12 @@ package com.example.solmatchfinalproject;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+
 import com.facebook.AccessToken;
 
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -38,7 +37,7 @@ public class facebookSignIn extends LoginActivity {
         FacebookSdk.setApplicationId("162580503315220");
         FacebookSdk.sdkInitialize(getApplicationContext());
         // Initialize Facebook Login button
-        LoginButton loginButton = findViewById(R.id.button5);
+        LoginButton loginButton = findViewById(R.id.facebookButt);
         CallbackManager callbackManager = CallbackManager.Factory.create();
         loginButton.setPermissions("email", "public_profile");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {

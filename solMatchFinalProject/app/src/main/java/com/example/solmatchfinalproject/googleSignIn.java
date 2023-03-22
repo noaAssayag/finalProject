@@ -33,17 +33,19 @@ public class googleSignIn extends LoginActivity {
     private boolean showOneTapUI = true;
     private static final int RC_SIGN_IN = 123;
 
+    // initializing Firebase and the Google sign in builder
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
-        google = findViewById(R.id.button5);
+        google = findViewById(R.id.facebookButt);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
+        // using google methods
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         google.setOnClickListener(new View.OnClickListener() {

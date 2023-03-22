@@ -2,7 +2,6 @@ package com.example.solmatchfinalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,8 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         inputUserName=(EditText) findViewById(R.id.inputname);
         inputpassword=(EditText) findViewById(R.id.inputpassword);
         btnLogin=(Button) findViewById(R.id.btnLogin);
-        google = findViewById(R.id.button);
-        facebook = findViewById(R.id.button5);
+        google = findViewById(R.id.googleButt);
+        facebook = findViewById(R.id.facebookButt);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
