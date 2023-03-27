@@ -50,7 +50,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // first we check the info
-                checkCredentials();
+                if (checkCredentials()) {
+                    mLoadingBar.setTitle("Login");
+                    mLoadingBar.setMessage("please wait,while check your credentials");
+                    mLoadingBar.setCanceledOnTouchOutside(false);
+                    mLoadingBar.show();
+
 
                 // Now, we start a FirebaseAuth instance
                 mAuth = FirebaseAuth.getInstance();
@@ -71,10 +76,12 @@ public class LoginActivity extends AppCompatActivity {
                             setContentView(R.layout.activity_profile);
 
                         } else {
-                            Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT);
+                            mLoadingBar.hide();
+                            Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+            }
             }
             });
 
@@ -151,19 +158,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void checkCredentials() {
+    private boolean checkCredentials() {
         String username = inputUserEmail.getText().toString();
         String password = inputpassword.getText().toString();
 
-        if (username.isEmpty() || (username.length() <7)) {
+        if (username.isEmpty() || !username.contains("@")) {
             showError(inputUserEmail, "Email in not valid!");
+            return false;
         } else if (password.isEmpty() || password.length() < 7) {
             showError(inputpassword, "password must be 7 character");
+            return false;
         } else {
-            mLoadingBar.setTitle("Login");
-            mLoadingBar.setMessage("please wait,while check your credentials");
-            mLoadingBar.setCanceledOnTouchOutside(false);
-            mLoadingBar.show();
+
+            return true;
 
 
         }
