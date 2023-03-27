@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".registerAfterGoogFaceActivity">
+
+    <Button
+        android:id="@+id/btnSubmitGF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/btn"
+        android:text="Submit"
+        app:layout_constraintEnd_toEndOf="@+id/dateCalFG"
+        app:layout_constraintHorizontal_bias="0.479"
+        app:layout_constraintStart_toStartOf="@+id/dateCalFG"
+        app:layout_constraintTop_toBottomOf="@+id/dateCalFG" />
+
+    <TextView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Register"
+        android:textColor="@color/black"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="20dp"
+    tools:ignore="MissingConstraints">
+
+</LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="20dp"
+    tools:ignore="MissingConstraints">
+
+</LinearLayout>
+
+    <TextView
+        android:id="@+id/genderTV"
+        android:layout_width="360dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:text="Gender"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/typeSpinner"
+        app:layout_constraintHorizontal_bias="0.023"
+        app:layout_constraintStart_toStartOf="@+id/typeSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/typeSpinner"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/dateCalFG"
+        android:layout_width="360dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="24dp"
+        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+        app:layout_constraintStart_toStartOf="@+id/textView7"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="360dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="28dp"
+        android:text="BirthDate"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/genderSpinner"
+        app:layout_constraintHorizontal_bias="0.003"
+        app:layout_constraintStart_toStartOf="@+id/genderSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/genderSpinner"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/typeTV"
+        android:layout_width="360dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="32dp"
+        android:paddingLeft="10dp"
+        android:text="Type"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FullName"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/nameTV"
+        android:layout_width="360dp"
+        android:layout_height="27dp"
+        android:paddingLeft="10dp"
+        android:text="Full Name"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        tools:ignore="MissingConstraints" />
+
+    <Spinner
+        android:id="@+id/typeSpinner"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:entries="@array/typeReg"
+        app:layout_constraintEnd_toEndOf="@+id/typeTV"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/typeTV"
+        app:layout_constraintTop_toBottomOf="@+id/typeTV"
+        tools:ignore="MissingConstraints,TouchTargetSizeCheck" />
+
+    <Spinner
+        android:id="@+id/genderSpinner"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:entries="@array/genderReg"
+        app:layout_constraintEnd_toEndOf="@+id/genderTV"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/genderTV"
+        app:layout_constraintTop_toBottomOf="@+id/genderTV"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/FullName"
+        android:layout_width="380dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="5dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameTV" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

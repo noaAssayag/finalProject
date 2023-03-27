@@ -159,10 +159,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean checkCredentials() {
-        String username = inputUserEmail.getText().toString();
+        String email = inputUserEmail.getText().toString();
         String password = inputpassword.getText().toString();
 
-        if (username.isEmpty() || !username.contains("@")) {
+        if (email.isEmpty() || !email.contains("@")) {
             showError(inputUserEmail, "Email in not valid!");
             return false;
         } else if (password.isEmpty() || password.length() < 7) {

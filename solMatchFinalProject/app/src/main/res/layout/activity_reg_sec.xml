@@ -54,7 +54,7 @@
 </LinearLayout>
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/typeTV"
         android:layout_width="360dp"
         android:layout_height="27dp"
         android:layout_marginStart="32dp"
@@ -76,10 +76,10 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:entries="@array/typeReg"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="@+id/typeTV"
         app:layout_constraintHorizontal_bias="0.042"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/typeTV"
+        app:layout_constraintTop_toBottomOf="@+id/typeTV"
         tools:ignore="MissingConstraints,TouchTargetSizeCheck" />
 
     <TextView

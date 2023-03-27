@@ -25,6 +25,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class googleSignIn extends LoginActivity {
     private Button google;
@@ -39,7 +43,7 @@ public class googleSignIn extends LoginActivity {
 
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
-        google = findViewById(R.id.facebookButt);
+        google = findViewById(R.id.googleButt);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -86,7 +90,35 @@ public class googleSignIn extends LoginActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
+                            FirebaseDatabase ref = FirebaseDatabase.getInstance();
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            assert user != null;
+                            String UID = user.getUid().toString();
+                            // now after google login we check if user allready exists
+                            // if he does, we continue to profile, else, we create a profile for him
+                            ref.getReference("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.hasChild(UID))
+                                    {
+                                        Intent intent = new Intent(googleSignIn.this,profileActivity.class);
+                                        intent.putExtra("UID", UID);
+                                        startActivity(intent);
+                                        setContentView(R.layout.activity_profile);
+                                    }
+                                    else{
+                                        Intent intent = new Intent(googleSignIn.this,RegSecActivity.class);
+                                        intent.putExtra("UID", UID);
+                                        startActivity(intent);
+                                        setContentView(R.layout.activity_reg_google_facebook);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                             Toast.makeText(googleSignIn.this, "Signed in as " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                         } else {
                             // If sign in fails, display a message to the user.

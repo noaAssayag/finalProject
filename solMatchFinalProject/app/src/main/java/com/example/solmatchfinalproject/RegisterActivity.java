@@ -104,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean checkCredentials() {
-        if(userName.isEmpty() || userName.length()<7)
+        if(userName.isEmpty() || userName.length()<7 || userName.contains(" "))
         {
             showError(inputUserName,"Your username is not valid!");
             return false;
