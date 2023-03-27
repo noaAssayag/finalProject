@@ -51,25 +51,22 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                userName=inputUserName.getText().toString();
-                email=inputEmail.getText().toString();
-                password=inputPassword.getText().toString();
-                rePassword=inputRePassword.getText().toString();
-                checkCredentials();
+                userName = inputUserName.getText().toString();
+                email = inputEmail.getText().toString();
+                password = inputPassword.getText().toString();
+                rePassword = inputRePassword.getText().toString();
+                if (checkCredentials()) {
+                    if (email.matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")) {
+                        Intent intent = new Intent(RegisterActivity.this, RegSecActivity.class);
+                        intent.putExtra("userName", getUserName());
+                        intent.putExtra("email", getEmail());
+                        intent.putExtra("password", getPassword());
 
-                if (email.matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"))
-                {
-                    Intent intent = new Intent(RegisterActivity.this, RegSecActivity.class);
-                    intent.putExtra("userName", getUserName());
-                    intent.putExtra("email", getEmail());
-                    intent.putExtra("password",getPassword());
-
-                    startActivity(intent);
-                    setContentView(layout.activity_reg_sec);
-                }
-                else
-                {
-                    inputEmail.setError("Invalid Email");
+                        startActivity(intent);
+                        setContentView(layout.activity_reg_sec);
+                    } else {
+                        inputEmail.setError("Invalid Email");
+                    }
                 }
             }
         });
@@ -106,24 +103,33 @@ public class RegisterActivity extends AppCompatActivity {
         this.rePassword = rePassword;
     }
 
-    private void checkCredentials() {
+    private boolean checkCredentials() {
         if(userName.isEmpty() || userName.length()<7)
         {
             showError(inputUserName,"Your username is not valid!");
+            return false;
         }
         else if(email.isEmpty() || !email.contains("@"))
         {
             showError(inputEmail,"Email in not valid!");
+            return false;
         }
         else if(password.isEmpty() || password.length()<7)
         {
             showError(inputPassword,"password must be 7 character");
+            return false;
         }
-        else if(rePassword.isEmpty() || !rePassword.equals(password))
+        else if(rePassword.isEmpty()|| rePassword.length()<7)
+        {
+            showError(inputRePassword,"password must be 7 character");
+            return false;
+        }
+        else if (!(rePassword.equals(password)))
         {
             showError(inputRePassword,"Password not match!");
+            return false;
         }
-
+        return true;
     }
 
     private static void showError(EditText input, String s) {

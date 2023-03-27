@@ -6,15 +6,18 @@ public class UserStorageData {
     private String email;
     private String gen;
     private String birthday;
+    private String password;
     private String type;
 
-    public UserStorageData( String userName, String email, String gen, String birthday, String type,String UID) {
+    public UserStorageData(String UID,String userName, String email, String gen, String birthday,String password, String type) {
+        this.UID = UID;
         this.userName = userName;
         this.email = email;
         this.gen = gen;
         this.birthday = birthday;
+        this.password=password;
         this.type = type;
-        this.UID = UID;
+
     }
 
 
@@ -56,6 +59,13 @@ public class UserStorageData {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getType() {

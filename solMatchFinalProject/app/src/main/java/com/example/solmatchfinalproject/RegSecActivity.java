@@ -51,8 +51,6 @@ public class RegSecActivity extends AppCompatActivity {
         intent = getIntent();
         setUserName(intent.getStringExtra("userName"));
         setEmail(intent.getStringExtra("email"));
-
-         Log.d("TAG", "hey"+getEmail());
         setPassword(intent.getStringExtra("password"));
 
         type = (Spinner)findViewById(R.id.type);
@@ -108,7 +106,7 @@ public class RegSecActivity extends AppCompatActivity {
                                         UID = user.getUid();
                                         firebaseDatabase=FirebaseDatabase.getInstance();
                                         reference=firebaseDatabase.getReference("Users");
-                                        UserStorageData storageData = new UserStorageData(getUserName(), getEmail(), gen, getDate(), host,UID);
+                                        UserStorageData storageData = new UserStorageData(UID, getUserName(), getEmail(),gen,getDate(),getPassword(),host);
                                         reference.child(UID).setValue(storageData);
                                         Toast.makeText(getApplicationContext(),"Register Successfully",Toast.LENGTH_SHORT).show();
                                         Intent newIntent = new Intent(RegSecActivity.this,LoginActivity.class);

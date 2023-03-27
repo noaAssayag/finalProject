@@ -8,7 +8,7 @@
 
     <View
         android:id="@+id/view4"
-        android:layout_width="408dp"
+        android:layout_width="wrap_content"
         android:layout_height="294dp"
         android:background="@drawable/top_background"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,112 +17,115 @@
         app:layout_constraintVertical_bias="0.0" />
 
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="332dp"
-        android:layout_height="349dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/white_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view4"
-        app:layout_constraintVertical_bias="0.582" />
-
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="305dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="28dp"
-        android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/ic_baseline_person"
-        android:text="Personal information"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/googleButt"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/googleButt"
-        app:layout_constraintTop_toBottomOf="@+id/googleButt"
-        app:rippleColor="#FFFFFF" />
-
-    <Button
-        android:id="@+id/button8"
-        android:layout_width="305dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="28dp"
-        android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/ic_baseline_notifications_24"
-        android:text="Notification"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/button7"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/button7"
-        app:layout_constraintTop_toBottomOf="@+id/button7"
-        app:rippleColor="#FFFFFF" />
-
-    <Button
-        android:id="@+id/button10"
-        android:layout_width="305dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="28dp"
-        android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/ic_baseline_logout_24"
-        android:text="Log-Out"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/button8"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/button8"
-        app:layout_constraintTop_toBottomOf="@+id/button8"
-        app:rippleColor="#FFFFFF" />
-
     <ImageView
-        android:id="@+id/imageView10"
+        android:id="@+id/profImage"
         android:layout_width="113dp"
         android:layout_height="101dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        android:layout_marginBottom="200dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.431"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/profName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="17dp"
+        android:layout_marginBottom="120dp"
         android:text="Name"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/imageView10"
-        app:layout_constraintStart_toStartOf="@+id/imageView10"
-        app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintEnd_toEndOf="@+id/profImage"
+        app:layout_constraintStart_toStartOf="@+id/profImage"
+        app:layout_constraintTop_toBottomOf="@+id/profImage"
+        app:layout_constraintVertical_bias="0.23" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_menu"
+        android:layout_width="415dp"
+        android:layout_height="57dp"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+    <TextView
+        android:id="@+id/descriptionText"
+        android:layout_width="133dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="56dp"
+        android:text="TextView"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintEnd_toEndOf="@+id/profImage"
+        app:layout_constraintStart_toStartOf="@+id/profImage" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ביצוע פעולות"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.951"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4"
+        app:layout_constraintVertical_bias="0.102" />
 
     <Button
-        android:id="@+id/googleButt"
-        android:layout_width="305dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="@color/white"
-        android:drawableLeft="@drawable/ic_baseline_settings_24"
-        android:text="Account Setting"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintHorizontal_bias="0.515"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view"
-        app:layout_constraintVertical_bias="0.075"
-        app:rippleColor="#FFFFFF" />
+        android:id="@+id/button2"
+        android:layout_width="121dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="96dp"
+        android:onClick="btnEditPersonal"
+        android:text="עריכת פרטים אישיים"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
+        app:layout_constraintEnd_toStartOf="@+id/btnChangeImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button3"
+        app:layout_constraintTop_toBottomOf="@+id/view4"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="123dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="96dp"
+        android:drawableLeft="@drawable/ic_baseline_check_box_24"
+        android:text="אירועים מוזמנים"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnChangeImage"
+        android:layout_width="99dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="84dp"
+        android:text="החלפת תמונה"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/view4"
+        app:layout_constraintVertical_bias="0.0" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

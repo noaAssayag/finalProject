@@ -52,7 +52,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/input"
-        android:drawableLeft="@drawable/ic_baseline_person"
+        android:drawableLeft="@drawable/ic_baseline_email"
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Email"
@@ -63,6 +63,7 @@
         android:paddingRight="10dp"
         android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
@@ -123,8 +124,8 @@
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/facebookButt"
-        android:layout_width="100dp"
-        android:layout_height="48dp"
+        android:layout_width="127dp"
+        android:layout_height="52dp"
         android:layout_marginTop="28dp"
         android:height="48dp"
         android:background="@drawable/btn"
