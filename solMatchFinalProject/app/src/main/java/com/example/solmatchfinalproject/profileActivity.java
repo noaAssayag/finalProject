@@ -158,6 +158,14 @@ public class profileActivity extends AppCompatActivity {
 
         });
     }
+
+    /**
+     * The function gets a ContentResolver object using the getContentResolver() method. The ContentResolver is used to access and manipulate the data in the underlying Android system.
+     * Then, it creates a MimeTypeMap object using the MimeTypeMap.getSingleton() method. This object is used to get the MIME type of a file based on its extension.
+     * Finally, it returns the extension of the file using the MimeTypeMap.getExtensionFromMimeType() method, which takes the MIME type of the file as an input parameter.
+     * @param uri
+     * @return
+     */
     private String getFileExtension(Uri uri)
     {
         ContentResolver cR=getContentResolver();
