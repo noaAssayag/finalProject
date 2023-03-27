@@ -15,8 +15,12 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.net.URI;
 
@@ -41,7 +46,15 @@ public class profileActivity extends AppCompatActivity {
     private String UID;
     private StorageReference mStorgaeRef;
     private DatabaseReference mDatabaseRef;
+    private String imageURL;
+    Uri uri = null;
 
+
+    /**
+     * OnCreate function initiates the app with all variables
+     * after initialization, we load the toolbar menu
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +89,10 @@ public class profileActivity extends AppCompatActivity {
                     break;
             }
         });
-
+        /**
+         * getting a reference to the realTime database, and to the Storage functions provied to us by fireBase
+         * After login we recive all User's details from the database including profile image.
+         */
         Intent intent = getIntent();
         UID = intent.getStringExtra("UID");
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -96,10 +112,19 @@ public class profileActivity extends AppCompatActivity {
                         gen = keyID.child("gen").getValue(String.class);
                         birthday = keyID.child("birthday").getValue(String.class);
                         type = keyID.child("type").getValue(String.class);
+                        imageURL = keyID.child("imageUrl").getValue(String.class);
+
                         break;
                     }
                 }
+                /**
+                 * after feching all the information we present them onto the layout elements
+                 */
                 name.setText(userName);
+                // Using Glide liberery to show image into the imageView using the URL
+                Glide.with(profileActivity.this)
+                        .load(imageURL)
+                        .into(image);
                 descriptionText.setText(userName + " , " + gen + " , " + type + " , " + birthday + " , " + email);
                 if (gen!=null) {
                     if (gen.equals("Female")) {
@@ -144,12 +169,51 @@ public class profileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri uri= data.getData();
+        uri= data.getData();
         image.setImageURI(uri);
+        uploadFile();
+    }
 
-        if(image!=null)
+
+    private void uploadFile()
+    {
+        if(uri!=null)
         {
+            // creates a unique URl for the photo to then be added as the image reference in the realTime database.
             StorageReference fileRef=mStorgaeRef.child(System.currentTimeMillis()+"."+getFileExtension(uri));
+            fileRef.putFile(uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Get the download URL of the uploaded file
+                            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String imageUrl = uri.toString();
+                                    // Add the image URL to the Firebase Realtime Database
+                                    mDatabaseRef.child("Users").child(UID).child("imageUrl").setValue(imageUrl)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Toast.makeText(profileActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(profileActivity.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(profileActivity.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 
