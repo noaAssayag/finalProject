@@ -5,13 +5,17 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -30,34 +34,52 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+
 public class googleSignIn extends LoginActivity {
     private Button google;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int REQ_ONE_TAP = 2;  // Can be any integer unique to the Activity.
     private boolean showOneTapUI = true;
     private static final int RC_SIGN_IN = 123;
+    private  GoogleSignInAccount account;
+    GoogleSignInOptions gso;
 
     // initializing Firebase and the Google sign in builder
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        FirebaseApp.initializeApp(this);
-        google = findViewById(R.id.googleButt);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        // initializing google builder with the DEFAULT sign in option, getting the idToken used to connect google with firebase
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+        FirebaseApp.initializeApp(this);
+        google = findViewById(R.id.googleButt);
 
         // using google methods
+        // this checks if there is a user allready logged in
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         google.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SuspiciousIndentation")
             @Override
             public void onClick(View v) {
-                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, RC_SIGN_IN);
-
+                // recives google account, if user == null we start a new Intent with the google sign in screen and wait for login
+               account = GoogleSignIn.getLastSignedInAccount(googleSignIn.this);
+                if(account == null) {
+                    Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                    startActivityForResult(signInIntent, RC_SIGN_IN);
+                }
+                else
+                try {
+                    firebaseAuthWithGoogle(account);
+                } catch (GoogleAuthException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -66,7 +88,7 @@ public class googleSignIn extends LoginActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        // after login we check for results, if everything went well, we get the account and start the firebase register
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
@@ -78,11 +100,18 @@ public class googleSignIn extends LoginActivity {
                 // Google Sign-In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
                 Toast.makeText(this, "Google sign in failed", Toast.LENGTH_SHORT).show();
+            } catch (GoogleAuthException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) throws GoogleAuthException, IOException {
+        // we get the ID token of the user signed in to be his UID in the realtimme database
+        String IDToken = acct.getIdToken();
+        AuthCredential credential = GoogleAuthProvider.getCredential(IDToken,null);
+        //we sign in the user from google data to the firebase authenticator
         FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
