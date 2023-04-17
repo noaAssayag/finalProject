@@ -3,11 +3,17 @@ package com.example.solmatchfinalproject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,8 +25,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,11 +37,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.net.URI;
+import java.util.HashMap;
+
+import notification.notificationService;
 
 public class profileActivity extends AppCompatActivity {
     private TextView name, descriptionText;
@@ -113,6 +126,9 @@ public class profileActivity extends AppCompatActivity {
                         birthday = keyID.child("birthday").getValue(String.class);
                         type = keyID.child("type").getValue(String.class);
                         imageURL = keyID.child("imageUrl").getValue(String.class);
+                        notificationService not = new notificationService();
+                        Context con = getApplicationContext();
+                        not.sendNotification("test",intent,con);
 
                         break;
                     }
@@ -187,6 +203,8 @@ public class profileActivity extends AppCompatActivity {
     {
         if(uri!=null)
         {
+
+            notification();
             // creates a unique URl for the photo to then be added as the image reference in the realTime database.
             StorageReference fileRef=mStorgaeRef.child(System.currentTimeMillis()+"."+getFileExtension(uri));
             fileRef.putFile(uri)
@@ -229,6 +247,33 @@ public class profileActivity extends AppCompatActivity {
         Intent intent = new Intent(this, EditPersonalDetailsActivity.class);
         startActivity(intent);
         setContentView(R.layout.activity_edit_personal_details);
+    }
+
+
+    /**
+     * writing the notification test code, after login we send a notification
+     */
+    private void notification()
+    {
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            String channelId = getString(R.string.default_notification_channel_id);
+            String channelName = getString(R.string.default_notification_channel_name);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId,channelName,NotificationManager.IMPORTANCE_LOW));
+        }
+        // making a test on the image upload button, when user clicks on upload button we want to send notification
+        FirebaseMessaging.getInstance().subscribeToTopic("testChannel").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                String msg = "Image Uploaded";
+                if(!task.isSuccessful())
+                {
+                    msg = "failed";
+                }
+            }
+        });
     }
 }
 

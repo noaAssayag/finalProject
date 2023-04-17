@@ -2,9 +2,13 @@ package com.example.solmatchfinalproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -24,6 +28,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.HashMap;
+
+import notification.notificationService;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -55,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                     mLoadingBar.setMessage("please wait,while check your credentials");
                     mLoadingBar.setCanceledOnTouchOutside(false);
                     mLoadingBar.show();
+                    notificationSender("test massage","test title");
 
 
                 // Now, we start a FirebaseAuth instance
@@ -73,6 +84,9 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, profileActivity.class);
                             intent.putExtra("UID", user.getUid());
                             startActivity(intent);
+
+
+
                             setContentView(R.layout.activity_profile);
 
                         } else {
@@ -181,5 +195,56 @@ public class LoginActivity extends AppCompatActivity {
         input.requestFocus();
     }
 
+    public void notificationSender(String massage, String title)
+    {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            String channelId = getString(R.string.default_notification_channel_id);
+            String channelName = getString(R.string.default_notification_channel_name);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId,channelName,NotificationManager.IMPORTANCE_LOW));
+        }
+        // making a test on the image upload button, when user clicks on upload button we want to send notification
+        FirebaseMessaging.getInstance().subscribeToTopic("testChannel").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                String msg = "LogInSuccess";
+                if(!task.isSuccessful())
+                {
+                    msg = "failed";
+                }
+            }
+        });
+        FirebaseMessaging.getInstance().subscribeToTopic("testChannel")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            boolean isSubscribed = task.isSuccessful();
+                            if (isSubscribed) {
+                                Log.d("TAG", "User is subscribed to testChannel topic");
+                            } else {
+                                Log.d("TAG", "User is not subscribed to testChannel topic");
+                            }
+                        } else {
+                            Log.e("TAG", "Error checking subscription status", task.getException());
+                        }
+                    }
+                });
 
+        // Create a new instance of the FirebaseMessaging class
+        FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
+
+// Create a new instance of the RemoteMessage class
+        RemoteMessage message = new RemoteMessage.Builder("testChannel")
+                .setMessageId("1")
+                .setData(new HashMap<String, String>())
+                .addData("notification_title", title)
+                .addData("notification_message", massage)
+                .build();
+
+// Send the notification message using the FirebaseMessaging API
+        firebaseMessaging.send(message);
+
+    }
     }
