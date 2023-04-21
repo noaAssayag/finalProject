@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -7,4 +10,18 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="_bg__sign_in__color">#FFFFFF</color>
+    <color name="log_in_color">#797C7B</color>
+    <color name="log_in_to_chatbox_color">#000D07</color>
+    <color name="line_38_color">#CDD1D0</color>
+    <color name="forgot_password__color">#24786D</color>
+    <color name="line_40_color">#CCD1CF</color>
+
+    <color name="_bg__sign_up_color">#121414</color>
+    <color name="rectangle_color">#ffffff</color>
+    <color name="rectangle_ek1_color">#FFFFFF</color>
+    <color name="get_chatting_with_friends_and_family_today_by_signing_up_for_our_chat_app__color">#797C7B</color>
+    <color name="your_email_color">#5EBAAE</color>
+    <color name="line_43_color">#595E5C</color>
+
 </resources>

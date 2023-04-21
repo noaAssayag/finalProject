@@ -29,6 +29,9 @@
             android:name=".facebookSignIn"
             android:exported="false" />
         <activity
+            android:name=".sign_in__activity"
+            android:exported="false"/>
+        <activity
             android:name=".RegSecActivity"
             android:exported="false">
             <meta-data
