@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ellipse_1191 from your XD file. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+	android:shape="oval" >
+	<stroke android:color="#000e08" android:width="1dp" />
+	<solid android:color="@color/_bg__sign_in__color" />
+</shape>
+
