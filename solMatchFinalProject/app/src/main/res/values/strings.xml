@@ -52,6 +52,6 @@
 
     <string name="confirm_password_string">Confirm Password</string>
     <string name="create_an_account_string">Create an account</string>
-    <string name="your_name_string">you name</string>
+    <string name="your_name_string">your name</string>
 
 </resources>
