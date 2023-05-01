@@ -11,9 +11,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-     //   Intent intent = new Intent(this, profileActivity.class);
-       // startActivity(intent);
-        setContentView(R.layout.user_profile);
+     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        setContentView(R.layout.activity_login);
     }
 
 

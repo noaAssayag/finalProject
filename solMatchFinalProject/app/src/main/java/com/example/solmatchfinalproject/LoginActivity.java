@@ -37,7 +37,7 @@ import notification.notificationService;
 
 
 public class LoginActivity extends AppCompatActivity {
-    TextView btn;
+    TextView btn,forgotPassword;
     EditText inputUserEmail,inputpassword;
     Button btnLogin;
     Button google;
@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin=(Button) findViewById(R.id.btnLogin);
         google = findViewById(R.id.googleButt);
         facebook = findViewById(R.id.facebookButt);
+        forgotPassword = findViewById(R.id.textViewForgetPassword);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +100,13 @@ public class LoginActivity extends AppCompatActivity {
             }
             });
 
-
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            Intent intent = new Intent(LoginActivity.this,forgotPasswordActivity.class);
+            startActivity(intent);
+            }
+        });
 
                 // dont want to delete but ill do the login through the authenticator (thats why we use it)
                /* FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();

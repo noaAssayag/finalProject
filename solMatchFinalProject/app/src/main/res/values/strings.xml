@@ -75,5 +75,7 @@
     <string name="john_ahraham_string">John Ahraham</string>
     <string name="hey__can_you_join_the_meeting__string">Hey! Can you join the meeting?</string>
     <string name="home_string">Home</string>
+    <string name="forget_password_msg">"Hello, please enter the email you used to register to the app. If the email is correct, we will send you a temporary password "</string>
+    <string name="reset_pass">Reset</string>
 
 </resources>
