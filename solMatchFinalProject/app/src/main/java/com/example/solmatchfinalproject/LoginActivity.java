@@ -50,8 +50,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         btn=(TextView)findViewById(R.id.textViewSignUp);
-        inputUserEmail=(EditText) findViewById(R.id.inputEmail);
-        inputpassword=(EditText) findViewById(R.id.inputpassword);
+        inputUserEmail=(EditText) findViewById(R.id.inputLogEmail);
+        inputpassword=(EditText) findViewById(R.id.inputLogPassword);
         btnLogin=(Button) findViewById(R.id.btnLogin);
         google = findViewById(R.id.googleButt);
         facebook = findViewById(R.id.facebookButt);

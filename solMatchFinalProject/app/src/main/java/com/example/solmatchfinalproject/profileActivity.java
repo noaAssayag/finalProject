@@ -71,8 +71,8 @@ public class profileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-        bottomNavigationView = findViewById(R.id.bottom_menu);
+        setContentView(R.layout.user_profile);
+     /* bottomNavigationView = findViewById(R.id.bottom_menu);
         image = findViewById(R.id.profImage);
         btnImg = findViewById(R.id.btnChangeImage);
         name = findViewById(R.id.profName);
@@ -101,7 +101,7 @@ public class profileActivity extends AppCompatActivity {
                     setContentView(R.layout.activity_login);
                     break;
             }
-        });
+        });*/
         /**
          * getting a reference to the realTime database, and to the Storage functions provied to us by fireBase
          * After login we recive all User's details from the database including profile image.

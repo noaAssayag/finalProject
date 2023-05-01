@@ -53,5 +53,27 @@
     <string name="confirm_password_string">Confirm Password</string>
     <string name="create_an_account_string">Create an account</string>
     <string name="your_name_string">your name</string>
+    <string name="jhon_abraham_string">Jhon Abraham</string>
+    <string name="__jhonabraham_string">jhonabraham</string>
+    <string name="display_name_ek1_string">Display Name</string>
+    <string name="jhon_abraham_ek1_string">Jhon Abraham</string>
+    <string name="email_address_ek1_string">Email Address</string>
+    <string name="jhonabraham20_gmail_com_string">jhonabraham20@gmail.com</string>
+    <string name="address_ek1_string">Address</string>
+    <string name="_33_street_west_subidbazar_sylhet_string">33 street west subidbazar,sylhet</string>
+    <string name="phone_number_ek1_string">Phone  Number</string>
+    <string name="__320__555_0104_string">(320) 555-0104</string>
+    <string name="_3_string">3</string>
+    <string name="_2_min_ago_string">2 min ago</string>
+    <string name="alex_linderson_string">Alex Linderson</string>
+    <string name="how_are_you_today__string">How are you today?</string>
+    <string name="_4_string">4</string>
+    <string name="_2_min_ago_ek1_string">2 min ago</string>
+    <string name="team_align_string">Team Align</string>
+    <string name="don_t_miss_to_attend_the_meeting__string">Dont miss to attend the meeting.</string>
+    <string name="_2_min_ago_ek2_string">2 min ago</string>
+    <string name="john_ahraham_string">John Ahraham</string>
+    <string name="hey__can_you_join_the_meeting__string">Hey! Can you join the meeting?</string>
+    <string name="home_string">Home</string>
 
 </resources>

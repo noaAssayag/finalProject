@@ -6,141 +6,109 @@
     android:layout_height="match_parent"
     tools:context=".RegSecActivity">
 
-    <TextView
-        android:id="@+id/typeTV"
-        android:layout_width="78dp"
-        android:layout_height="19dp"
-        android:layout_gravity="center_horizontal|center"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:text="@string/type"
-        android:textColor="@color/your_email_color"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/type"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.021"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/gender_prompt"
-        android:layout_width="78dp"
-        android:layout_height="19dp"
-        android:layout_gravity="center_horizontal|center"
-        android:gravity="center"
-        android:text="@string/gender"
-        android:textColor="@color/your_email_color"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/gender"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.06"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/type"
-        app:layout_constraintVertical_bias="0.512" />
-
-    <ImageView
-        android:id="@+id/line_42__stroke_4"
-        android:layout_width="50dp"
-        android:layout_height="8dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginEnd="241dp"
-        android:contentDescription="line_42__stroke_"
-        android:src="@drawable/line_42__stroke_"
-        app:layout_constraintBottom_toBottomOf="@+id/sign_up_with_email3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sign_up_with_email3"
-        app:layout_constraintVertical_bias="0.652" />
-
-    <TextView
-        android:id="@+id/sign_up_with_email3"
-        android:layout_width="188dp"
-        android:layout_height="31dp"
-        android:text="@string/sign_up_with_email_string"
-        android:textColor="@color/log_in_to_chatbox_color"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.094" />
-
-    <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="276dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="36dp"
-        android:backgroundTint="#404040"
-        android:text="@string/submit"
-        app:layout_constraintEnd_toEndOf="@+id/dateCal"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/dateCal"
-        app:layout_constraintTop_toBottomOf="@+id/dateCal" />
-
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginTop="20dp"
-    tools:ignore="MissingConstraints">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="86dp"
+        tools:layout_editor_absoluteY="339dp">
 
-</LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginTop="20dp"
-    tools:ignore="MissingConstraints">
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="183dp"
+            android:layout_height="31dp"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="72dp"
+            android:text="@string/sign_up_with_email_string"
+            android:textColor="@color/log_in_to_chatbox_color"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/textViewType"
+            android:layout_width="81dp"
+            android:layout_height="24dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/type"
+            android:textColor="@color/your_email_color"
+            android:textSize="14sp" />
 
-    <Spinner
-        android:id="@+id/type"
-        android:layout_width="100dp"
-        android:layout_height="0dp"
-        android:entries="@array/typeReg"
-        tools:ignore="MissingConstraints,TouchTargetSizeCheck"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="213dp" />
+        <Spinner
+            android:id="@+id/spinnerType"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:entries="@array/typeReg"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"  />
 
-    <Spinner
-        android:id="@+id/gender"
-        android:layout_width="103dp"
-        android:layout_height="28dp"
-        android:entries="@array/genderReg"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="297dp" />
+        <TextView
+            android:id="@+id/textViewGender"
+            android:layout_width="81dp"
+            android:layout_height="24dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/gender"
+            android:textColor="@color/your_email_color"
+            android:textSize="14sp"
+            />
+        <Spinner
+            android:id="@+id/spinnerGender"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:entries="@array/genderReg"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            />
 
-    <TextView
-        android:id="@+id/typeTV3"
-        android:layout_width="78dp"
-        android:layout_height="19dp"
-        android:layout_gravity="center_horizontal|center"
-        android:gravity="center"
-        android:text="@string/birthdate"
-        android:textColor="@color/your_email_color"
-        android:textSize="14sp"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="338dp" />
+        <TextView
+            android:id="@+id/textViewBd"
+            android:layout_width="81dp"
+            android:layout_height="24dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/birthdate"
+            android:textColor="@color/your_email_color"
+            android:textSize="14sp"
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="338dp" />
 
-    <TextView
-        android:id="@+id/dateCal"
-        android:layout_width="87dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="8dp"
-        android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.088"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/typeTV3"
-        tools:ignore="MissingConstraints" />
+        <TextView
+            android:id="@+id/dateCal"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            />
+        <Button
+            android:id="@+id/btnSubmit"
+            android:text="@string/submit"
+            android:layout_width="260dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#404040"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/common_google_signin_btn_icon_dark_focused"
+            />
+    </LinearLayout>
 
-
+    <!--    <ImageView-->
+    <!--        android:id="@+id/line_42__stroke_4"-->
+    <!--        android:layout_width="50dp"-->
+    <!--        android:layout_height="8dp"-->
+    <!--        android:layout_marginStart="120dp"-->
+    <!--        android:layout_marginEnd="241dp"-->
+    <!--        android:contentDescription="line_42_stroke"-->
+    <!--        android:src="@drawable/line_42_stroke"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/textViewTitle"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/textViewTitle"-->
+    <!--        app:layout_constraintVertical_bias="0.652" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

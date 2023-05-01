@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+	<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".profileActivity">
+
+
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+		<androidx.cardview.widget.CardView
+			android:layout_width="155dp"
+			android:layout_height="155dp"
+			app:cardCornerRadius="250dp"
+			app:cardBackgroundColor="@color/white"
+			app:cardStrokeColor="@color/black"
+			app:cardStrokeWidth="2dp">
+
+			<androidx.cardview.widget.CardView
+				android:layout_width="150dp"
+				android:layout_height="150dp"
+				app:cardCornerRadius="250dp"
+				android:layout_gravity="center">
+
+				<ImageView
+					android:layout_width="150dp"
+					android:layout_height="150dp"
+					android:src="@drawable/anonymousman"
+					android:scaleType="centerCrop"/>
+
+			</androidx.cardview.widget.CardView>
+
+		</androidx.cardview.widget.CardView>
+
+
+		<ImageView
+			android:id="@+id/imageView"
+			android:layout_width="match_parent"
+			android:layout_height="80dp"
+			android:background="@drawable/profile_image_view"
+			tools:srcCompat="@drawable/anonymousman" />
+
+		<View
+			android:id="@+id/rectangle_1131"
+			android:layout_width="30dp"
+			android:layout_height="3dp"
+			android:layout_marginStart="173dp"
+			android:layout_marginTop="306dp"
+			android:background="@drawable/rectangle_1131_shape" />
+
+
+		<View
+			android:id="@+id/rectangle_1092"
+			android:layout_width="82dp"
+			android:layout_height="82dp"
+			android:layout_marginStart="32dp"
+			android:layout_marginTop="0dp"
+			android:background="@drawable/rectangle_1092_shape"
+
+				/>
+
+
+		<TextView
+			android:id="@+id/jhon_abraham"
+			android:layout_width="170dp"
+			android:layout_height="34dp"
+			android:layout_marginLeft="0dp"
+			android:layout_marginTop="0dp"
+			android:text="@string/jhon_abraham_string"
+			android:textColor="@color/rectangle_1149_color"
+			android:textSize="20sp"
+			android:textStyle="bold" />
+
+		<TextView
+			android:id="@+id/__jhonabraham"
+			android:layout_width="92dp"
+			android:layout_height="20dp"
+			android:layout_gravity="center_horizontal|center"
+			android:layout_marginLeft="30dp"
+			android:layout_marginTop="28dp"
+			android:gravity="center"
+			android:text="@string/__jhonabraham_string"
+			android:textColor="@color/_bg__user_profile_color"
+			android:textSize="12sp" />
+
+
+		<TextView
+			android:id="@+id/display_name_ek1"
+			android:layout_width="107dp"
+			android:layout_height="24dp"
+			android:layout_marginLeft="0dp"
+			android:layout_marginTop="0dp"
+			android:text="@string/display_name_ek1_string"
+			android:textColor="@color/_bg__user_profile_color"
+			android:textSize="14sp" />
+
+		<TextView
+			android:id="@+id/jhon_abraham_ek1"
+			android:layout_width="153dp"
+			android:layout_height="31dp"
+			android:layout_marginLeft="4dp"
+			android:layout_marginTop="24dp"
+			android:text="@string/jhon_abraham_ek1_string"
+			android:textColor="@color/_bg__user_profile_color"
+			android:textSize="18sp" />
+
+
+		<TextView
+			android:id="@+id/email_address_ek1"
+			android:layout_width="109dp"
+			android:layout_height="24dp"
+			android:layout_marginLeft="0dp"
+			android:layout_marginTop="0dp"
+			android:text="@string/email_address_ek1_string"
+			android:textColor="@color/__jhonabraham_color"
+			android:textSize="14sp" />
+
+		<TextView
+			android:id="@+id/jhonabraham20_gmail_com"
+			android:layout_width="277dp"
+			android:layout_height="31dp"
+			android:layout_marginLeft="4dp"
+			android:layout_marginTop="24dp"
+			android:text="@string/jhonabraham20_gmail_com_string"
+			android:textColor="@color/_bg__user_profile_color"
+			android:textSize="18sp" />
+
+
+		<TextView
+			android:id="@+id/address_ek1"
+			android:layout_width="71dp"
+			android:layout_height="24dp"
+			android:layout_marginLeft="0dp"
+			android:layout_marginTop="0dp"
+			android:text="@string/address_ek1_string"
+			android:textColor="@color/__jhonabraham_color"
+			android:textSize="14sp" />
+
+		<TextView
+			android:id="@+id/_33_street_west_subidbazar_sylhet"
+			android:layout_width="308dp"
+			android:layout_height="31dp"
+			android:layout_marginLeft="4dp"
+			android:layout_marginTop="24dp"
+			android:text="@string/_33_street_west_subidbazar_sylhet_string"
+			android:textColor="@color/_bg__user_profile_color"
+			android:textSize="18sp" />
+
+
+		<TextView
+			android:id="@+id/phone_number_ek1"
+			android:layout_width="118dp"
+			android:layout_height="24dp"
+			android:layout_marginLeft="0dp"
+			android:layout_marginTop="0dp"
+			android:text="@string/phone_number_ek1_string"
+			android:textColor="@color/__jhonabraham_color"
+			android:textSize="14sp" />
+
+		<TextView
+			android:id="@+id/__320__555_0104"
+			android:layout_width="159dp"
+			android:layout_height="31dp"
+			android:layout_marginLeft="4dp"
+			android:layout_marginTop="24dp"
+			android:text="@string/__320__555_0104_string"
+			android:textColor="@color/_bg__user_profile_color"
+			android:textSize="18sp" />
+
+
+	</LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

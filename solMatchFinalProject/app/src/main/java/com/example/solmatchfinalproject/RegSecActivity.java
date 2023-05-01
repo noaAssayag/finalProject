@@ -53,8 +53,8 @@ public class RegSecActivity extends AppCompatActivity {
         setEmail(intent.getStringExtra("email"));
         setPassword(intent.getStringExtra("password"));
 
-        type = (Spinner)findViewById(R.id.type);
-        gender = (Spinner)findViewById(R.id.gender);
+        type = (Spinner)findViewById(R.id.spinnerType);
+        gender = (Spinner)findViewById(R.id.spinnerGender);
         dateCal =(TextView) findViewById(R.id.dateCal);
         finish = (Button) findViewById(R.id.btnSubmit);
 
