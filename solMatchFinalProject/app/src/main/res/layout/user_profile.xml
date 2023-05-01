@@ -8,42 +8,52 @@
 		tools:context=".profileActivity">
 
 
-
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="vertical">
-		<androidx.cardview.widget.CardView
-			android:layout_width="155dp"
-			android:layout_height="155dp"
-			app:cardCornerRadius="250dp"
-			app:cardBackgroundColor="@color/white"
-			app:cardStrokeColor="@color/black"
-			app:cardStrokeWidth="2dp">
+		android:layout_marginEnd="16dp"
+		android:orientation="vertical"
+		app:layout_constraintEnd_toEndOf="parent"
+		tools:layout_editor_absoluteY="252dp">
 
-			<androidx.cardview.widget.CardView
-				android:layout_width="150dp"
-				android:layout_height="150dp"
-				app:cardCornerRadius="250dp"
-				android:layout_gravity="center">
+
+
+		<androidx.cardview.widget.CardView
+			android:layout_width="150dp"
+			android:layout_height="150dp"
+			android:layout_gravity="center"
+			app:cardCornerRadius="2500dp">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical"/>
 
 				<ImageView
 					android:layout_width="150dp"
 					android:layout_height="150dp"
-					android:src="@drawable/anonymousman"
-					android:scaleType="centerCrop"/>
+					android:scaleType="centerCrop"
+					android:src="@drawable/anonymousman" />
 
-			</androidx.cardview.widget.CardView>
+
+
 
 		</androidx.cardview.widget.CardView>
+		<TextView
+			android:id="@+id/__jhonabraham"
+			android:layout_marginTop="10dp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal"
+			android:gravity="center"
+			android:text="@string/__jhonabraham_string"
+			android:textColor="@color/_bg__user_profile_color"
+			android:textSize="14sp"
+			/>
+	</LinearLayout>
 
 
-		<ImageView
-			android:id="@+id/imageView"
-			android:layout_width="match_parent"
-			android:layout_height="80dp"
-			android:background="@drawable/profile_image_view"
-			tools:srcCompat="@drawable/anonymousman" />
+
 
 		<View
 			android:id="@+id/rectangle_1131"
@@ -62,7 +72,7 @@
 			android:layout_marginTop="0dp"
 			android:background="@drawable/rectangle_1092_shape"
 
-				/>
+			/>
 
 
 		<TextView
@@ -76,17 +86,7 @@
 			android:textSize="20sp"
 			android:textStyle="bold" />
 
-		<TextView
-			android:id="@+id/__jhonabraham"
-			android:layout_width="92dp"
-			android:layout_height="20dp"
-			android:layout_gravity="center_horizontal|center"
-			android:layout_marginLeft="30dp"
-			android:layout_marginTop="28dp"
-			android:gravity="center"
-			android:text="@string/__jhonabraham_string"
-			android:textColor="@color/_bg__user_profile_color"
-			android:textSize="12sp" />
+
 
 
 		<TextView
@@ -173,7 +173,6 @@
 			android:textSize="18sp" />
 
 
-	</LinearLayout>
+	</androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
