@@ -33,7 +33,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.HashMap;
 
-import notification.notificationService;
+//import notification.notificationService;
 
 
 public class LoginActivity extends AppCompatActivity {
