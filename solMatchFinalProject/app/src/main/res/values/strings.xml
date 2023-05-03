@@ -21,7 +21,7 @@
     <string name="google">google</string>
     <string name="signup">signUp</string>
     <string name="dont_have_an_account">Dont have an Account?</string>
-    <string name="Change_Pic">החלפת תמונה</string>
+    <string name="Change_Pic">Change_Pic</string>
     <string name="textview">TextView</string>
     <string name="ek_img_content">ExportKit Image</string>
     <string name="log_in_string">Log in</string>

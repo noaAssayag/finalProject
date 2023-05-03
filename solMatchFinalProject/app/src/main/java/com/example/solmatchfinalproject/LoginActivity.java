@@ -85,11 +85,6 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, profileActivity.class);
                             intent.putExtra("UID", user.getUid());
                             startActivity(intent);
-
-
-
-                            setContentView(R.layout.activity_profile);
-
                         } else {
                             mLoadingBar.hide();
                             Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
