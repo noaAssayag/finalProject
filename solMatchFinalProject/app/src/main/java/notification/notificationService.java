@@ -80,7 +80,7 @@ public class notificationService extends FirebaseMessagingService {
     {
 
     }
-
+/*
     public void sendNotification(String massageBody,Intent intent,Context context)
     {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -104,7 +104,7 @@ public class notificationService extends FirebaseMessagingService {
         }
         notificationManager.notify(0,notificationBuilder.build());
     }
-
+*/
 
 }
 

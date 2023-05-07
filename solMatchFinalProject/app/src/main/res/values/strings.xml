@@ -74,10 +74,10 @@
     <string name="reset_pass">Reset</string>
 
     <!-- String for profile Page-->
-   <string name="name">Full Name</string>
+    <string name="name">Full Name</string>
     <string name="namePro">My Name</string>
 
-   <string name="email">Email Address</string>
+    <string name="email">Email Address</string>
     <string name="emailPro">My Email</string>
 
     <string name="password">Password</string>
@@ -90,6 +90,14 @@
     <string name="birthdayPro">My Birthday</string>
 
     <string name="btnEdit">Edit</string>
+    <string name="describeUser">description....</string>
+    <string name="titleProfPage">Upcoming events:</string>
+
+    <string name="hostingDate">Date</string>
+
+    <string name="btnCancel">Cancel</string>
+
+
 
 
 </resources>

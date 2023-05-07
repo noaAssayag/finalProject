@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                             // if sign in was successful we pass the UID to the profile activity and start the activity
                             // all user info is located within the realtime DataBase, and can be accessed with the UID as the key under the users parent.
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(LoginActivity.this, profileActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, editPersonalDetails.class);
                             intent.putExtra("UID", user.getUid());
                             startActivity(intent);
                         } else {

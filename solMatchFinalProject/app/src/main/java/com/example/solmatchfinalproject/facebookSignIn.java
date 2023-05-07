@@ -93,7 +93,7 @@ public class facebookSignIn extends LoginActivity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (snapshot.hasChild(user.getUid()))
                                     {
-                                        Intent intent = new Intent(facebookSignIn.this,profileActivity.class);
+                                        Intent intent = new Intent(facebookSignIn.this,editPersonalDetails.class);
 
                                     }
                                 }

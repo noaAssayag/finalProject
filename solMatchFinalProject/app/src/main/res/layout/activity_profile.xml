@@ -6,126 +6,89 @@
     android:layout_height="match_parent"
     tools:context=".profileActivity">
 
-    <View
-        android:id="@+id/view4"
-        android:layout_width="wrap_content"
-        android:layout_height="294dp"
-        android:background="@drawable/top_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-
-    <ImageView
-        android:id="@+id/profImage"
-        android:layout_width="113dp"
-        android:layout_height="101dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="200dp"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintBottom_toBottomOf="@+id/view4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/profName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
-        android:layout_marginBottom="120dp"
-        android:text="@string/name"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/view4"
-        app:layout_constraintEnd_toEndOf="@+id/profImage"
-        app:layout_constraintStart_toStartOf="@+id/profImage"
-        app:layout_constraintTop_toBottomOf="@+id/profImage"
-        app:layout_constraintVertical_bias="0.23" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_menu"
-        android:layout_width="415dp"
-        android:layout_height="57dp"
-        android:layout_gravity="bottom"
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/descriptionText"
-        android:layout_width="133dp"
-        android:layout_height="55dp"
-        android:layout_marginBottom="56dp"
-        android:text="@string/textview"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/view4"
-        app:layout_constraintEnd_toEndOf="@+id/profImage"
-        app:layout_constraintStart_toStartOf="@+id/profImage" />
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="#5EBAAE"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="6dp"
+        android:layout_alignParentTop="true"/>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Action_making"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.951"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view4"
-        app:layout_constraintVertical_bias="0.102" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="12dp"
+            app:cardCornerRadius="40dp"
+            android:layout_below="@id/view">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="121dp"
-        android:layout_height="76dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="96dp"
-        android:onClick="btnEditPersonal"
-        android:text="@string/edit_personal_details"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
-        app:layout_constraintEnd_toStartOf="@+id/btnChangeImage"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button3"
-        app:layout_constraintTop_toBottomOf="@+id/view4"
-        app:layout_constraintVertical_bias="0.0" />
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="256dp"
+            android:layout_height="256dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/anonymousman">
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="123dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="96dp"
-        android:drawableLeft="@drawable/ic_baseline_check_box_24"
-        android:text="@string/scheduled_events"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view4"
-        app:layout_constraintVertical_bias="0.0" />
+        </ImageView>
+    </androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_view"
+            android:gravity="left"
+            android:layout_marginLeft="16dp"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="@string/username">
+        </TextView>
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userName"
+            android:gravity="left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/describeUser">
+        </TextView>
 
-    <Button
-        android:id="@+id/btnChangeImage"
-        android:layout_width="99dp"
-        android:layout_height="82dp"
-        android:layout_marginTop="84dp"
-        android:text="@string/Change_Pic"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_menu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/view4"
-        app:layout_constraintVertical_bias="0.028" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/desc"
+            android:gravity="left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/titleProfPage">
+        </TextView>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginTop="20dp"
+            android:id="@+id/recycleView">
 
+        </androidx.recyclerview.widget.RecyclerView>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

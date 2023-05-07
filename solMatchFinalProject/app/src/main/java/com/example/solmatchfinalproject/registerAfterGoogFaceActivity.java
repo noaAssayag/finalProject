@@ -77,7 +77,7 @@ public class registerAfterGoogFaceActivity extends AppCompatActivity {
                     UserStorageData storageData = new UserStorageData(UID, getName(), null,gender,getDate(),null,type);
                     users.child(UID).setValue(storageData);
                     Toast.makeText(getApplicationContext(),"Register Successfully",Toast.LENGTH_SHORT).show();
-                    Intent newIntent = new Intent(registerAfterGoogFaceActivity.this,profileActivity.class);
+                    Intent newIntent = new Intent(registerAfterGoogFaceActivity.this,editPersonalDetails.class);
                     startActivity(newIntent);
                     setContentView(R.layout.activity_profile);
                 }
