@@ -94,6 +94,8 @@
     <string name="titleProfPage">Upcoming events:</string>
 
     <string name="hostingDate">Date</string>
+    <string name="hostAddress">Address</string>
+
 
     <string name="btnCancel">Cancel</string>
 

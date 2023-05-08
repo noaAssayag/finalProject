@@ -5,12 +5,17 @@ import android.graphics.Bitmap;
 public class UserHosting {
     String name;
     String dateHost;
+
+
+
+    String address;
     int img;
 
-    public UserHosting(String name, int img, String dateHost) {
+    public UserHosting(String name, int img, String dateHost,String address) {
         this.name = name;
         this.img = img;
         this.dateHost = dateHost;
+        this.address=address;
     }
 
     public String getName() {
@@ -34,5 +39,12 @@ public class UserHosting {
 
     public void setDateHost(String dateHost) {
         this.dateHost = dateHost;
+    }
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

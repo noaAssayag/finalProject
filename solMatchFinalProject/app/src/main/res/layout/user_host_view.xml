@@ -28,12 +28,20 @@
           android:layout_below="@+id/name"
           android:layout_gravity="left"
           android:text="@string/hostingDate"/>
+      <TextView
+          android:id="@+id/hostAddress"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_toEndOf="@+id/img"
+          android:layout_below="@+id/hostDate"
+          android:layout_gravity="left"
+          android:text="@string/hostAddress"/>
 
       <Button
           android:id="@+id/btn"
           android:layout_width="wrap_content"
           android:layout_height="48dp"
-          android:layout_below="@+id/hostDate"
+          android:layout_below="@+id/hostAddress"
           android:layout_alignParentRight="true"
           android:layout_marginRight="16dp"
           android:background="#D0021B"

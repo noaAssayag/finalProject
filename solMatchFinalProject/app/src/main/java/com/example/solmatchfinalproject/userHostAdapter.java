@@ -30,6 +30,7 @@ public class userHostAdapter extends RecyclerView.Adapter<MyViewHolder> {
         holder.nameView.setText(UserHosts.get(position).getName());
         holder.dateView.setText(UserHosts.get(position).getDateHost());
         holder.imageView.setImageResource(UserHosts.get(position).getImg());
+        holder.addressView.setText(UserHosts.get(position).getAddress());
     }
 
     @Override

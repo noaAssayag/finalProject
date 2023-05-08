@@ -18,7 +18,7 @@ public class profileActivity extends AppCompatActivity {
         RecyclerView recyclerView=findViewById(R.id.recycleView);
 
         List<UserHosting> listhostingForUsers=new ArrayList<>();
-        listhostingForUsers.add(new UserHosting("Noa Assayag",R.drawable.anonymousman,"24/08/2002"));
+        listhostingForUsers.add(new UserHosting("Noa Assayag",R.drawable.anonymousman,"24/08/2002","Migdal Haemek"));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new userHostAdapter(getApplicationContext(),listhostingForUsers));

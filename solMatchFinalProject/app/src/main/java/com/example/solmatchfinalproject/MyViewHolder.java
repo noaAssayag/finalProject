@@ -12,6 +12,8 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
     ImageView imageView;
     TextView nameView;
     TextView dateView;
+    TextView addressView;
+
     Button btnView;
 
     public MyViewHolder(@NonNull View itemView) {
@@ -20,5 +22,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         nameView=itemView.findViewById(R.id.name);
         dateView=itemView.findViewById(R.id.hostDate);
         btnView=itemView.findViewById(R.id.btn);
+        addressView=itemView.findViewById(R.id.hostAddress);
     }
 }
