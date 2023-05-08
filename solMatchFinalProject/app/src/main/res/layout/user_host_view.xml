@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+      <ImageView
+          android:id="@+id/img"
+          android:layout_width="48dp"
+          android:layout_height="48dp"
+          android:layout_marginRight="10dp"
+          android:layout_centerVertical="true" />
+      <TextView
+          android:id="@+id/name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="left"
+          android:layout_toEndOf="@+id/img"
+          android:text="@string/username"
+          android:textSize="20dp"
+          android:textColor="@color/black"
+          android:textStyle="bold"/>
+      <TextView
+          android:id="@+id/hostDate"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_toEndOf="@+id/img"
+          android:layout_below="@+id/name"
+          android:layout_gravity="left"
+          android:text="@string/hostingDate"/>
+
+      <Button
+          android:id="@+id/btn"
+          android:layout_width="wrap_content"
+          android:layout_height="48dp"
+          android:layout_below="@+id/hostDate"
+          android:layout_alignParentRight="true"
+          android:layout_marginRight="16dp"
+          android:background="#D0021B"
+          android:backgroundTint="#D0021B"
+          android:text="@string/btnCancel"
+          android:textColor="@color/white"
+          android:textStyle="bold" />
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="2dp"
+          android:layout_below="@+id/btn"
+          android:layout_marginTop="10dp"
+          android:background="#DAD8D8"/>
+  </RelativeLayout>
+
