@@ -98,8 +98,8 @@
 
 
     <string name="btnCancel">Cancel</string>
-
-
+    <string name="channel_name">solMatchNot</string>
+    <string name="channel_description">notification for project</string>
 
 
 </resources>

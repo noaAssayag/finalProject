@@ -1,47 +1,41 @@
 package Model;
 
 public class chat {
-    private int ID;
-    private users userSent;
-    private users userRecived;
-    private String content;
 
-    public chat(int ID, users userSent, users userRecived, String content) {
-        this.ID = ID;
-        this.userSent = userSent;
-        this.userRecived = userRecived;
-        this.content = content;
+    private String from;
+    private String to;
+    private String message;
+
+    public chat( String from, String to, String massage) {
+
+        this.from = from;
+        this.to = to;
+        this.message = massage;
     }
 
-    public int getID() {
-        return ID;
+
+
+    public String getFrom() {
+        return from;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
-    public users getUserSent() {
-        return userSent;
+    public String getTo() {
+        return to;
     }
 
-    public void setUserSent(users userSent) {
-        this.userSent = userSent;
+    public void setTo(String to) {
+        this.to = to;
     }
 
-    public users getUserRecived() {
-        return userRecived;
+    public String getMessage() {
+        return message;
     }
 
-    public void setUserRecived(users userRecived) {
-        this.userRecived = userRecived;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
+    public void setMessage(String massage) {
+        this.message = massage;
     }
 }

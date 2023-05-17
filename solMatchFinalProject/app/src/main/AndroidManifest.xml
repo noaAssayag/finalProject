@@ -24,6 +24,11 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name="ChatClasses.chatMenuActivity"
+            android:exported="false"/>
+
+        <activity android:name="ChatClasses.chatActivity"
+            android:exported="false"/>
         <activity
             android:name=".facebookSignIn"
             android:exported="false" />
@@ -36,7 +41,7 @@
         </activity>
 
         <service
-            android:name="notification.notificationService"
+            android:name=".notificationService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

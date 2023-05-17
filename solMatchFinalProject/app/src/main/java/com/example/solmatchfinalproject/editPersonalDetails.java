@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
-//import notification.notificationService;
+//import com.example.solmatchfinalproject.notificationService;
 
 public class editPersonalDetails extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 11;
