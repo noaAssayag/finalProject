@@ -37,5 +37,6 @@
     <color name="rectangle_1092_ek1_color">#FFC746</color>
     <color name="ellipse_385_ek2_color">#999E9B</color>
     <color name="__jhonabraham_color">#797C7B</color>
+    <color name="disabledTextColor">#808080</color> <!-- Replace with your desired color value -->
 
 </resources>

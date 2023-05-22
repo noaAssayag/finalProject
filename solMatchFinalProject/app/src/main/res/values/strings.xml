@@ -72,6 +72,8 @@
     <string name="home_string">Home</string>
     <string name="forget_password_msg">"Hello, please enter the email you used to register to the app. If the email is correct, we will send you a temporary password "</string>
     <string name="reset_pass">Reset</string>
+    <string name="regWithGoogle">register with your Google account</string>
+
 
     <!-- String for profile Page-->
     <string name="name">Full Name</string>
@@ -98,8 +100,9 @@
 
 
     <string name="btnCancel">Cancel</string>
-    <string name="channel_name">solMatchNot</string>
-    <string name="channel_description">notification for project</string>
+    <string name="btnsave">Save</string>
+    <string name="channel_name">solmatch</string>
+    <string name="channel_description">solmatchdescription</string>
 
 
 </resources>

@@ -1,15 +1,14 @@
 package com.example.solmatchfinalproject;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -28,37 +27,35 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-public class RegSecActivity extends AppCompatActivity {
-    Spinner type,gender;
+import Model.UserStorageData;
+import dataBase.MyInfoDataBase;
+import dataBase.MyInfoManager;
+
+public class RegSecActivity extends Activity {
+    Spinner sType, sGender;
     TextView dateCal;
     Button finish;
-    String UID;
     Intent intent;
-    private String userName,email,date,password;
-
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference reference;
-    FirebaseAuth auth;
-
-     @Override
+    private String userName;
+    private String email;
+    private String date;
+    private String password;
+    private String gen;
+    private String type;
+    private Bitmap image;
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg_sec);
-
         intent = getIntent();
         setUserName(intent.getStringExtra("userName"));
         setEmail(intent.getStringExtra("email"));
         setPassword(intent.getStringExtra("password"));
-
-        type = (Spinner)findViewById(R.id.spinnerType);
-        gender = (Spinner)findViewById(R.id.spinnerGender);
-        dateCal =(TextView) findViewById(R.id.dateCal);
+        sType = (Spinner) findViewById(R.id.spinnerType);
+        sGender = (Spinner) findViewById(R.id.spinnerGender);
+        dateCal = (TextView) findViewById(R.id.dateCal);
         finish = (Button) findViewById(R.id.btnSubmit);
-
-        setDate(dateCal);
         dateCal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,60 +75,51 @@ public class RegSecActivity extends AppCompatActivity {
             }
         });
 
+        setDate(dateCal);
+
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkDate() == true) {
-                    String gen = gender.getSelectedItem().toString();
-                    String host = type.getSelectedItem().toString();
-                    // creating a user in the fireBase auth, and then getting that users
-                    // unique id to save as key in database
-                    auth = FirebaseAuth.getInstance();
-                   // first we check inputs are correct
-                    if(gender!=null&&gender.getSelectedItem()!=null) {
-                        if (type != null && type.getSelectedItem() != null && checkDate()!= false) {
-                            // @ Func createUserWithEmailAndPassword
-                            // @ Parms email (users email) password (users password)
-                            // function takes parms and adds then to the firebase authenticator
-                            // after the user was added we take the UID that was created by the auth and
-                            // adding that as the key of the user on the realtime Database.
-                            auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(RegSecActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task)
+                if (getDate() !=null&&(!(getDate().isEmpty()))) {
+                    if (sGender != null && sGender.getSelectedItem() != null) {
+                        if (sType != null && sType.getSelectedItem() != null) {
+                            {
+                                setGen(sGender.getSelectedItem().toString());
+                                setType(sType.getSelectedItem().toString());
+                                if(checkDate()==true)
                                 {
-                                    if (task.isSuccessful())
+                                    if(gen.equals("Female"))
                                     {
-                                        // after adding user to authenticator, we add his data to the realTime dataBase
-                                        FirebaseUser user = auth.getCurrentUser();
-                                        UID = user.getUid();
-                                        firebaseDatabase=FirebaseDatabase.getInstance();
-                                        reference=firebaseDatabase.getReference("Users");
-                                        UserStorageData storageData = new UserStorageData(UID, getUserName(), getEmail(),gen,getDate(),getPassword(),host);
-                                        reference.child(UID).setValue(storageData);
-                                        Toast.makeText(getApplicationContext(),"Register Successfully",Toast.LENGTH_SHORT).show();
-                                        Intent newIntent = new Intent(RegSecActivity.this,LoginActivity.class);
-                                        startActivity(newIntent);
-                                        setContentView(R.layout.activity_login);
-
+                                        image = BitmapFactory.decodeResource(getResources(), R.drawable.anonymouswoman);
                                     }
+                                    else{
+                                        image = BitmapFactory.decodeResource(getResources(), R.drawable.anonymousman);
+                                    }
+                                    setImage(image);
+                                    UserStorageData user=new UserStorageData(getUserName(),getEmail(),getGen(),getDate(),getPassword(),getImage(),getType());
+                                    MyInfoManager.getInstance().openDataBase(RegSecActivity.this);
+                                    MyInfoManager.getInstance().createUser(user);
+                                    Intent newIntent = new Intent(RegSecActivity.this, LoginActivity.class);
+                                    startActivity(newIntent);
+                                    setContentView(R.layout.activity_login);
                                 }
-                            });
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Please choose a type of user", Toast.LENGTH_SHORT).show();
                         }
-                        else
-                        {
-                            Toast.makeText(getApplicationContext(),"Please choose a type of user",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    else
-                    {
-                        Toast.makeText(getApplicationContext(),"Please choose a gender",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Please choose a gender", Toast.LENGTH_SHORT).show();
                     }
 
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Please pick your birthday", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
     }
+
     public String getUserName() {
         return userName;
     }
@@ -159,25 +147,41 @@ public class RegSecActivity extends AppCompatActivity {
     public void setPassword(String password) {
         this.password = password;
     }
+    public String getGen() {
+        return gen;
+    }
 
+    public void setGen(String gen) {
+        this.gen = gen;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
     private String setDate(TextView dateCal) {
-        Date hrini=Calendar.getInstance().getTime();
-        SimpleDateFormat format=new SimpleDateFormat("d MMM yyyy");
-        String date=format.format(hrini);
+        Date hrini = Calendar.getInstance().getTime();
+        SimpleDateFormat format = new SimpleDateFormat("d MMM yyyy");
+        String date = format.format(hrini);
         dateCal.setText(date);
         return date;
     }
 
-    public boolean checkDate()
-    {
-        ProgressDialog mLoadingBar = new ProgressDialog(RegSecActivity.this);
+    public boolean checkDate() {
         String[] splitDate = getDate().split("/");
         String year = splitDate[2];
-        int currentYear=Calendar.getInstance().get(Calendar.YEAR);
-        if(currentYear-Integer.parseInt(year)<18)
-        {
-            mLoadingBar.setTitle("Register");
-            mLoadingBar.setMessage("You are to young to register to the service");
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        if (currentYear - Integer.parseInt(year) < 18&&currentYear - Integer.parseInt(year)>120) {
             return false;
         }
         return true;

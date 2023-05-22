@@ -1,31 +1,36 @@
-package com.example.solmatchfinalproject;
+package Model;
+
+import android.graphics.Bitmap;
 
 public class UserStorageData {
-    private String UID;
+    private int UID;
     private String userName;
     private String email;
     private String gen;
     private String birthday;
     private String password;
+    private Bitmap image=null;
     private String type;
 
-    public UserStorageData(String UID,String userName, String email, String gen, String birthday,String password, String type) {
-        this.UID = UID;
+    public UserStorageData(String userName, String email, String gen, String birthday,String password,Bitmap image, String type) {
         this.userName = userName;
         this.email = email;
         this.gen = gen;
         this.birthday = birthday;
         this.password=password;
+        this.image=image;
         this.type = type;
+    }
+
+    public UserStorageData() {
 
     }
 
-
-    public String getUID() {
+    public int getUID() {
         return UID;
     }
 
-    public void setUID(String UID) {
+    public void setUID(int UID) {
         this.UID = UID;
     }
 
@@ -67,7 +72,13 @@ public class UserStorageData {
     public void setPassword(String password) {
         this.password = password;
     }
+    public Bitmap getImage() {
+        return image;
+    }
 
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
     public String getType() {
         return type;
     }

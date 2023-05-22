@@ -49,9 +49,9 @@
             android:id="@+id/welcome_back__sign_in_using_your_social_account_or_email_to_continue_us2"
             android:layout_width="305dp"
             android:layout_height="50dp"
+            android:text="@string/welcome_back__sign_in_using_your_social_account_or_email_to_continue_us_string"
             android:layout_gravity="center_horizontal|center"
             android:gravity="center"
-            android:text="@string/welcome_back__sign_in_using_your_social_account_or_email_to_continue_us_string"
             android:textColor="@color/log_in_color"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +116,8 @@
             android:layout_gravity="center"
             android:backgroundTint="#404040"
             android:layout_marginTop="10dp"
-            android:drawableStart="@drawable/common_google_signin_btn_icon_dark_focused"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:text="@string/Login"
             />
 
@@ -171,19 +172,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp">
+            android:orientation="horizontal">
 
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/facebookButt"
+            <TextView
+                android:id="@+id/textViewLogFace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/googleButt"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:text="@string/regWithGoogle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.104"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnLogin"
-                tools:ignore="TouchTargetSizeCheck" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewForgetPassword" />
+
 
             <Button
                 android:id="@+id/googleButt"

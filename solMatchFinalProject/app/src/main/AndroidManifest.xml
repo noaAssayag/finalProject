@@ -30,9 +30,6 @@
         <activity android:name="ChatClasses.chatActivity"
             android:exported="false"/>
         <activity
-            android:name=".facebookSignIn"
-            android:exported="false" />
-        <activity
             android:name=".RegSecActivity"
             android:exported="false">
             <meta-data

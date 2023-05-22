@@ -130,7 +130,7 @@ public class googleSignIn extends LoginActivity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if(snapshot.hasChild(UID))
                                     {
-                                        Intent intent = new Intent(googleSignIn.this,editPersonalDetails.class);
+                                        Intent intent = new Intent(googleSignIn.this,EditPersonalDetails.class);
                                         intent.putExtra("UID", UID);
                                         startActivity(intent);
                                         setContentView(R.layout.activity_profile);

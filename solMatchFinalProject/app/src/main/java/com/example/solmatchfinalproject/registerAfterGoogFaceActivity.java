@@ -19,11 +19,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+
+import Model.UserStorageData;
 
 public class registerAfterGoogFaceActivity extends AppCompatActivity {
-
-
         private EditText fullName;
         private Button btnSubmitGF;
         private TextView logo;
@@ -77,7 +76,7 @@ public class registerAfterGoogFaceActivity extends AppCompatActivity {
                     UserStorageData storageData = new UserStorageData(UID, getName(), null,gender,getDate(),null,type);
                     users.child(UID).setValue(storageData);
                     Toast.makeText(getApplicationContext(),"Register Successfully",Toast.LENGTH_SHORT).show();
-                    Intent newIntent = new Intent(registerAfterGoogFaceActivity.this,editPersonalDetails.class);
+                    Intent newIntent = new Intent(registerAfterGoogFaceActivity.this,EditPersonalDetails.class);
                     startActivity(newIntent);
                     setContentView(R.layout.activity_profile);
                 }

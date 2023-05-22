@@ -1,275 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/mainLayout"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".editPersonalDetails">
+	tools:context=".EditPersonalDetails">
 
-	<LinearLayout
-		android:id="@+id/linearLayout"
+	<ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:orientation="vertical"
-		tools:layout_editor_absoluteX="-76dp"
-		tools:layout_editor_absoluteY="0dp">
+		android:layout_above="@+id/menu">
 
 		<LinearLayout
+			android:id="@+id/linearLayout"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:gravity="top|center"
 			android:orientation="vertical">
-
-			<com.mikhaellopez.circularimageview.CircularImageView
-				android:id="@+id/profImg"
-				android:layout_width="250dp"
-				android:layout_height="250dp"
-				android:onClick="@string/Change_Pic"
-				android:src="@drawable/anonymousman"
-				app:civ_border_color="#4B9289"
-				app:civ_border_width="2dp"
-				app:civ_shadow="true"
-				app:civ_shadow_color="#4B9289"
-				app:civ_shadow_radius="10dp" />
-
-			<TextView
-				android:id="@+id/textViewTitleName"
-				android:layout_width="wrap_content"
-				android:layout_height="20dp"
-				android:layout_below="@+id/profImg"
-				android:layout_centerVertical="true"
-				android:text="@string/username"
-				android:textColor="@color/black"
-				android:textSize="18sp"
-				android:textStyle="bold" />
-		</LinearLayout>
-		<ScrollView
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:fillViewport="true">
 
 			<LinearLayout
 				android:layout_width="match_parent"
-				android:layout_height="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="top|center"
 				android:orientation="vertical">
-				<androidx.cardview.widget.CardView
-					android:id="@+id/card_view"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="16dp"
-					android:backgroundTint="#F3F6F6"
-					android:padding="16dp"
-					app:cardCornerRadius="8dp"
-					app:cardElevation="4dp"
-					app:cardUseCompatPadding="true">
 
-					<LinearLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:padding="16dp">
+				<com.mikhaellopez.circularimageview.CircularImageView
+					android:id="@+id/profImg"
+					android:layout_width="250dp"
+					android:layout_height="250dp"
+					android:onClick="@string/Change_Pic"
+					android:src="@drawable/anonymousman"
+					app:civ_border_color="#4B9289"
+					app:civ_border_width="2dp"
+					app:civ_shadow="true"
+					app:civ_shadow_color="#4B9289"
+					app:civ_shadow_radius="10dp" />
 
-						<TextView
-							android:id="@+id/title_text_view"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/name"
-							android:textColor="#4B9289"
-							android:textSize="14sp" />
-
-						<TextView
-							android:id="@+id/textViewName"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/namePro"
-							android:textColor="@color/black"
-							android:textSize="16sp" />
-
-						<Button
-							android:layout_width="wrap_content"
-							android:layout_height="48dp"
-							android:layout_gravity="right"
-							android:backgroundTint="#404040"
-							android:text="@string/btnEdit" />
-
-					</LinearLayout>
-				</androidx.cardview.widget.CardView>
-				<androidx.cardview.widget.CardView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="16dp"
-					android:backgroundTint="#F3F6F6"
-					android:padding="16dp"
-					app:cardCornerRadius="8dp"
-					app:cardElevation="4dp"
-					app:cardUseCompatPadding="true">
-
-					<LinearLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:padding="16dp">
-
-						<TextView
-							android:id="@+id/email"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/email"
-							android:textColor="#4B9289"
-							android:textSize="14sp" />
-
-						<TextView
-							android:id="@+id/textViewEmail"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/emailPro"
-							android:textColor="@color/black"
-							android:textSize="16sp" />
-
-						<Button
-							android:layout_width="wrap_content"
-							android:layout_height="48dp"
-							android:layout_gravity="right"
-							android:backgroundTint="#404040"
-							android:text="@string/btnEdit" />
-
-					</LinearLayout>
-				</androidx.cardview.widget.CardView>
-				<androidx.cardview.widget.CardView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="16dp"
-					android:backgroundTint="#F3F6F6"
-					android:padding="16dp"
-					app:cardCornerRadius="8dp"
-					app:cardElevation="4dp"
-					app:cardUseCompatPadding="true">
-
-					<LinearLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:padding="16dp">
-
-						<TextView
-							android:id="@+id/password"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:textColor="#4B9289"
-							android:text="@string/password"
-							android:textSize="14sp" />
-
-						<TextView
-							android:id="@+id/textViewPassword"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/passwordPro"
-							android:textColor="@color/black"
-							android:textSize="16sp" />
-
-						<Button
-							android:layout_width="wrap_content"
-							android:layout_height="48dp"
-							android:layout_gravity="right"
-							android:backgroundTint="#404040"
-							android:text="@string/btnEdit"/>
-					</LinearLayout>
-				</androidx.cardview.widget.CardView>
-
-				<androidx.cardview.widget.CardView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="16dp"
-					android:backgroundTint="#F3F6F6"
-					android:padding="16dp"
-					app:cardCornerRadius="8dp"
-					app:cardElevation="4dp"
-					app:cardUseCompatPadding="true">
-
-					<LinearLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:padding="16dp">
-
-						<TextView
-							android:id="@+id/gender"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/gender"
-							android:textColor="#4B9289"
-							android:textSize="14sp" />
-
-						<TextView
-							android:id="@+id/textViewGender"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/genderPro"
-							android:textColor="@color/black"
-							android:textSize="16sp" />
-
-						<Button
-							android:layout_width="wrap_content"
-							android:layout_height="48dp"
-							android:layout_gravity="right"
-							android:backgroundTint="#404040"
-							android:text="@string/btnEdit"/>
-					</LinearLayout>
-				</androidx.cardview.widget.CardView>
-
-				<androidx.cardview.widget.CardView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="16dp"
-					android:backgroundTint="#F3F6F6"
-					android:padding="16dp"
-					app:cardCornerRadius="8dp"
-					app:cardElevation="4dp"
-					app:cardUseCompatPadding="true">
-
-					<LinearLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:padding="16dp">
-
-						<TextView
-							android:id="@+id/birthday"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/birthdate"
-							android:textColor="#4B9289"
-							android:textSize="14sp" />
-
-						<TextView
-							android:id="@+id/textViewBirthday"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:text="@string/birthdayPro"
-							android:textColor="@color/black"
-							android:textSize="16sp" />
-
-						<Button
-							android:layout_width="wrap_content"
-							android:layout_height="48dp"
-							android:layout_gravity="right"
-							android:backgroundTint="#404040"
-							android:text="@string/btnEdit"/>
-
-					</LinearLayout>
-				</androidx.cardview.widget.CardView>
-
+				<TextView
+					android:id="@+id/textViewTitleName"
+					android:layout_width="wrap_content"
+					android:layout_height="20dp"
+					android:layout_below="@+id/profImg"
+					android:layout_centerVertical="true"
+					android:text="@string/username"
+					android:textColor="@color/black"
+					android:textSize="18sp"
+					android:textStyle="bold" />
 			</LinearLayout>
-		</ScrollView>
-	</LinearLayout>
+
+			<ListView
+				android:id="@+id/listOfDetailsToEdit"
+				android:layout_width="match_parent"
+				android:layout_height="501dp"></ListView>
+		</LinearLayout>
+	</ScrollView>
+
 	<com.google.android.material.bottomnavigation.BottomNavigationView
 		android:id="@+id/menu"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
+		android:layout_alignParentBottom="true"
 		app:menu="@menu/bottom_nav_menu" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
