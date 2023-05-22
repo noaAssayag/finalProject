@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+    <ImageView
+        android:id="@+id/imgDonation"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerVertical="true" />
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_toEndOf="@+id/imgDonation"
+        android:text="@string/ItemName"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/donationLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/imgDonation"
+        android:layout_below="@+id/name"
+        android:layout_gravity="left"
+        android:text="@string/location"/>
+    <TextView
+        android:id="@+id/hostAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/imgDonation"
+        android:layout_below="@+id/donationLocation"
+        android:layout_gravity="left"
+        android:text="@string/catagory"/>
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_toEndOf="@+id/imgDonation"
+        android:layout_below="@+id/hostAddress"
+        android:layout_gravity="left"
+        android:text="@string/description"/>
+
+    <Button
+        android:id="@+id/btnStartChat"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@+id/description"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:background="@color/black"
+        android:backgroundTint="#D0021B"
+        android:text="@string/startChat"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/btnStartChat"
+        android:layout_marginTop="10dp"
+        android:background="#DAD8D8"/>
+</RelativeLayout>
+

@@ -103,6 +103,18 @@
     <string name="btnsave">Save</string>
     <string name="channel_name">solmatch</string>
     <string name="channel_description">solmatchdescription</string>
+    <string name="ItenNamePrompt">Name</string>
+    <string name="addDonation">hello please follow the instractions</string>
+    <string name="itemImage">image</string>
+    <string name="AddItem">add\n</string>
+    <string name="location">Location</string>
+    <string name="shortDescription">description</string>
+    <string name="add">ADD</string>
+    <string name="ItemName">Item</string>
+    <string name="catagory">Catagory</string>
+    <string name="description">description</string>
+    <string name="startChat">start chat</string>
+    <string name="AllDonations">All Donations</string>
 
 
 </resources>
