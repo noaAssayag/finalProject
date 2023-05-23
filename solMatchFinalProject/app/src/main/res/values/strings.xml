@@ -40,7 +40,6 @@
     <string name="next">Next</string>
     <string name="already_have_an_acount">already have an acount?</string>
     <string name="submit">Submit</string>
-    <string name="type">Type</string>
     <string name="_9_41_string">9:41</string>
     <string name="sign_up_with_email_string">Sign up with Email</string>
     <string name="get_chatting_with_friends_and_family_today_by_signing_up_for_our_chat_app__string">Get chatting with friends and family today by signing up for our chat app!</string>
@@ -90,6 +89,9 @@
 
     <string name="birthdate">BirthDate</string>
     <string name="birthdayPro">My Birthday</string>
+
+    <string name="type">Type</string>
+    <string name="typePro">My Type of user</string>
 
     <string name="btnEdit">Edit</string>
     <string name="describeUser">description....</string>

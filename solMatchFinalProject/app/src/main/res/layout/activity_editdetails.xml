@@ -51,7 +51,7 @@
 			<ListView
 				android:id="@+id/listOfDetailsToEdit"
 				android:layout_width="match_parent"
-				android:layout_height="501dp"></ListView>
+				android:layout_height="832dp"></ListView>
 		</LinearLayout>
 	</ScrollView>
 

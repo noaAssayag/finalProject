@@ -11,9 +11,9 @@ import java.util.List;
 
 public class userHostAdapter extends RecyclerView.Adapter<MyViewHolder> {
     Context context;
-    List<UserHosting> UserHosts;
+    List<com.example.solmatchfinalproject.UserHosting> UserHosts;
 
-    public userHostAdapter(Context context, List<UserHosting> UserHosts) {
+    public userHostAdapter(Context context, List<com.example.solmatchfinalproject.UserHosting> UserHosts) {
         this.context = context;
         this.UserHosts = UserHosts;
     }

@@ -22,11 +22,14 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     Button google;
     private ProgressDialog mLoadingBar;
-    private MyInfoManager myInfoManager = MyInfoManager.getInstance();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyInfoManager.getInstance();
+        MyInfoManager.getInstance().openDataBase(LoginActivity.this);
         setContentView(R.layout.activity_login);
         signIn = (TextView) findViewById(R.id.textViewSignUp);
         inputUserEmail = (EditText) findViewById(R.id.inputLogEmail);
@@ -86,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean checkCredentials() {
-        List<UserStorageData> userList = myInfoManager.getAllUser();
+        List<UserStorageData> userList = MyInfoManager.getInstance().getAllUser();
         String email = inputUserEmail.getText().toString();
         String password = inputpassword.getText().toString();
 

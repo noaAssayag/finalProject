@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ import Model.UserStorageData;
 public class MyInfoDataBase extends SQLiteOpenHelper {
     private Context context;
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "MyInfoDB";
+    private static final String DATABASE_NAME = "MyInfoDataBase";
 
     // Users table
     private static final String TABLE_USERS_NAME = "users";
@@ -59,17 +61,15 @@ public class MyInfoDataBase extends SQLiteOpenHelper {
             t.printStackTrace();
         }
     }
-
-
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        try {
-            // drop user table if already exists
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS_NAME);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        onCreate(db);
+//        try {
+//            // drop user table if already exists
+//            db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS_NAME);
+//        } catch (Throwable t) {
+//            t.printStackTrace();
+//        }
+//        onCreate(db);
     }
 
     public void createUser(UserStorageData user) {
@@ -90,6 +90,8 @@ public class MyInfoDataBase extends SQLiteOpenHelper {
                     values.put(USER_COLUMN__IMAGE, data);
                 }
             }
+            values.put(USERS_COLUMN_TYPE, user.getType());
+
             // Insert the values into the database
             long result=db.insert(TABLE_USERS_NAME, null, values);
             if(result==-1)
@@ -158,19 +160,20 @@ public class MyInfoDataBase extends SQLiteOpenHelper {
                 cursor.moveToFirst();
                 user = new UserStorageData();
                 user.setUID(cursor.getInt(0));
-                user.setEmail(cursor.getString(1));
-                user.setGen(cursor.getString(2));
-                user.setBirthday(cursor.getString(3));
-                user.setPassword(cursor.getString(4));
+                user.setUserName(cursor.getString(1));
+                user.setEmail(cursor.getString(2));
+                user.setGen(cursor.getString(3));
+                user.setBirthday(cursor.getString(4));
+                user.setPassword(cursor.getString(5));
                 //images
-                byte[] img1Byte = cursor.getBlob(5);
+                byte[] img1Byte = cursor.getBlob(6);
                 if (img1Byte != null && img1Byte.length > 0) {
                     Bitmap image1 = BitmapFactory.decodeByteArray(img1Byte, 0, img1Byte.length);
                     if (image1 != null) {
                         user.setImage(image1);
                     }
                 }
-                user.setType(cursor.getString(6));
+                user.setType(cursor.getString(7));
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -214,14 +217,14 @@ public class MyInfoDataBase extends SQLiteOpenHelper {
             result.setBirthday(cursor.getString(4));
             result.setPassword(cursor.getString(5));
 
-            byte[] img1Byte = cursor.getBlob(5);
+            byte[] img1Byte = cursor.getBlob(6);
             if (img1Byte != null && img1Byte.length > 0) {
                 Bitmap image1 = BitmapFactory.decodeByteArray(img1Byte, 0, img1Byte.length);
                 if (image1 != null) {
                     result.setImage(image1);
                 }
             }
-            result.setType(cursor.getString(6));
+            result.setType(cursor.getString(7));
         } catch (Throwable t) {
             t.printStackTrace();
         }

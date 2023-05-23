@@ -37,6 +37,7 @@ public class RegisterActivity extends Activity {
     private MyInfoManager myInfoManager = MyInfoManager.getInstance();
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

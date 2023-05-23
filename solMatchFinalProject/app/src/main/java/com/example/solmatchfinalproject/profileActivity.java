@@ -41,10 +41,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class profileActivity extends AppCompatActivity {
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

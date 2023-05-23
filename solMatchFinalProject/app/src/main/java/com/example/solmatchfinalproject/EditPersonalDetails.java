@@ -1,5 +1,4 @@
 package com.example.solmatchfinalproject;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,16 +9,12 @@ import android.widget.ImageView;
 import android.net.Uri;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import Model.UserInfo;
 import Model.UserStorageData;
 import dataBase.MyInfoManager;
-
 //import notification.notificationService;
 
 public class EditPersonalDetails extends Activity {
@@ -44,7 +39,7 @@ public class EditPersonalDetails extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editdetails);
-        myInfoManager.openDataBase(this);
+        myInfoManager.openDataBase(EditPersonalDetails.this);
 
         bottomNavigationView = findViewById(R.id.menu);
         image = findViewById(R.id.profImg);
@@ -107,6 +102,12 @@ public class EditPersonalDetails extends Activity {
                 userInfos.add(new UserInfo(R.string.birthdate, "" + R.string.birthdayPro));
             } else {
                 userInfos.add(new UserInfo(R.string.birthdate, user.getBirthday()));
+            }
+            if(user.getType()==null)
+            {
+                userInfos.add(new UserInfo(R.string.type, "" + R.string.typePro));
+            } else {
+                userInfos.add(new UserInfo(R.string.type, user.getType()));
             }
         }
         listView = (ListView) findViewById(R.id.listOfDetailsToEdit);
