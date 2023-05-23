@@ -33,31 +33,26 @@
         android:gravity="center"
         android:textColor="@color/log_in_color"
         android:textSize="14sp"        />
-    <TextView
-        android:id="@+id/txtPrevVal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
     <EditText
         android:id="@+id/editTextPass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="password"
-        android:inputType="text" />
-
+        android:inputType="textPassword"
+        android:hint="password" />
     <EditText
         android:id="@+id/editTextRePass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="rePassword"
-        android:inputType="text" />
+        android:inputType="textPassword" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/btnSubmit"
+            android:id="@+id/btnSubmitResetPass"
             android:text="@string/btnsave"
             android:layout_width="260dp"
             android:layout_height="48dp"

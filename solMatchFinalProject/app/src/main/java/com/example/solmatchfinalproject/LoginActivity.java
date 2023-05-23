@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (inputUserEmail.getText().toString() != null) {
+                if (inputUserEmail.getText().toString() != null&&(!inputUserEmail.getText().toString().isEmpty())) {
                     AlertDialogFragmentEdit frag = new AlertDialogFragmentEdit();
                     Bundle b = new Bundle();
                     b.putString("Email", inputUserEmail.getText().toString());
@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                     frag.show(getFragmentManager(), "dialog");
                 } else {
                     Toast.makeText(getApplicationContext(), "You must enter an email for reset password", Toast.LENGTH_SHORT).show();
+                    return;
                 }
             }
         });

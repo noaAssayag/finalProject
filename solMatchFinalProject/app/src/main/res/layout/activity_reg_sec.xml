@@ -86,7 +86,7 @@
             android:layout_marginLeft="16dp"
             />
         <Button
-            android:id="@+id/btnSubmit"
+            android:id="@+id/btnSubmitResetPass"
             android:text="@string/submit"
             android:layout_width="260dp"
             android:layout_height="48dp"

@@ -1,10 +1,7 @@
 package com.example.solmatchfinalproject;
 
-import androidx.annotation.NonNull;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,20 +13,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import Model.UserStorageData;
-import dataBase.MyInfoDataBase;
 import dataBase.MyInfoManager;
 
 public class RegSecActivity extends Activity {
@@ -55,7 +43,7 @@ public class RegSecActivity extends Activity {
         sType = (Spinner) findViewById(R.id.spinnerType);
         sGender = (Spinner) findViewById(R.id.spinnerGender);
         dateCal = (TextView) findViewById(R.id.dateCal);
-        finish = (Button) findViewById(R.id.btnSubmit);
+        finish = (Button) findViewById(R.id.btnSubmitResetPass);
         dateCal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

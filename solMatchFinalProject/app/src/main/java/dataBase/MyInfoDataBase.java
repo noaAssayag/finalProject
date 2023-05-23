@@ -252,7 +252,7 @@ public class MyInfoDataBase extends SQLiteOpenHelper {
                 values.putNull(USER_COLUMN__IMAGE);
             }
             values.put(USERS_COLUMN_TYPE, user.getType());
-            cnt = db.update(TABLE_USERS_NAME, values, USERS_COLUMN_ID = " = ? ",
+            cnt = db.update(TABLE_USERS_NAME, values, USERS_COLUMN_ID + " = ?",
                     new String[]{String.valueOf(user.getUID())});
         } catch (Throwable t) {
             t.printStackTrace();
