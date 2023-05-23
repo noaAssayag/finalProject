@@ -111,7 +111,7 @@ public class EditPersonalDetails extends Activity {
             }
         }
         listView = (ListView) findViewById(R.id.listOfDetailsToEdit);
-        adapter = new UserInfoListAdapter(EditPersonalDetails.this, userInfos);
+        adapter = new UserInfoListAdapter(EditPersonalDetails.this, userInfos,user.getEmail());
         listView.setAdapter(adapter);
         textTitleViewName.setText(user.getUserName());
         if (user.getImage() == null) {
@@ -122,7 +122,9 @@ public class EditPersonalDetails extends Activity {
                     image.setImageResource(R.drawable.anonymousman);
                 }
             }
-        } else {
+        }
+        else
+        {
             image.setImageBitmap(user.getImage());
         }
         image.setOnClickListener(new View.OnClickListener() {
