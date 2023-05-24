@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // first we check the info
-              // if (checkCredentials()) {
+//              if (checkCredentials()) {
                     mLoadingBar.setTitle("Login");
                     mLoadingBar.setMessage("Please wait while we check your credentials");
                     mLoadingBar.setCanceledOnTouchOutside(false);
@@ -68,15 +68,15 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
-                //    Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
-                 //   intent.putExtra("UserEmail", inputUserEmail.getText().toString());
-                  //  startActivity(intent);
-                  //  setContentView(R.layout.activity_editdetails);
+//                    Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
+//                    intent.putExtra("UserEmail", inputUserEmail.getText().toString());
+//                    startActivity(intent);
+//                    setContentView(R.layout.activity_editdetails);
                // }
-                  // else {
-                   // mLoadingBar.hide();
-                   // Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
-                //}
+//                   else {
+//                    mLoadingBar.hide();
+//                    Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
         forgotPassword.setOnClickListener(new View.OnClickListener() {

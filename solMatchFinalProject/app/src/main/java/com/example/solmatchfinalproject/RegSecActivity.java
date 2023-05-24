@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
@@ -103,13 +104,14 @@ public class RegSecActivity extends Activity {
                                                 String UID = auth.getUid();
                                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                                 database.getReference().child("Users").setValue(user);
-                                                Toast.makeText(getApplicationContext(),"user created successfully",Toast.LENGTH_SHORT).show();
+
                                             }
                                             else {
                                                 Toast.makeText(getApplicationContext(),"users allready exists with that email",Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
+                                    Toast.makeText(getApplicationContext(),"user created successfully",Toast.LENGTH_SHORT).show();
                                     Intent newIntent = new Intent(RegSecActivity.this, LoginActivity.class);
                                     startActivity(newIntent);
                                     setContentView(R.layout.activity_login);

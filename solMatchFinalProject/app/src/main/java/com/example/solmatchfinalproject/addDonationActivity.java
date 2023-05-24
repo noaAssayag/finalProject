@@ -106,6 +106,8 @@ public class addDonationActivity extends Activity {
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int id = R.drawable.anonymousman;
+
 
 
                 // Upload the image to Firebase Storage
