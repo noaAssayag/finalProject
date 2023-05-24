@@ -58,7 +58,7 @@ public class UserInfoListAdapter extends ArrayAdapter<UserInfo> {
 
         UserInfo userInfo = dataList.get(position);
         txtTitle.setText(userInfo.getTitle());
-        extratxt.setText(userInfo.getValue().toString());
+        extratxt.setText(userInfo.getValue());
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

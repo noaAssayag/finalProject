@@ -58,10 +58,10 @@ public class LoginActivity extends AppCompatActivity {
                             if(task.isSuccessful())
                             {
                                 Toast.makeText(getApplicationContext(),"login was good",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, profileActivity.class);
+                                Intent intent = new Intent(LoginActivity.this,EditPersonalDetails.class);
                                 intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                 startActivity(intent);
-                                setContentView(R.layout.activity_profile);
+                                setContentView(R.layout.activity_editdetails);
                             }
                             else{
                                 Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
