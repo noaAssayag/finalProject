@@ -57,7 +57,7 @@ public class profileActivity extends AppCompatActivity {
         listhostingForUsers.add(new UserHosting("Noa Assayag",R.drawable.anonymousman,"24/08/2002","Migdal Haemek"));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new userHostAdapter(getApplicationContext(),listhostingForUsers));
+        //recyclerView.setAdapter(new userHostAdapter(getApplicationContext(),listhostingForUsers));
 
 
      //   FirebaseMessaging.getInstance().subscribeToTopic(msg);
