@@ -117,6 +117,7 @@
     <string name="description">description</string>
     <string name="startChat">start chat</string>
     <string name="AllDonations">All Donations</string>
+    <string name="searchText">please select the service you wish to search</string>
 
 
 </resources>

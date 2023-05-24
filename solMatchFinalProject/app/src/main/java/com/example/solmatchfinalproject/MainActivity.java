@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import ChatClasses.chatMenuActivity;
+import donations.donationActivity;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -11,13 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -41,16 +44,12 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class profileActivity extends AppCompatActivity {
+    private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp app = FirebaseApp.initializeApp(this);
-
-     //   FirebaseMessaging.getInstance().subscribeToTopic(msg);
-
-
-
-
+        bottomNavigationView = findViewById(R.id.menu);
         setContentView(R.layout.activity_profile);
         RecyclerView recyclerView=findViewById(R.id.recycleView);
 
@@ -59,6 +58,14 @@ public class profileActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new userHostAdapter(getApplicationContext(),listhostingForUsers));
+
+
+     //   FirebaseMessaging.getInstance().subscribeToTopic(msg);
+
+
+
+
+
     }
 
 

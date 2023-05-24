@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="10dp"
+    tools:context="donations.donationActivity">
     <ImageView
         android:id="@+id/imgDonation"
         android:layout_width="48dp"
@@ -11,7 +13,7 @@
         android:layout_marginRight="10dp"
         android:layout_centerVertical="true" />
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/Donatorname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
@@ -25,11 +27,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/imgDonation"
-        android:layout_below="@+id/name"
+        android:layout_below="@+id/Donatorname"
         android:layout_gravity="left"
         android:text="@string/location"/>
     <TextView
-        android:id="@+id/hostAddress"
+        android:id="@+id/donationCatagory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/imgDonation"
@@ -37,11 +39,11 @@
         android:layout_gravity="left"
         android:text="@string/catagory"/>
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/donationDescription"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_toEndOf="@+id/imgDonation"
-        android:layout_below="@+id/hostAddress"
+        android:layout_below="@+id/donationCatagory"
         android:layout_gravity="left"
         android:text="@string/description"/>
 
@@ -49,7 +51,7 @@
         android:id="@+id/btnStartChat"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_below="@+id/description"
+        android:layout_below="@+id/donationDescription"
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
         android:background="@color/black"

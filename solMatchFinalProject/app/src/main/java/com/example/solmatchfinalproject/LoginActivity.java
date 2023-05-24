@@ -1,5 +1,6 @@
 package com.example.solmatchfinalproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -11,25 +12,29 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 
 import Model.UserStorageData;
 import dataBase.MyInfoManager;
+import donations.donationActivity;
 
 public class LoginActivity extends AppCompatActivity {
+    FirebaseAuth auth = FirebaseAuth.getInstance();
     TextView signIn, forgotPassword;
     EditText inputUserEmail, inputpassword;
     Button btnLogin;
     Button google;
     private ProgressDialog mLoadingBar;
-
-
+    private MyInfoManager myInfoManager = MyInfoManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyInfoManager.getInstance();
-        MyInfoManager.getInstance().openDataBase(LoginActivity.this);
         setContentView(R.layout.activity_login);
         signIn = (TextView) findViewById(R.id.textViewSignUp);
         inputUserEmail = (EditText) findViewById(R.id.inputLogEmail);
@@ -42,24 +47,50 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // first we check the info
-                if (checkCredentials()) {
+              // if (checkCredentials()) {
                     mLoadingBar.setTitle("Login");
                     mLoadingBar.setMessage("Please wait while we check your credentials");
                     mLoadingBar.setCanceledOnTouchOutside(false);
                     mLoadingBar.show();
-                    Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
-                    intent.putExtra("UserEmail", inputUserEmail.getText().toString());
-                    startActivity(intent);
-                    setContentView(R.layout.activity_editdetails);
-                } else {
-                    mLoadingBar.hide();
-                    Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
-                }
+                    auth.signInWithEmailAndPassword(inputUserEmail.getText().toString(),inputpassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful())
+                            {
+                                Toast.makeText(getApplicationContext(),"login was good",Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, profileActivity.class);
+                                intent.putExtra("UserEmail", inputUserEmail.getText().toString());
+                                startActivity(intent);
+                                setContentView(R.layout.activity_profile);
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                //    Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
+                 //   intent.putExtra("UserEmail", inputUserEmail.getText().toString());
+                  //  startActivity(intent);
+                  //  setContentView(R.layout.activity_editdetails);
+               // }
+                  // else {
+                   // mLoadingBar.hide();
+                   // Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
+                //}
             }
         });
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                auth.sendPasswordResetEmail(inputUserEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(getApplicationContext(),"email was sent to you with information", Toast.LENGTH_LONG);
+                        }
+                    }
+                });
                 if (inputUserEmail.getText().toString() != null&&(!inputUserEmail.getText().toString().isEmpty())) {
                     AlertDialogFragmentEdit frag = new AlertDialogFragmentEdit();
                     Bundle b = new Bundle();
@@ -90,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean checkCredentials() {
-        List<UserStorageData> userList = MyInfoManager.getInstance().getAllUser();
+        List<UserStorageData> userList = myInfoManager.getAllUser();
         String email = inputUserEmail.getText().toString();
         String password = inputpassword.getText().toString();
 

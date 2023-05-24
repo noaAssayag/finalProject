@@ -112,6 +112,21 @@
         android:layout_marginRight="16dp"
         android:inputType="textPassword" />
 
+        <TextView
+            android:id="@+id/itemCatagory"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            android:text="@string/catagory"
+            android:textColor="@color/your_email_color"
+            android:textSize="14sp" />
+        <Spinner
+            android:id="@+id/catagorySpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"/>
+
         <Button
         android:id="@+id/btnAddDonation"
         android:layout_width="wrap_content"

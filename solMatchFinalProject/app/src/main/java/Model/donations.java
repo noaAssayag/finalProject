@@ -1,5 +1,12 @@
 package Model;
 
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.File;
+
 public class donations {
 
 
@@ -7,14 +14,24 @@ public class donations {
     private String adress;
     private String catagory;
     private String description;
-    private int img;
+    private String img;
+    private String username;
 
-    public donations(String name, String adress, String catagory, int img,String description) {
+    public donations(String name, String adress, String catagory, String description, String img,String username) {
         this.name = name;
         this.adress = adress;
         this.catagory = catagory;
-        this.img = img;
         this.description = description;
+        this.img = img;
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getDescription() {
@@ -49,11 +66,11 @@ public class donations {
         this.catagory = catagory;
     }
 
-    public int getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(int img) {
+    public void setImg(String img) {
         this.img = img;
     }
 }

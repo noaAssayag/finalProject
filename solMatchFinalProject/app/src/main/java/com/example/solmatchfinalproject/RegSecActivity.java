@@ -13,6 +13,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,6 +29,8 @@ import Model.UserStorageData;
 import dataBase.MyInfoManager;
 
 public class RegSecActivity extends Activity {
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+
     Spinner sType, sGender;
     TextView dateCal;
     Button finish;
@@ -85,8 +95,21 @@ public class RegSecActivity extends Activity {
                                     }
                                     setImage(image);
                                     UserStorageData user=new UserStorageData(getUserName(),getEmail(),getGen(),getDate(),getPassword(),getImage(),getType());
-                                    MyInfoManager.getInstance().openDataBase(RegSecActivity.this);
-                                    MyInfoManager.getInstance().createUser(user);
+                                    auth.createUserWithEmailAndPassword(getEmail(),getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if(task.isSuccessful())
+                                            {
+                                                String UID = auth.getUid();
+                                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                database.getReference().child("Users").setValue(user);
+                                                Toast.makeText(getApplicationContext(),"user created successfully",Toast.LENGTH_SHORT).show();
+                                            }
+                                            else {
+                                                Toast.makeText(getApplicationContext(),"users allready exists with that email",Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                                     Intent newIntent = new Intent(RegSecActivity.this, LoginActivity.class);
                                     startActivity(newIntent);
                                     setContentView(R.layout.activity_login);

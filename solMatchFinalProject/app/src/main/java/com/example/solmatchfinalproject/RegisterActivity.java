@@ -113,7 +113,6 @@ public class RegisterActivity extends Activity {
     }
 
     private boolean checkCredentials() {
-        List<UserStorageData> users = myInfoManager.getAllUser();
         if (userName.isEmpty() || userName.length() < 7 || userName.contains(" ")) {
             showError(inputUserName, "Your username is not valid!");
             return false;
@@ -129,12 +128,6 @@ public class RegisterActivity extends Activity {
         } else if (!(rePassword.equals(password))) {
             showError(inputRePassword, "Password not match!");
             return false;
-        }
-        for (UserStorageData user : users) {
-            if (user.getEmail().equals(email)) {
-                Toast.makeText(getApplicationContext(), "This email is already in use, change email to register", Toast.LENGTH_SHORT).show();
-                return false;
-            }
         }
         return true;
     }
