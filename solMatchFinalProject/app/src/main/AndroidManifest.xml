@@ -18,6 +18,9 @@
         android:theme="@style/Theme.SolMatchFinalProject"
         tools:targetApi="31">
         <activity
+            android:name=".AddHost"
+            android:exported="false" />
+        <activity
             android:name=".profileActivity"
             android:exported="false">
             <meta-data
@@ -31,11 +34,12 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name="ChatClasses.chatMenuActivity"
-            android:exported="false"/>
-
-        <activity android:name="ChatClasses.chatActivity"
-            android:exported="false"/>
+        <activity
+            android:name="ChatClasses.chatMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name="ChatClasses.chatActivity"
+            android:exported="false" />
         <activity
             android:name=".RegSecActivity"
             android:exported="false">
@@ -43,11 +47,14 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-<activity android:name="donations.donationActivity"
-    android:exported="false"/>
-        <activity android:name=".searchNavigationMenue"/>
-        <activity android:name=".addDonationActivity"
-            android:exported="false"/>
+        <activity
+            android:name="donations.donationActivity"
+            android:exported="false" />
+        <activity android:name=".searchNavigationMenue" />
+        <activity
+            android:name=".addDonationActivity"
+            android:exported="false" />
+
         <service
             android:name=".notificationService"
             android:exported="false">

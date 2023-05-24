@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddHost">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="86dp"
+        tools:layout_editor_absoluteY="339dp">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:text="@string/AddHostPage"
+            android:layout_marginTop="72dp"
+            android:textColor="@color/log_in_to_chatbox_color"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/welcome_back__sign_in_using_your_social_account_or_email_to_continue_us2"
+            android:layout_width="305dp"
+            android:layout_height="50dp"
+            android:text="Hello!Please fill the following fileds to add a new host"
+            android:layout_gravity="center_horizontal|center"
+            android:gravity="center"
+            android:textColor="@color/log_in_color"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logo" />
+        <TextView
+            android:id="@+id/txtsetDate"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            android:text="@string/setDate"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/forgot_password__color"
+            android:textSize="14sp"
+           />
+        <Button
+            android:id="@+id/dateBtn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onDateClicked"
+            android:layout_marginTop="10dp"
+            android:text="@string/ui_button_date_title" />
+        <TextView
+            android:id="@+id/txtsetTime"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/setTime"
+            android:textColor="@color/forgot_password__color"
+            android:textSize="14sp"
+            />
+        <Button
+            android:id="@+id/timeBtn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onTimeClicked"
+            android:layout_marginTop="10dp"
+            android:text="@string/ui_button_time_title" />
+
+        <TextView
+            android:id="@+id/txtAddAddress"
+            android:layout_width="81dp"
+            android:layout_height="24dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/Addaddress"
+            android:textColor="@color/forgot_password__color"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/hostAddress"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="left"
+           />
+        <TextView
+            android:id="@+id/txtDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/descriptionOfHost"
+            android:textColor="@color/forgot_password__color"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/hostDescription"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="left"
+            />
+
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:text="@string/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#404040"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+
+            />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
