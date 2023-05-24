@@ -86,14 +86,15 @@
             android:layout_marginLeft="16dp"
             />
         <Button
-            android:id="@+id/btnSubmitResetPass"
+            android:id="@+id/btnSubmit"
             android:text="@string/submit"
             android:layout_width="260dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:backgroundTint="#404040"
             android:layout_marginTop="10dp"
-            android:drawableStart="@drawable/common_google_signin_btn_icon_dark_focused"
+            android:textColor="@color/white"
+
             />
     </LinearLayout>
 

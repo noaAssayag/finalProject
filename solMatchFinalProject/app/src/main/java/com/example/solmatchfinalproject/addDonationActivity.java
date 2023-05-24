@@ -51,7 +51,6 @@ public class addDonationActivity extends Activity {
     Button addItem;
     Spinner spinner;
     String selectedItem = null;
-
     String userName;
     String userId;
     Uri imageURI;

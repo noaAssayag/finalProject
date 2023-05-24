@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,6 +44,9 @@ public class RegSecActivity extends Activity {
     private String gen;
     private String type;
     private Bitmap image;
+    private boolean valid;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,18 +89,16 @@ public class RegSecActivity extends Activity {
                             {
                                 setGen(sGender.getSelectedItem().toString());
                                 setType(sType.getSelectedItem().toString());
-                                if(checkDate()==true)
-                                {
-                                    if(gen.equals("Female"))
-                                    {
+                                if (checkDate() == true) {
+                                    if (gen.equals("Female")) {
                                         image = BitmapFactory.decodeResource(getResources(), R.drawable.anonymouswoman);
-                                    }
-                                    else{
+                                    } else {
                                         image = BitmapFactory.decodeResource(getResources(), R.drawable.anonymousman);
                                     }
                                     setImage(image);
-                                    UserStorageData user=new UserStorageData(getUserName(),getEmail(),getGen(),getDate(),getPassword(),getImage(),getType());
-                                    auth.createUserWithEmailAndPassword(getEmail(),getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    UserStorageData user = new UserStorageData(getUserName(), getEmail(), getGen(), getDate(), getPassword(), null, getType());
+
+                                    auth.createUserWithEmailAndPassword(getEmail(), getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if(task.isSuccessful())
@@ -104,17 +106,17 @@ public class RegSecActivity extends Activity {
                                                 String UID = auth.getUid();
                                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                                 database.getReference().child("Users").setValue(user);
-
+                                                valid=true;
                                             }
-                                            else {
-                                                Toast.makeText(getApplicationContext(),"users allready exists with that email",Toast.LENGTH_SHORT).show();
+                                            else
+                                            {
+                                                Toast.makeText(getApplicationContext(), "users allready exists with that email", Toast.LENGTH_SHORT).show();
+                                                valid=false;
+                                                return;
                                             }
                                         }
                                     });
-                                    Toast.makeText(getApplicationContext(),"user created successfully",Toast.LENGTH_SHORT).show();
-                                    Intent newIntent = new Intent(RegSecActivity.this, LoginActivity.class);
-                                    startActivity(newIntent);
-                                    setContentView(R.layout.activity_login);
+
                                 }
                             }
                         } else {
@@ -124,9 +126,15 @@ public class RegSecActivity extends Activity {
                         Toast.makeText(getApplicationContext(), "Please choose a gender", Toast.LENGTH_SHORT).show();
                     }
 
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), "Please pick your birthday", Toast.LENGTH_SHORT).show();
+                }
+                if(valid)
+                {
+                    Toast.makeText(getApplicationContext(), "user created successfully", Toast.LENGTH_SHORT).show();
+                    Intent newIntent = new Intent(RegSecActivity.this, LoginActivity.class);
+                    startActivity(newIntent);
+                    setContentView(R.layout.activity_login);
                 }
             }
         });
@@ -160,6 +168,7 @@ public class RegSecActivity extends Activity {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public String getGen() {
         return gen;
     }
@@ -175,6 +184,7 @@ public class RegSecActivity extends Activity {
     public void setType(String type) {
         this.type = type;
     }
+
     public Bitmap getImage() {
         return image;
     }
@@ -182,6 +192,7 @@ public class RegSecActivity extends Activity {
     public void setImage(Bitmap image) {
         this.image = image;
     }
+
     private String setDate(TextView dateCal) {
         Date hrini = Calendar.getInstance().getTime();
         SimpleDateFormat format = new SimpleDateFormat("d MMM yyyy");
@@ -194,7 +205,7 @@ public class RegSecActivity extends Activity {
         String[] splitDate = getDate().split("/");
         String year = splitDate[2];
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        if (currentYear - Integer.parseInt(year) < 18&&currentYear - Integer.parseInt(year)>120) {
+        if (currentYear - Integer.parseInt(year) < 18 && currentYear - Integer.parseInt(year) > 120) {
             return false;
         }
         return true;

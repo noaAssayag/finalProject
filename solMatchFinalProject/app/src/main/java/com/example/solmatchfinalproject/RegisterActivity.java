@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Model.UserStorageData;
 import dataBase.MyInfoManager;
@@ -129,12 +131,30 @@ public class RegisterActivity extends Activity {
             showError(inputRePassword, "Password not match!");
             return false;
         }
+        else if (!isValidEmail(email))
+        {
+            showError(inputEmail, "Email in not valid!");
+            return false;
+        }
         return true;
     }
 
     private static void showError(EditText input, String s) {
         input.setError(s);
         input.requestFocus();
+    }
+    public boolean isValidEmail(String email) {
+        // Regular expression pattern for email validation
+        String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+
+        // Create a Pattern object
+        Pattern pattern = Pattern.compile(emailPattern);
+
+        // Match the input email with the pattern
+        Matcher matcher = pattern.matcher(email);
+
+        // Return true if the email matches the pattern, false otherwise
+        return matcher.matches();
     }
 
 }
