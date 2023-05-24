@@ -82,11 +82,12 @@ public class EditPersonalDetails extends Activity {
                 }
             }
         });
-
+        firebaseAuth = FirebaseAuth.getInstance();
         String uid=firebaseAuth.getCurrentUser().getUid();
         UserStorageData currentUser=new UserStorageData();
         //update the listview
         List<UserInfo> userInfos = new ArrayList<>();
+        db = FirebaseDatabase.getInstance();
         ref=db.getReference().child("Users").child(uid);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -97,50 +98,55 @@ public class EditPersonalDetails extends Activity {
                 currentUser.setGen(snapshot.child("gen").getValue().toString());
                 currentUser.setType(snapshot.child("type").getValue().toString());
                 currentUser.setBirthday(snapshot.child("birthday").getValue().toString());
-                String imageUrl = snapshot.child("imageUrl").getValue().toString();
-                Bitmap imageBitmap = convertBase64ToBitmap(imageUrl);
-                currentUser.setImage(imageBitmap);            }
+              //  String imageUrl = snapshot.child("imageUrl").getValue().toString();
+              //  Bitmap imageBitmap = convertBase64ToBitmap(imageUrl);
+               currentUser.setImage(null);
+                if (currentUser != null) {
+                    if (currentUser.getUserName() == null) {
+                        userInfos.add(new UserInfo(R.string.name, "" + R.string.namePro));
+                    } else {
+                        userInfos.add(new UserInfo(R.string.name, currentUser.getUserName()));
+                    }
+                    if (currentUser.getEmail() == null) {
+                        userInfos.add(new UserInfo(R.string.email, "" + R.string.emailPro));
+                    } else {
+                        userInfos.add(new UserInfo(R.string.email, currentUser.getEmail()));
+                    }
+                    if (currentUser.getPassword() == null) {
+                        userInfos.add(new UserInfo(R.string.password, "" + R.string.passwordPro));
+                    } else {
+                        userInfos.add(new UserInfo(R.string.password, currentUser.getPassword()));
+                    }
+                    if (currentUser.getGen() == null) {
+                        userInfos.add(new UserInfo(R.string.gender, "" + R.string.genderPro));
+                    } else {
+                        userInfos.add(new UserInfo(R.string.gender, currentUser.getGen()));
+                    }
+                    if (currentUser.getBirthday() == null) {
+                        userInfos.add(new UserInfo(R.string.birthdate, "" + R.string.birthdayPro));
+                    } else {
+                        userInfos.add(new UserInfo(R.string.birthdate, currentUser.getBirthday()));
+                    }
+                    if(currentUser.getType()==null)
+                    {
+                        userInfos.add(new UserInfo(R.string.type, "" + R.string.typePro));
+                    } else {
+                        userInfos.add(new UserInfo(R.string.type, currentUser.getType()));
+                    }
+                    listView = (ListView) findViewById(R.id.listOfDetailsToEdit);
+                    adapter = new UserInfoListAdapter(EditPersonalDetails.this, userInfos,currentUser.getEmail());
+                    listView.setAdapter(adapter);
+                }
+
+
+                }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-        if (currentUser != null) {
-            if (currentUser.getUserName() == null) {
-                userInfos.add(new UserInfo(R.string.name, "" + R.string.namePro));
-            } else {
-                userInfos.add(new UserInfo(R.string.name, currentUser.getUserName()));
-            }
-            if (currentUser.getEmail() == null) {
-                userInfos.add(new UserInfo(R.string.email, "" + R.string.emailPro));
-            } else {
-                userInfos.add(new UserInfo(R.string.email, currentUser.getEmail()));
-            }
-            if (currentUser.getPassword() == null) {
-                userInfos.add(new UserInfo(R.string.password, "" + R.string.passwordPro));
-            } else {
-                userInfos.add(new UserInfo(R.string.password, currentUser.getPassword()));
-            }
-            if (currentUser.getGen() == null) {
-                userInfos.add(new UserInfo(R.string.gender, "" + R.string.genderPro));
-            } else {
-                userInfos.add(new UserInfo(R.string.gender, currentUser.getGen()));
-            }
-            if (currentUser.getBirthday() == null) {
-                userInfos.add(new UserInfo(R.string.birthdate, "" + R.string.birthdayPro));
-            } else {
-                userInfos.add(new UserInfo(R.string.birthdate, currentUser.getBirthday()));
-            }
-            if(currentUser.getType()==null)
-            {
-                userInfos.add(new UserInfo(R.string.type, "" + R.string.typePro));
-            } else {
-                userInfos.add(new UserInfo(R.string.type, currentUser.getType()));
-            }
-        }
-        listView = (ListView) findViewById(R.id.listOfDetailsToEdit);
-        adapter = new UserInfoListAdapter(EditPersonalDetails.this, userInfos,currentUser.getEmail());
-        listView.setAdapter(adapter);
+
+
         textTitleViewName.setText(currentUser.getUserName());
         if (currentUser.getImage() == null) {
             if (currentUser.getGen() != null) {

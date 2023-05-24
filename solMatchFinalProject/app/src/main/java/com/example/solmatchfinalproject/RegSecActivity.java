@@ -58,7 +58,7 @@ public class RegSecActivity extends Activity {
         sType = (Spinner) findViewById(R.id.spinnerType);
         sGender = (Spinner) findViewById(R.id.spinnerGender);
         dateCal = (TextView) findViewById(R.id.dateCal);
-        finish = (Button) findViewById(R.id.btnSubmitResetPass);
+        finish = (Button) findViewById(R.id.btnSubmit);
         dateCal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +105,7 @@ public class RegSecActivity extends Activity {
                                             {
                                                 String UID = auth.getUid();
                                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                                database.getReference().child("Users").setValue(user);
+                                                database.getReference().child("Users").child(UID).setValue(user);
                                                 valid=true;
                                             }
                                             else
@@ -114,7 +114,15 @@ public class RegSecActivity extends Activity {
                                                 valid=false;
                                                 return;
                                             }
+                                            if(valid)
+                                            {
+                                                Toast.makeText(getApplicationContext(), "user created successfully", Toast.LENGTH_SHORT).show();
+                                                Intent newIntent = new Intent(RegSecActivity.this, LoginActivity.class);
+                                                startActivity(newIntent);
+                                                setContentView(R.layout.activity_login);
+                                            }
                                         }
+
                                     });
 
                                 }
@@ -129,13 +137,7 @@ public class RegSecActivity extends Activity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Please pick your birthday", Toast.LENGTH_SHORT).show();
                 }
-                if(valid)
-                {
-                    Toast.makeText(getApplicationContext(), "user created successfully", Toast.LENGTH_SHORT).show();
-                    Intent newIntent = new Intent(RegSecActivity.this, LoginActivity.class);
-                    startActivity(newIntent);
-                    setContentView(R.layout.activity_login);
-                }
+
             }
         });
 
