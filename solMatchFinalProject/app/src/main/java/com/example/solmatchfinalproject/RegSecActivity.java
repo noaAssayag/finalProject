@@ -42,6 +42,7 @@ public class RegSecActivity extends Activity {
     private String gen;
     private String type;
     private Bitmap image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +62,6 @@ public class RegSecActivity extends Activity {
                 int day = calnedar.get(Calendar.DAY_OF_MONTH);
                 int month = calnedar.get(Calendar.MONTH);
                 int year = calnedar.get(Calendar.YEAR);
-
                 DatePickerDialog pickerDialog = new DatePickerDialog(RegSecActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
@@ -78,35 +78,30 @@ public class RegSecActivity extends Activity {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getDate() !=null&&(!(getDate().isEmpty()))) {
+                if (getDate() != null && (!(getDate().isEmpty()))) {
                     if (sGender != null && sGender.getSelectedItem() != null) {
                         if (sType != null && sType.getSelectedItem() != null) {
                             {
                                 setGen(sGender.getSelectedItem().toString());
                                 setType(sType.getSelectedItem().toString());
-                                if(checkDate()==true)
-                                {
-                                    if(gen.equals("Female"))
-                                    {
+                                if (checkDate() == true) {
+                                    if (gen.equals("Female")) {
                                         image = BitmapFactory.decodeResource(getResources(), R.drawable.anonymouswoman);
-                                    }
-                                    else{
+                                    } else {
                                         image = BitmapFactory.decodeResource(getResources(), R.drawable.anonymousman);
                                     }
                                     setImage(image);
-                                    UserStorageData user=new UserStorageData(getUserName(),getEmail(),getGen(),getDate(),getPassword(),getImage(),getType());
-                                    auth.createUserWithEmailAndPassword(getEmail(),getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    UserStorageData user = new UserStorageData(getUserName(), getEmail(), getGen(), getDate(), getPassword(), getImage(), getType());
+                                    auth.createUserWithEmailAndPassword(getEmail(), getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if(task.isSuccessful())
-                                            {
+                                            if (task.isSuccessful()) {
                                                 String UID = auth.getUid();
                                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                                 database.getReference().child("Users").setValue(user);
-                                                Toast.makeText(getApplicationContext(),"user created successfully",Toast.LENGTH_SHORT).show();
-                                            }
-                                            else {
-                                                Toast.makeText(getApplicationContext(),"users allready exists with that email",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getApplicationContext(), "user created successfully", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "users allready exists with that email", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
@@ -122,8 +117,7 @@ public class RegSecActivity extends Activity {
                         Toast.makeText(getApplicationContext(), "Please choose a gender", Toast.LENGTH_SHORT).show();
                     }
 
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), "Please pick your birthday", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -158,6 +152,7 @@ public class RegSecActivity extends Activity {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public String getGen() {
         return gen;
     }
@@ -173,6 +168,7 @@ public class RegSecActivity extends Activity {
     public void setType(String type) {
         this.type = type;
     }
+
     public Bitmap getImage() {
         return image;
     }
@@ -180,6 +176,7 @@ public class RegSecActivity extends Activity {
     public void setImage(Bitmap image) {
         this.image = image;
     }
+
     private String setDate(TextView dateCal) {
         Date hrini = Calendar.getInstance().getTime();
         SimpleDateFormat format = new SimpleDateFormat("d MMM yyyy");
@@ -192,7 +189,7 @@ public class RegSecActivity extends Activity {
         String[] splitDate = getDate().split("/");
         String year = splitDate[2];
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        if (currentYear - Integer.parseInt(year) < 18&&currentYear - Integer.parseInt(year)>120) {
+        if (currentYear - Integer.parseInt(year) < 18 && currentYear - Integer.parseInt(year) > 120) {
             return false;
         }
         return true;

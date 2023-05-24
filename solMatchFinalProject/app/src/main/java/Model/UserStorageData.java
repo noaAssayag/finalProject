@@ -21,8 +21,8 @@ public class UserStorageData {
         this.image=image;
         this.type = type;
     }
-
-    public UserStorageData() {
+    public UserStorageData()
+    {
 
     }
 

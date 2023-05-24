@@ -46,57 +46,44 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // first we check the info
-              // if (checkCredentials()) {
+                if (checkCredentials()) {
                     mLoadingBar.setTitle("Login");
                     mLoadingBar.setMessage("Please wait while we check your credentials");
                     mLoadingBar.setCanceledOnTouchOutside(false);
                     mLoadingBar.show();
-                    auth.signInWithEmailAndPassword(inputUserEmail.getText().toString(),inputpassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    auth.signInWithEmailAndPassword(inputUserEmail.getText().toString(), inputpassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful())
-                            {
-                                Toast.makeText(getApplicationContext(),"login was good",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, profileActivity.class);
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "login was good", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
                                 intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                 startActivity(intent);
-                                setContentView(R.layout.activity_profile);
-                            }
-                            else{
+                                setContentView(R.layout.activity_editdetails);
+                            } else {
                                 Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-                //    Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
-                 //   intent.putExtra("UserEmail", inputUserEmail.getText().toString());
-                  //  startActivity(intent);
-                  //  setContentView(R.layout.activity_editdetails);
-               // }
-                  // else {
-                   // mLoadingBar.hide();
-                   // Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
-                //}
+                } else {
+                    mLoadingBar.hide();
+                    Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                auth.sendPasswordResetEmail(inputUserEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful())
-                        {
-                            Toast.makeText(getApplicationContext(),"email was sent to you with information", Toast.LENGTH_LONG);
+
+                if (inputUserEmail.getText().toString() != null && (!inputUserEmail.getText().toString().isEmpty())) {
+                    auth.sendPasswordResetEmail(inputUserEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "email was sent to you with information", Toast.LENGTH_LONG);
+                            }
                         }
-                    }
-                });
-                if (inputUserEmail.getText().toString() != null&&(!inputUserEmail.getText().toString().isEmpty())) {
-                    AlertDialogFragmentEdit frag = new AlertDialogFragmentEdit();
-                    Bundle b = new Bundle();
-                    b.putString("Email", inputUserEmail.getText().toString());
-                    frag.setArguments(b);
-                    frag.show(getFragmentManager(), "dialog");
+                    });
                 } else {
                     Toast.makeText(getApplicationContext(), "You must enter an email for reset password", Toast.LENGTH_SHORT).show();
                     return;
@@ -118,9 +105,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    private boolean checkCredentials() {
+        }
+        private boolean checkCredentials() {
         List<UserStorageData> userList = myInfoManager.getAllUser();
         String email = inputUserEmail.getText().toString();
         String password = inputpassword.getText().toString();
@@ -132,16 +118,11 @@ public class LoginActivity extends AppCompatActivity {
             showError(inputpassword, "password must be 7 character");
             return false;
         }
-        for (UserStorageData user : userList) {
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                return true;
-            }
-        }
+
         return false;
     }
-
-    private static void showError(EditText input, String s) {
-        input.setError(s);
-        input.requestFocus();
+        private static void showError (EditText input, String s){
+            input.setError(s);
+            input.requestFocus();
     }
 }
