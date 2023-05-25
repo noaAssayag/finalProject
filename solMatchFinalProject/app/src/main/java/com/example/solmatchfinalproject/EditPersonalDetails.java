@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -16,6 +17,8 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.solmatchfinalproject.Hosts.Host;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import Model.UserInfo;
 import Model.UserStorageData;
@@ -98,9 +103,10 @@ public class EditPersonalDetails extends Activity {
                 currentUser.setGen(snapshot.child("gen").getValue().toString());
                 currentUser.setType(snapshot.child("type").getValue().toString());
                 currentUser.setBirthday(snapshot.child("birthday").getValue().toString());
-              //  String imageUrl = snapshot.child("imageUrl").getValue().toString();
-              //  Bitmap imageBitmap = convertBase64ToBitmap(imageUrl);
-               currentUser.setImage(null);
+                String imageUrl = snapshot.child("image").getValue(String.class);
+                loadImage(imageUrl, currentUser);
+                image.setImageBitmap(currentUser.getImage());
+
                 if (currentUser != null) {
                     if (currentUser.getUserName() == null) {
                         userInfos.add(new UserInfo(R.string.name, "" + R.string.namePro));
@@ -171,11 +177,7 @@ public class EditPersonalDetails extends Activity {
             }
         });
     }
-    // Helper method to convert Base64 string to Bitmap
-    private Bitmap convertBase64ToBitmap(String base64String) {
-        byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -190,7 +192,25 @@ public class EditPersonalDetails extends Activity {
             }
         }
     }
+    private void loadImage(String imageUrl, UserStorageData user) {
+        Picasso.get().load(imageUrl).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                // Set the loaded bitmap to the host object
+                user.setImage(bitmap);
+            }
 
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                // Handle the failure case if needed
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                // Handle the image loading progress if needed
+            }
+        });
+    }
 }
 
 

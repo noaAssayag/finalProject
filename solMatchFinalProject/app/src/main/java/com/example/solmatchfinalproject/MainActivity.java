@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.solmatchfinalproject.Hosts.allHosts;
+
 import ChatClasses.chatMenuActivity;
 import donations.donationActivity;
 

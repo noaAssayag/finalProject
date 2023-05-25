@@ -1,4 +1,4 @@
-package Model;
+package com.example.solmatchfinalproject.Hosts;
 
 import android.graphics.Bitmap;
 public class Host {
@@ -14,6 +14,10 @@ public class Host {
         this.hostEmail = hostEmail;
         this.hostAddress = hostAddress;
         this.hostingDate = hostingDate;
+    }
+
+    public Host() {
+
     }
 
     public Bitmap getHostImage() {

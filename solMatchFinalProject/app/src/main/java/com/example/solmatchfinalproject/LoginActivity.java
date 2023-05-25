@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.solmatchfinalproject.Hosts.AddHost;
+import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -21,7 +23,6 @@ import java.util.List;
 
 import Model.UserStorageData;
 import dataBase.MyInfoManager;
-import donations.donationActivity;
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -46,8 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // first we check the info
-//              if (checkCredentials()) {
+              if (checkCredentials()) {
                     mLoadingBar.setTitle("Login");
                     mLoadingBar.setMessage("Please wait while we check your credentials");
                     mLoadingBar.setCanceledOnTouchOutside(false);
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                             if(task.isSuccessful())
                             {
                                 Toast.makeText(getApplicationContext(),"login was good",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this,AddHost.class);
+                                Intent intent = new Intent(LoginActivity.this, AddHost.class);
                                 intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                 startActivity(intent);
                                 setContentView(R.layout.activity_add_host);
@@ -72,11 +72,11 @@ public class LoginActivity extends AppCompatActivity {
 //                    intent.putExtra("UserEmail", inputUserEmail.getText().toString());
 //                    startActivity(intent);
 //                    setContentView(R.layout.activity_editdetails);
-               // }
-//                   else {
-//                    mLoadingBar.hide();
-//                    Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
-//                }
+                }
+                   else {
+                    mLoadingBar.hide();
+                    Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         forgotPassword.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean checkCredentials() {
-        List<UserStorageData> userList = myInfoManager.getAllUser();
         String email = inputUserEmail.getText().toString();
         String password = inputpassword.getText().toString();
 
@@ -132,12 +131,7 @@ public class LoginActivity extends AppCompatActivity {
             showError(inputpassword, "password must be 7 character");
             return false;
         }
-        for (UserStorageData user : userList) {
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                return true;
-            }
-        }
-        return false;
+        return true;
     }
 
     private static void showError(EditText input, String s) {

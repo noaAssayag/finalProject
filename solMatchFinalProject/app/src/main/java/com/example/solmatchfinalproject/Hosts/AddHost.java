@@ -1,4 +1,4 @@
-package com.example.solmatchfinalproject;
+package com.example.solmatchfinalproject.Hosts;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.solmatchfinalproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,8 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
-
-import Model.Host;
 
 public class AddHost extends AppCompatActivity {
     TextView mDisplayDateTime;
@@ -52,7 +51,8 @@ public class AddHost extends AppCompatActivity {
                 if (address == null || address.getText().toString().isEmpty()||mDisplayDateTime.getText().toString().isEmpty()) {
                     Toast.makeText(AddHost.this, "Please fill all the fileds", Toast.LENGTH_SHORT).show();
                     return;
-                } else {
+                }
+                else {
                     hostAddress=address.getText().toString();
                     hostDate=mDisplayDateTime.getText().toString();
                     auth = FirebaseAuth.getInstance();
@@ -68,8 +68,7 @@ public class AddHost extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
+                        public void onCancelled(@NonNull DatabaseError error){
                         }
                     });
                     ref = db.getReference().child("Host").child(uid);
