@@ -77,7 +77,7 @@ public class profileActivity extends AppCompatActivity {
         // need to implement listview horizontal present all hobbies in the form ill write right now
         // each object is in the form of the xml file personal_hobbit_item.xml i created
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("UserInfo");
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("userInfo");
 
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override

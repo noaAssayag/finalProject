@@ -78,10 +78,10 @@ public class LoginActivity extends AppCompatActivity {
                                         if(snapshot.hasChild("userInfo"))
                                         {
                                             Toast.makeText(getApplicationContext(),"login was good",Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LoginActivity.this, profileActivity.class);
+                                            Intent intent = new Intent(LoginActivity.this, chatMenuActivity.class);
                                             intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                             startActivity(intent);
-                                            setContentView(R.layout.activity_profile);
+                                            setContentView(R.layout.chat_menu);
                                         }
                                         else{
                                             Intent intent = new Intent(LoginActivity.this,personalQuestionsActivity.class);
