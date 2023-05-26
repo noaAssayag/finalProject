@@ -37,6 +37,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".personalQuestionsActivity"/>
         <activity
             android:name="ChatClasses.chatMenuActivity"
             android:exported="false" />

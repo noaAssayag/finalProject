@@ -18,9 +18,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import ChatClasses.chatMenuActivity;
 import Model.UserStorageData;
 import dataBase.MyInfoManager;
 
@@ -62,6 +69,33 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                 startActivity(intent);
                                 setContentView(R.layout.activity_add_host);
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                String UID = user.getUid();
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(UID);
+                                ref.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if(snapshot.hasChild("userInfo"))
+                                        {
+                                            Toast.makeText(getApplicationContext(),"login was good",Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(LoginActivity.this, profileActivity.class);
+                                            intent.putExtra("UserEmail", inputUserEmail.getText().toString());
+                                            startActivity(intent);
+                                            setContentView(R.layout.activity_profile);
+                                        }
+                                        else{
+                                            Intent intent = new Intent(LoginActivity.this,personalQuestionsActivity.class);
+                                            setContentView(R.layout.personal_questions_layout);
+                                            startActivity(intent);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
                             }
                             else{
                                 Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();

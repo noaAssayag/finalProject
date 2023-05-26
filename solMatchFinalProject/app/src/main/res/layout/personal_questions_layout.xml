@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context=".personalQuestionsActivity"
+    >
+
+    <TextView
+        android:id="@+id/intrestsPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intrests"
+        android:textColor="@color/black"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/promptInterests"
+        android:layout_width="305dp"
+        android:layout_height="50dp"
+        android:text="@string/intretsDesc"
+        android:gravity="center"
+        android:textColor="@color/log_in_color"
+        android:textSize="14sp"
+        android:layout_gravity="center_horizontal"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hobbiesList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#80FFC0CB"/>
+    <TextView
+        android:id="@+id/personalInfoPrompt"
+        android:layout_width="305dp"
+        android:layout_height="50dp"
+        android:text="@string/tellUs"
+        android:gravity="center"
+        android:textColor="@color/log_in_color"
+        android:textSize="14sp"
+        android:layout_gravity="center_horizontal"/>
+    <EditText
+        android:id="@+id/inputPersonalInfo"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:inputType="text" />
+
+
+
+    <Button
+        android:id="@+id/nextPersonal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/next"
+        android:textColor="@color/white"
+        android:background="@color/black"
+        android:layout_marginBottom="18dp"
+        android:layout_marginTop="18dp"/>
+
+</LinearLayout>

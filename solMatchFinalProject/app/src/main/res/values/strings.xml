@@ -127,6 +127,9 @@
     <string name="startChat">start chat</string>
     <string name="AllDonations">All Donations</string>
     <string name="searchText">please select the service you wish to search</string>
+    <string name="intrests">Intrests</string>
+    <string name="intretsDesc">hello please fill some of the intrests described here to make the hosts feel more comfortebly around you</string>
+    <string name="tellUs">please tell us about yourself in a few sentences</string>
 
 
 </resources>

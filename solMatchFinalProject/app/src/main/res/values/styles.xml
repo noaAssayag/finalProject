@@ -8,5 +8,9 @@
 		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 
+	<style name="interestsText">
+		<item name="android:textSize">14.98sp</item>
+		<item name="android:textColor">#BFC3CF</item>
+	</style>
 
 </resources>
