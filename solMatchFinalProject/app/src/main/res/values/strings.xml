@@ -108,6 +108,7 @@
     <string name="setDate">Choose the day of accommodation </string>
     <string name="setTime">Choose the time of accommodation</string>
     <string name="descriptionOfHost">please add description</string>
+    <string name="imgOfLocation">Please add an image of the accommodation location to be displayed to the user. </string>
 
 
     <string name="btnCancel">Cancel</string>

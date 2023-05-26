@@ -78,10 +78,9 @@ public class LoginActivity extends AppCompatActivity {
                                         if(snapshot.hasChild("userInfo"))
                                         {
                                             Toast.makeText(getApplicationContext(),"login was good",Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LoginActivity.this, chatMenuActivity.class);
+                                            Intent intent = new Intent(LoginActivity.this, AddHost.class);
                                             intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                             startActivity(intent);
-                                            setContentView(R.layout.chat_menu);
                                         }
                                         else{
                                             Intent intent = new Intent(LoginActivity.this,personalQuestionsActivity.class);
@@ -102,10 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     });
-//                    Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
-//                    intent.putExtra("UserEmail", inputUserEmail.getText().toString());
-//                    startActivity(intent);
-//                    setContentView(R.layout.activity_editdetails);
+
                 }
                    else {
                     mLoadingBar.hide();

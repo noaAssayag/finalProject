@@ -2,30 +2,33 @@ package com.example.solmatchfinalproject.Hosts;
 
 import android.graphics.Bitmap;
 public class Host {
-    private Bitmap hostImage;
+    private String hostImg;
     private String hostName;
     private String hostEmail;
     private String hostAddress;
     private String hostingDate;
+    private String hostingLocImg;
 
-    public Host(Bitmap hostImage, String hostName, String hostEmail, String hostAddress, String hostingDate) {
-        this.hostImage = hostImage;
+    public Host(String hostImg, String hostName, String hostEmail, String hostAddress, String hostingDate,String hostingLocImg) {
+        this.hostImg = hostImg;
         this.hostName = hostName;
         this.hostEmail = hostEmail;
         this.hostAddress = hostAddress;
         this.hostingDate = hostingDate;
+        this.hostingLocImg=hostingLocImg;
     }
 
     public Host() {
 
     }
 
-    public Bitmap getHostImage() {
-        return hostImage;
+
+    public String getHostImg() {
+        return hostImg;
     }
 
-    public void setHostImage(Bitmap hostImage) {
-        this.hostImage = hostImage;
+    public void setHostImg(String hostImg) {
+        this.hostImg = hostImg;
     }
 
     public String getHostName() {
@@ -58,5 +61,13 @@ public class Host {
 
     public void setHostingDate(String hostingDate) {
         this.hostingDate = hostingDate;
+    }
+
+    public String getHostingLocImg() {
+        return hostingLocImg;
+    }
+
+    public void setHostingLocImg(String hostingLocImg) {
+        this.hostingLocImg = hostingLocImg;
     }
 }

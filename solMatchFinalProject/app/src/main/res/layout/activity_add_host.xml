@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,122 +7,143 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="86dp"
-        tools:layout_editor_absoluteY="339dp">
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|top"
+            android:layout_marginTop="20dp"
             android:text="@string/AddHostPage"
-            android:layout_marginTop="72dp"
             android:textColor="@color/log_in_to_chatbox_color"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/welcome_back__sign_in_using_your_social_account_or_email_to_continue_us2"
-            android:layout_width="305dp"
-            android:layout_height="50dp"
-            android:text="Hello!Please fill the following fileds to add a new host"
-            android:layout_gravity="center_horizontal|center"
-            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Hello! Please fill the following fields to add a new host"
+            android:textAlignment="center"
             android:textColor="@color/log_in_color"
-            android:textSize="14sp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logo" />
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/txtsetDate"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/setDate"
-            android:layout_marginTop="10dp"
             android:textColor="@color/forgot_password__color"
-            android:textSize="14sp"
-           />
+            android:textSize="14sp" />
+
         <Button
             android:id="@+id/dateBtn"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onDateClicked"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:text="@string/ui_button_date_title" />
+
         <TextView
             android:id="@+id/txtsetTime"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="@string/setTime"
             android:textColor="@color/forgot_password__color"
             android:textSize="14sp"
-            />
+            android:layout_gravity="left"/>
+
         <Button
             android:id="@+id/timeBtn"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onTimeClicked"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:text="@string/ui_button_time_title" />
 
         <TextView
             android:id="@+id/txtAddAddress"
-            android:layout_width="81dp"
-            android:layout_height="24dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="@string/Addaddress"
             android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:layout_gravity="left"/>
 
         <EditText
             android:id="@+id/hostAddress"
+            style="@style/Widget.AppCompat.EditText"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_gravity="left"
-           />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Enter the host address" />
+
         <TextView
             android:id="@+id/txtDescription"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="@string/descriptionOfHost"
             android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:layout_gravity="left"/>
 
         <EditText
             android:id="@+id/hostDescription"
+            style="@style/Widget.AppCompat.EditText"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_gravity="left"
-            />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Enter description of the host" />
 
+        <TextView
+            android:id="@+id/txtImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/imgOfLocation"
+            android:textColor="@color/forgot_password__color"
+            android:textSize="14sp"
+            android:layout_gravity="left"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/imageOfLocation"
+                android:layout_width="80dp"
+                android:layout_height="48dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
+            <ImageButton
+                android:id="@+id/uploadImage"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:tooltipText="@string/AddItem"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnSubmit"
-            android:text="@string/submit"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:backgroundTint="#404040"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/white"
+            android:text="@string/submit"
+            android:textColor="@color/white" />
 
-            />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

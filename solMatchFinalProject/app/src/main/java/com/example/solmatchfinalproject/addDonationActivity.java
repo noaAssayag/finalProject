@@ -92,7 +92,7 @@ public class addDonationActivity extends Activity {
                 selectedItem = options[3];
             }
         });
-                uploadImage.setOnClickListener(new View.OnClickListener() {
+        uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -106,37 +106,30 @@ public class addDonationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 int id = R.drawable.anonymousman;
-
-
-
                 // Upload the image to Firebase Storage
-                StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageURI.toString());
-                storageRef.putFile(imageURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                      boolean check = task.isSuccessful();
-                        if (task.isSuccessful()) {
-                           storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                               @Override
-                               public void onSuccess(Uri uri) {
-                                URL = uri.toString();
-                               }
-                           });
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            userId = user.getUid();
-
-
-
-
-                        }
+                        StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageURI.toString());
+                        storageRef.putFile(imageURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                boolean check = task.isSuccessful();
+                                if (task.isSuccessful()) {
+                                    storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            URL = uri.toString();
+                                        }
+                                    });
+                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    userId = user.getUid();
+                                }
                         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Donations");
                         databaseRef.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                              while(snapshot.hasChild(String.valueOf(i)))
-                              {
-                                  i++;
-                              }
+                                while(snapshot.hasChild(String.valueOf(i)))
+                                {
+                                    i++;
+                                }
 
 
                             }
@@ -165,9 +158,9 @@ public class addDonationActivity extends Activity {
                         });
 
                     }
-                    });
-        }
-    });
+                });
+            }
+        });
     }
 
     @Override

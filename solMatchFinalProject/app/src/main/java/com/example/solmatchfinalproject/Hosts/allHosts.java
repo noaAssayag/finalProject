@@ -51,11 +51,10 @@ public class allHosts extends AppCompatActivity {
                     newHost.setHostAddress(snap.child("hostAddress").getValue(String.class));
                     newHost.setHostingDate(snap.child("hostingDate").getValue(String.class));
                     String imageUrl = snap.child("hostImage").getValue(String.class);
-                    loadImage(imageUrl, newHost);
                     list.add(newHost);
                 }
                 // Populate the RecyclerView with the retrieved list of hosts
-                UserHostAdapter userHostAdapter = new UserHostAdapter(list);
+                UserHostAdapter userHostAdapter = new UserHostAdapter(list,allHosts.this);
                 recList.setAdapter(userHostAdapter);
             }
 
@@ -66,23 +65,5 @@ public class allHosts extends AppCompatActivity {
 
         });
     }
-    private void loadImage(String imageUrl, Host host) {
-        Picasso.get().load(imageUrl).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                // Set the loaded bitmap to the host object
-                host.setHostImage(bitmap);
-            }
 
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                // Handle the failure case if needed
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-                // Handle the image loading progress if needed
-            }
-        });
-    }
 }
