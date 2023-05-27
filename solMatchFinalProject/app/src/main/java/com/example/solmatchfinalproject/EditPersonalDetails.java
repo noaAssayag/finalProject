@@ -48,10 +48,10 @@ public class EditPersonalDetails extends Activity {
 
     private ListView listView;
     private UserInfoListAdapter adapter;
-    private String email;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase db;
     DatabaseReference ref;
+
     private UserStorageData currentUser;
 
     /**
@@ -147,6 +147,13 @@ public class EditPersonalDetails extends Activity {
                     listView = (ListView) findViewById(R.id.listOfDetailsToEdit);
                     adapter = new UserInfoListAdapter(EditPersonalDetails.this, userInfos);
                     listView.setAdapter(adapter);
+                    try {
+                        setData(currentUser);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    } catch (InstantiationException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
 
 

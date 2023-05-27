@@ -107,21 +107,25 @@ public class addDonationActivity extends Activity {
             public void onClick(View v) {
                 int id = R.drawable.anonymousman;
                 // Upload the image to Firebase Storage
-                        StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageURI.toString());
-                        storageRef.putFile(imageURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                boolean check = task.isSuccessful();
-                                if (task.isSuccessful()) {
-                                    storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            URL = uri.toString();
-                                        }
-                                    });
-                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                    userId = user.getUid();
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageURI.toString());
+                storageRef.putFile(imageURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        boolean check = task.isSuccessful();
+                        if (task.isSuccessful()) {
+                            storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    URL = uri.toString();
                                 }
+                            });
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            userId = user.getUid();
+
+
+
+
+                        }
                         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Donations");
                         databaseRef.addValueEventListener(new ValueEventListener() {
                             @Override
