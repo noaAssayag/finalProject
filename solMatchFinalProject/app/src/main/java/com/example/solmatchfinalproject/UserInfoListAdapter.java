@@ -13,24 +13,36 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.List;
 
 import Model.UserInfo;
 import Model.UserStorageData;
-import dataBase.MyInfoManager;
 
 public class UserInfoListAdapter extends ArrayAdapter<UserInfo> {
     private List<UserInfo> dataList = null;
     private Context context = null;
-    private String email;
     boolean isEditing = true;
 
+    FirebaseDatabase db;
+    DatabaseReference ref;
+    FirebaseAuth firebaseAuth;
 
-    public UserInfoListAdapter(Context context, List<UserInfo> dataList, String email) {
+    private UserStorageData currentUser;
+
+
+    public UserInfoListAdapter(Context context, List<UserInfo> dataList) {
         super(context, R.layout.userinfolist, dataList);
         this.context = context;
         this.dataList = dataList;
-        this.email = email;
     }
 
     @Override
@@ -75,8 +87,29 @@ public class UserInfoListAdapter extends ArrayAdapter<UserInfo> {
                     extratxt.setTextColor(context.getResources().getColor(R.color.black));
                     extratxt.setEnabled(false);
                     btnEdit.setImageResource(R.drawable.baseline_mode_edit_24); // Set the image when editing
-                    UserInfo userInfo = dataList.get(position);
-                    UserStorageData currentUser = MyInfoManager.getInstance().readUserByEmail(email);
+
+                    firebaseAuth = FirebaseAuth.getInstance();
+                    currentUser = new UserStorageData();
+                    String uid = firebaseAuth.getCurrentUser().getUid();
+                    db = FirebaseDatabase.getInstance();
+                    ref = db.getReference().child("Users").child(uid);
+                    ref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            currentUser.setUserName(snapshot.child("userName").getValue().toString());
+                            currentUser.setEmail(snapshot.child("email").getValue().toString());
+                            currentUser.setPassword(snapshot.child("password").getValue().toString());
+                            currentUser.setGen(snapshot.child("gen").getValue().toString());
+                            currentUser.setType(snapshot.child("type").getValue().toString());
+                            currentUser.setBirthday(snapshot.child("birthday").getValue().toString());
+                            currentUser.setImage(snapshot.child("image").getValue().toString());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
                     switch (userInfo.getTitle()) {
                         case R.string.name:
@@ -111,7 +144,8 @@ public class UserInfoListAdapter extends ArrayAdapter<UserInfo> {
                             }
                             break;
                     }
-                    MyInfoManager.getInstance().updateUser(currentUser);
+                    db.getReference().child("Users").child(uid).setValue(currentUser);
+
                 }
             }
         });

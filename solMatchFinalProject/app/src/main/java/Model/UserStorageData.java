@@ -9,10 +9,10 @@ public class UserStorageData {
     private String gen;
     private String birthday;
     private String password;
-    private Bitmap image=null;
+    private String image=null;
     private String type;
 
-    public UserStorageData(String userName, String email, String gen, String birthday,String password,Bitmap image, String type) {
+    public UserStorageData(String userName, String email, String gen, String birthday,String password,String image, String type) {
         this.userName = userName;
         this.email = email;
         this.gen = gen;
@@ -72,11 +72,11 @@ public class UserStorageData {
     public void setPassword(String password) {
         this.password = password;
     }
-    public Bitmap getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Bitmap image) {
+    public void setImage(String image) {
         this.image = image;
     }
     public String getType() {

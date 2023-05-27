@@ -29,7 +29,6 @@ import java.util.List;
 
 import ChatClasses.chatMenuActivity;
 import Model.UserStorageData;
-import dataBase.MyInfoManager;
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -38,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     Button google;
     private ProgressDialog mLoadingBar;
-    private MyInfoManager myInfoManager = MyInfoManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,36 +52,28 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              if (checkCredentials()) {
+                if (checkCredentials()) {
                     mLoadingBar.setTitle("Login");
                     mLoadingBar.setMessage("Please wait while we check your credentials");
                     mLoadingBar.setCanceledOnTouchOutside(false);
                     mLoadingBar.show();
-                    auth.signInWithEmailAndPassword(inputUserEmail.getText().toString(),inputpassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    auth.signInWithEmailAndPassword(inputUserEmail.getText().toString(), inputpassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful())
-                            {
-                                Toast.makeText(getApplicationContext(),"login was good",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, AddHost.class);
-                                intent.putExtra("UserEmail", inputUserEmail.getText().toString());
-                                startActivity(intent);
-                                setContentView(R.layout.activity_add_host);
+                            if (task.isSuccessful()) {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 String UID = user.getUid();
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(UID);
                                 ref.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if(snapshot.hasChild("userInfo"))
-                                        {
-                                            Toast.makeText(getApplicationContext(),"login was good",Toast.LENGTH_SHORT).show();
+                                        if (snapshot.hasChild("userInfo")) {
+                                            Toast.makeText(getApplicationContext(), "login was good", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(LoginActivity.this, AddHost.class);
                                             intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                             startActivity(intent);
-                                        }
-                                        else{
-                                            Intent intent = new Intent(LoginActivity.this,personalQuestionsActivity.class);
+                                        } else {
+                                            Intent intent = new Intent(LoginActivity.this, personalQuestionsActivity.class);
                                             setContentView(R.layout.personal_questions_layout);
                                             startActivity(intent);
                                         }
@@ -95,15 +85,13 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 });
 
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
 
-                }
-                   else {
+                } else {
                     mLoadingBar.hide();
                     Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
                 }
@@ -115,22 +103,11 @@ public class LoginActivity extends AppCompatActivity {
                 auth.sendPasswordResetEmail(inputUserEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful())
-                        {
-                            Toast.makeText(getApplicationContext(),"email was sent to you with information", Toast.LENGTH_LONG);
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "email was sent to you with information", Toast.LENGTH_LONG);
                         }
                     }
                 });
-                if (inputUserEmail.getText().toString() != null&&(!inputUserEmail.getText().toString().isEmpty())) {
-                    AlertDialogFragmentEdit frag = new AlertDialogFragmentEdit();
-                    Bundle b = new Bundle();
-                    b.putString("Email", inputUserEmail.getText().toString());
-                    frag.setArguments(b);
-                    frag.show(getFragmentManager(), "dialog");
-                } else {
-                    Toast.makeText(getApplicationContext(), "You must enter an email for reset password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
             }
         });
         signIn.setOnClickListener(new View.OnClickListener() {

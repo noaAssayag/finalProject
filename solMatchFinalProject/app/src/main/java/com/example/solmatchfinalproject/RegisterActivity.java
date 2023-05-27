@@ -23,7 +23,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Model.UserStorageData;
-import dataBase.MyInfoManager;
 
 public class RegisterActivity extends Activity {
     private TextView linkToLogin;
@@ -36,8 +35,6 @@ public class RegisterActivity extends Activity {
     private String password;
     private String rePassword;
     private String Password;
-    private MyInfoManager myInfoManager = MyInfoManager.getInstance();
-
 
 
     @Override
@@ -118,6 +115,9 @@ public class RegisterActivity extends Activity {
         if (userName.isEmpty() || userName.length() < 7 || userName.contains(" ")) {
             showError(inputUserName, "Your username is not valid!");
             return false;
+        } else if (!userName.matches("[a-zA-Z]+")) {
+            showError(inputUserName, "Username can only contain letters!");
+            return false;
         } else if (email.isEmpty() || !email.contains("@") || (!(email.matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")))) {
             showError(inputEmail, "Email in not valid!");
             return false;
@@ -130,9 +130,7 @@ public class RegisterActivity extends Activity {
         } else if (!(rePassword.equals(password))) {
             showError(inputRePassword, "Password not match!");
             return false;
-        }
-        else if (!isValidEmail(email))
-        {
+        } else if (!isValidEmail(email)) {
             showError(inputEmail, "Email in not valid!");
             return false;
         }
@@ -143,6 +141,7 @@ public class RegisterActivity extends Activity {
         input.setError(s);
         input.requestFocus();
     }
+
     public boolean isValidEmail(String email) {
         // Regular expression pattern for email validation
         String emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";

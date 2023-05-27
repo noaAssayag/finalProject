@@ -97,6 +97,8 @@
     <string name="describeUser">description....</string>
     <string name="titleProfPage">Upcoming events:</string>
 
+    <string name="addProfImg">Profile Image:</string>
+
     <string name="hostingDate">Date</string>
     <string name="hostAddress">Address</string>
 

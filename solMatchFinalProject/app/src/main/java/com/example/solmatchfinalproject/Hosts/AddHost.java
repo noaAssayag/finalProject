@@ -59,14 +59,15 @@ public class AddHost extends AppCompatActivity {
     Uri imageURILoc;
     String URL;
     String imageURLHost;
-    private  Host newHost;
+    private Host newHost;
+    private boolean validDate = true;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_host);
-        mDisplayDateTime = (TextView) findViewById(R.id.txtTitle);
+        mDisplayDateTime = (TextView) findViewById(R.id.txtPresDateAndTime);
         sub = (Button) findViewById(R.id.btnSubmit);
         address = (EditText) findViewById(R.id.hostAddress);
         locationImg = (ImageView) findViewById(R.id.imageOfLocation);
@@ -81,17 +82,15 @@ public class AddHost extends AppCompatActivity {
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
         });
-        hostAddress = address.getText().toString();
-        hostDate = mDisplayDateTime.getText().toString();
         sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (address == null || hostAddress.isEmpty() || hostDate.isEmpty()) {
+                hostDate = mDisplayDateTime.getText().toString();
+                hostAddress = address.getText().toString();
+                if (address == null || address.getText().toString().isEmpty() || hostDate.isEmpty() || validDate == false) {
                     Toast.makeText(AddHost.this, "Please fill all the fileds", Toast.LENGTH_SHORT).show();
                     return;
-                }
-                if (locationImg == null) {
+                } else if (locationImg.getDrawable() == null) {
                     Toast.makeText(AddHost.this, "You must upload an image!", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
@@ -104,6 +103,7 @@ public class AddHost extends AppCompatActivity {
                         public void onDataChange(DataSnapshot snapshot) {
                             email = snapshot.child("email").getValue().toString();
                             userName = snapshot.child("userName").getValue().toString();
+                            if(snapshot.child("imageURl").getValue()!=null)
                             imageURLHost = snapshot.child("imageURL").getValue().toString();
                         }
 
@@ -129,7 +129,7 @@ public class AddHost extends AppCompatActivity {
                             ref.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    Host newHost = new Host(imageURLHost,userName, email, hostAddress, hostDate,URL);
+                                    Host newHost = new Host(imageURLHost, userName, email, hostAddress, hostDate, URL);
                                     ref.setValue(newHost);
                                     Toast.makeText(AddHost.this, "The host Added Succefully!", Toast.LENGTH_SHORT).show();
                                 }
@@ -146,6 +146,7 @@ public class AddHost extends AppCompatActivity {
             }
         });
     }
+
     public void onTimeClicked(View v) {
 
         TimePickerDialog.OnTimeSetListener mTimeListener = new TimePickerDialog.OnTimeSetListener() {
@@ -171,10 +172,11 @@ public class AddHost extends AppCompatActivity {
                 mDateAndTime.set(Calendar.MONTH, monthOfYear);
                 mDateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 if (mDateAndTime.after(currentDate)) {
-                    Toast.makeText(getApplicationContext(), "INVALID date", Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
+                    validDate = true;
                     updateDateAndTimeDisplay();
+                } else {
+                    Toast.makeText(getApplicationContext(), "INVALID date", Toast.LENGTH_SHORT).show();
+                    validDate = false;
                 }
             }
         };

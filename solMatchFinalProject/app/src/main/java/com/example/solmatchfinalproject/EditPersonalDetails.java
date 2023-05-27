@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.net.Uri;
@@ -14,10 +15,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.solmatchfinalproject.Hosts.Host;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,11 +34,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import Model.UserInfo;
 import Model.UserStorageData;
-import dataBase.MyInfoManager;
+import Model.donations;
 //import notification.notificationService;
 
 public class EditPersonalDetails extends Activity {
@@ -46,6 +52,8 @@ public class EditPersonalDetails extends Activity {
     FirebaseAuth firebaseAuth;
     FirebaseDatabase db;
     DatabaseReference ref;
+    private UserStorageData currentUser;
+
     /**
      * OnCreate function initiates the app with all variables
      * after initialization, we load the toolbar menu
@@ -88,12 +96,12 @@ public class EditPersonalDetails extends Activity {
             }
         });
         firebaseAuth = FirebaseAuth.getInstance();
-        String uid=firebaseAuth.getCurrentUser().getUid();
-        UserStorageData currentUser=new UserStorageData();
+        currentUser = new UserStorageData();
+        String uid = firebaseAuth.getCurrentUser().getUid();
         //update the listview
         List<UserInfo> userInfos = new ArrayList<>();
         db = FirebaseDatabase.getInstance();
-        ref=db.getReference().child("Users").child(uid);
+        ref = db.getReference().child("Users").child(uid);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -103,9 +111,7 @@ public class EditPersonalDetails extends Activity {
                 currentUser.setGen(snapshot.child("gen").getValue().toString());
                 currentUser.setType(snapshot.child("type").getValue().toString());
                 currentUser.setBirthday(snapshot.child("birthday").getValue().toString());
-                String imageUrl = snapshot.child("image").getValue(String.class);
-                loadImage(imageUrl, currentUser);
-                image.setImageBitmap(currentUser.getImage());
+                currentUser.setImage(snapshot.child("image").getValue().toString());
 
                 if (currentUser != null) {
                     if (currentUser.getUserName() == null) {
@@ -133,40 +139,26 @@ public class EditPersonalDetails extends Activity {
                     } else {
                         userInfos.add(new UserInfo(R.string.birthdate, currentUser.getBirthday()));
                     }
-                    if(currentUser.getType()==null)
-                    {
+                    if (currentUser.getType() == null) {
                         userInfos.add(new UserInfo(R.string.type, "" + R.string.typePro));
                     } else {
                         userInfos.add(new UserInfo(R.string.type, currentUser.getType()));
                     }
                     listView = (ListView) findViewById(R.id.listOfDetailsToEdit);
-                    adapter = new UserInfoListAdapter(EditPersonalDetails.this, userInfos,currentUser.getEmail());
+                    adapter = new UserInfoListAdapter(EditPersonalDetails.this, userInfos);
                     listView.setAdapter(adapter);
                 }
 
 
-                }
+            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
-
         textTitleViewName.setText(currentUser.getUserName());
-        if (currentUser.getImage() == null) {
-            if (currentUser.getGen() != null) {
-                if (currentUser.getGen().equals("Female")) {
-                    image.setImageResource(R.drawable.anonymouswoman);
-                } else if (currentUser.getGen().equals("Male")) {
-                    image.setImageResource(R.drawable.anonymousman);
-                }
-            }
-        }
-        else
-        {
-            image.setImageBitmap(currentUser.getImage());
-        }
+
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,25 +184,30 @@ public class EditPersonalDetails extends Activity {
             }
         }
     }
-    private void loadImage(String imageUrl, UserStorageData user) {
-        Picasso.get().load(imageUrl).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                // Set the loaded bitmap to the host object
-                user.setImage(bitmap);
-            }
 
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                // Handle the failure case if needed
-            }
+    public void setData(UserStorageData user) throws IllegalAccessException, InstantiationException {
+        this.currentUser=user;
+        Glide.with(EditPersonalDetails.class.newInstance())
+                .load(currentUser.getImage())
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target<Drawable> target, boolean isFirstResource) {
+                        // Handle image loading failure
+                        Log.e("Glide", "Image loading failed: " + e.getMessage());
+                        return false; // Return false to allow Glide to handle the error and show any error placeholder you have set
+                    }
 
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-                // Handle the image loading progress if needed
-            }
-        });
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        // Image successfully loaded
+                        return false; // Return false to allow Glide to handle the resource and display it
+                    }
+                })
+                .into(image);
     }
+
+
+
 }
 
 

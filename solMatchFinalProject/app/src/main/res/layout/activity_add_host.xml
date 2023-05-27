@@ -50,6 +50,7 @@
             android:id="@+id/dateBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onDateClicked"
             android:layout_marginTop="8dp"
             android:text="@string/ui_button_date_title" />
 
@@ -68,8 +69,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:onClick="onTimeClicked"
             android:text="@string/ui_button_time_title" />
-
+        <TextView
+            android:id="@+id/txtPresDateAndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_gravity="left"/>
         <TextView
             android:id="@+id/txtAddAddress"
             android:layout_width="wrap_content"
@@ -136,7 +146,6 @@
 
         <Button
             android:id="@+id/btnSubmit"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
