@@ -65,6 +65,7 @@ public class RegSecActivity extends Activity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     Uri imageURI;
     String URL;
+    UserStorageData user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,12 +132,13 @@ public class RegSecActivity extends Activity {
                                                         @Override
                                                         public void onSuccess(Uri uri) {
                                                             URL = uri.toString();
+                                                            user = new UserStorageData(getUserName(), getEmail(), getGen(), getDate(), getPassword(), URL, getType());
+
                                                         }
                                                     });
                                                 }
                                             }
                                         });
-                                        UserStorageData user = new UserStorageData(getUserName(), getEmail(), getGen(), getDate(), getPassword(), URL, getType());
                                         auth.createUserWithEmailAndPassword(getEmail(), getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                             @Override
                                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -244,6 +246,7 @@ public class RegSecActivity extends Activity {
         return true;
     }
 
+
     private void showImagePickerDialog() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -253,13 +256,13 @@ public class RegSecActivity extends Activity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
 
-        // Create a chooser intent to select between camera and gallery
-        Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Picture");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{takePictureIntent});
-
-        // Start the chooser activity
-        startActivityForResult(chooserIntent, REQUEST_IMAGE_PICK);
+        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
+            Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Picture");
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{takePictureIntent});
+            startActivityForResult(chooserIntent, REQUEST_IMAGE_PICK);
+        }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

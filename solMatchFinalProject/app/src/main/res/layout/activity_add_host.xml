@@ -50,19 +50,19 @@
             android:id="@+id/dateBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onDateClicked"
             android:layout_marginTop="8dp"
+            android:onClick="onDateClicked"
             android:text="@string/ui_button_date_title" />
 
         <TextView
             android:id="@+id/txtsetTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:layout_marginTop="16dp"
             android:text="@string/setTime"
             android:textColor="@color/forgot_password__color"
-            android:textSize="14sp"
-            android:layout_gravity="left"/>
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/timeBtn"
@@ -71,24 +71,25 @@
             android:layout_marginTop="8dp"
             android:onClick="onTimeClicked"
             android:text="@string/ui_button_time_title" />
+
         <TextView
             android:id="@+id/txtPresDateAndTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:layout_marginTop="16dp"
             android:textColor="@color/black"
             android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_gravity="left"/>
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/txtAddAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_gravity="left"
             android:text="@string/Addaddress"
             android:textColor="@color/forgot_password__color"
-            android:textSize="14sp"
-            android:layout_gravity="left"/>
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/hostAddress"
@@ -102,11 +103,11 @@
             android:id="@+id/txtDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:layout_marginTop="16dp"
             android:text="@string/descriptionOfHost"
             android:textColor="@color/forgot_password__color"
-            android:textSize="14sp"
-            android:layout_gravity="left"/>
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/hostDescription"
@@ -116,33 +117,31 @@
             android:layout_marginTop="8dp"
             android:hint="Enter description of the host" />
 
+
         <TextView
             android:id="@+id/txtImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:layout_marginTop="16dp"
             android:text="@string/imgOfLocation"
             android:textColor="@color/forgot_password__color"
-            android:textSize="14sp"
-            android:layout_gravity="left"/>
+            android:textSize="14sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/uploadImage"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/baseline_file_upload_24"
+            android:tooltipText="@string/AddItem" />
+
+        <ImageView
+            android:id="@+id/imageOfLocation"
+            android:layout_width="80dp"
             android:layout_height="48dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/imageOfLocation"
-                android:layout_width="80dp"
-                android:layout_height="48dp"
-                android:layout_gravity="left"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp" />
-            <ImageButton
-                android:id="@+id/uploadImage"
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                android:tooltipText="@string/AddItem"/>
-        </LinearLayout>
+            android:layout_gravity="left"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp" />
 
         <Button
             android:id="@+id/btnSubmit"

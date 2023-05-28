@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -103,8 +104,9 @@ public class AddHost extends AppCompatActivity {
                         public void onDataChange(DataSnapshot snapshot) {
                             email = snapshot.child("email").getValue().toString();
                             userName = snapshot.child("userName").getValue().toString();
-                            if(snapshot.child("imageURl").getValue()!=null)
-                            imageURLHost = snapshot.child("imageURL").getValue().toString();
+                            if(snapshot.child("image").getValue()!=null) {
+                                imageURLHost = snapshot.child("image").getValue().toString();
+                            }
                         }
 
                         @Override
