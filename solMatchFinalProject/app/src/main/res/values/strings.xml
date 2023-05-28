@@ -120,7 +120,7 @@
     <string name="ItenNamePrompt">Name</string>
     <string name="addDonation">hello please follow the instractions</string>
     <string name="itemImage">image</string>
-    <string name="AddItem">add\n</string>
+    <string name="AddItem">add</string>
     <string name="location">Location</string>
     <string name="shortDescription">description</string>
     <string name="add">ADD</string>
@@ -133,6 +133,13 @@
     <string name="intrests">Intrests</string>
     <string name="intretsDesc">hello please fill some of the intrests described here to make the hosts feel more comfortebly around you</string>
     <string name="tellUs">please tell us about yourself in a few sentences</string>
+    <string name="upload_image">upload</string>
+    <string name="dialog_message">are you sure you want to add this user to be hosted?</string>
+    <string name="dialog_title">Confirm</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
 
 
 </resources>

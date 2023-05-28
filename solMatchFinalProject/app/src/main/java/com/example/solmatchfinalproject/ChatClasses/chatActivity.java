@@ -1,6 +1,8 @@
 package com.example.solmatchfinalproject.ChatClasses;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -18,9 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
+import com.example.solmatchfinalproject.Hosts.Host;
 import com.example.solmatchfinalproject.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -63,18 +67,21 @@ public class chatActivity extends AppCompatActivity {
     private TextView writeMessage;
     private Button sendButt;
 
+    private TextView chatterName;
+    private Button addHostButt;
+
     private BottomNavigationHandler navigationHandler;
     List<chatItemInfo> userChats = new ArrayList<chatItemInfo>();
     FirebaseApp app = FirebaseApp.getInstance();
+    Intent intent = getIntent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        HashMap<String,chat> messagedSent = new HashMap<>();
+        HashMap<String, chat> messagedSent = new HashMap<>();
         askNotificationPermission();
-        i =1;
-        Intent intent = getIntent();
+        i = 1;
         String chatId = intent.getStringExtra("chatID");
-        System.out.println("the chatid is " +chatId);
+        System.out.println("the chatid is " + chatId);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("chats").child(chatId);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_layout);
@@ -84,14 +91,19 @@ public class chatActivity extends AppCompatActivity {
         navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         messages = findViewById(R.id.chatMessages);
+        chatterName = findViewById(R.id.chatterName);
+        addHostButt = findViewById(R.id.addHostButt);
+        chatterName.setText(intent.getStringExtra("from"));
+
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                while(snapshot.hasChild(String.valueOf(i)))
-                {
-                    if(snapshot.child(String.valueOf(i)).child("from").getValue().toString()!= null && snapshot.child(String.valueOf(i)).child("message").getValue().toString()!= null) {
-                        String from = snapshot.child(String.valueOf(i)).child("from").getValue().toString();;
+                while (snapshot.hasChild(String.valueOf(i))) {
+                    if (snapshot.child(String.valueOf(i)).child("from").getValue().toString() != null && snapshot.child(String.valueOf(i)).child("message").getValue().toString() != null) {
+                        String from = snapshot.child(String.valueOf(i)).child("from").getValue().toString();
+                        ;
                         String messageContent = snapshot.child(String.valueOf(i)).child("message").getValue().toString();
                         chatItemInfo item = new chatItemInfo(from, messageContent);
                         userChats.add(item);
@@ -99,7 +111,7 @@ public class chatActivity extends AppCompatActivity {
                     i++;
                 }
 
-                chatListAdapter adapter = new chatListAdapter(chatActivity.this,userChats);
+                chatListAdapter adapter = new chatListAdapter(chatActivity.this, userChats);
                 messages.setAdapter(adapter);
             }
 
@@ -111,18 +123,17 @@ public class chatActivity extends AppCompatActivity {
         sendButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(writeMessage.getText().toString()!= null)
-                {
+                if (writeMessage.getText().toString() != null) {
                     // we need to know which user is signed in to send the message as of right now
                     // we do this by hand easelly fixable by identifing the user signed in
                     String from = intent.getStringExtra("from");
                     String to = intent.getStringExtra("to");
-                    String notificationSender = from+"-"+to;
-                    FirebaseMessaging.getInstance().subscribeToTopic(to+"-"+from);
-                    send(String.format(notificationMessage.message,notificationSender, from, writeMessage.getText().toString()), new Callback() {
+                    String notificationSender = from + "-" + to;
+                    FirebaseMessaging.getInstance().subscribeToTopic(to + "-" + from);
+                    send(String.format(notificationMessage.message, notificationSender, from, writeMessage.getText().toString()), new Callback() {
                         @Override
                         public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                            Toast.makeText(chatActivity.this,"error",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(chatActivity.this, "error", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -130,7 +141,7 @@ public class chatActivity extends AppCompatActivity {
                             chatActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(response.code()==200){
+                                    if (response.code() == 200) {
                                         Toast.makeText(chatActivity.this, "Notification sent", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -139,12 +150,20 @@ public class chatActivity extends AppCompatActivity {
                         }
                     });
                     // need to implement which user sent the message
-                    messagedSent.put(String.valueOf(i),new chat(from,to,writeMessage.getText().toString()));
+                    messagedSent.put(String.valueOf(i), new chat(from, to, writeMessage.getText().toString()));
                     reference.child(String.valueOf(i)).setValue(messagedSent.get(String.valueOf(i)));
                 }
             }
         });
+
+        addHostButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSimpleAlertDialog(v);
+            }
+        });
     }
+
     private void askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -162,6 +181,7 @@ public class chatActivity extends AppCompatActivity {
             }
         }
     }
+
     public void send(String message, Callback callback) {
         RequestBody reqBody = RequestBody.create(message
                 , MediaType.get("application/json"));
@@ -175,5 +195,76 @@ public class chatActivity extends AppCompatActivity {
 
         Call call = client.newCall(request);
         call.enqueue(callback);
+    }
+
+    public void showSimpleAlertDialog(View view) {
+
+        // 1. Instantiate an AlertDialog.Builder with its constructor
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+
+        // 2. Chain together various setter methods to set the dialog characteristics
+        builder.setMessage(R.string.dialog_message);
+        builder.setTitle(R.string.dialog_title);
+
+        // Add the buttons
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot child:snapshot.getChildren())
+                        {
+                            if(child.child("userName").getValue().toString().equals(intent.getStringExtra("to")))
+                            {
+                                DatabaseReference referenceHost = FirebaseDatabase.getInstance().getReference().child("Host")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                referenceHost.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        Host newHost = new Host();
+                                        newHost.setHostName(snapshot.child("hostName").getValue(String.class));
+                                        newHost.setHostEmail(snapshot.child("hostEmail").getValue(String.class));
+                                        newHost.setHostAddress(snapshot.child("hostAddress").getValue(String.class));
+                                        newHost.setHostingDate(snapshot.child("hostingDate").getValue(String.class));
+                                        String imageUrl = snapshot.child("hostImage").getValue(String.class);
+                                        newHost.setHostImg(imageUrl);
+
+                                        //  reference.child(child.getKey()).child("Host").;
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+                Toast.makeText(getApplicationContext(), "User clicked OK button", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                Toast.makeText(getApplicationContext(), "User cancelled the dialog", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), "User clicked on Neutral Btn", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 }
