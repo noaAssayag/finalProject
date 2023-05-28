@@ -1,4 +1,4 @@
-package ChatClasses;
+package com.example.solmatchfinalproject.ChatClasses;
 
 
 public class chatItemInfo {

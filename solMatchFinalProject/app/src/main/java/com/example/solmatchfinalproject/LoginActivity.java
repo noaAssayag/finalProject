@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.solmatchfinalproject.Hosts.AddHost;
-import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,9 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.List;
+import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 
-import ChatClasses.chatMenuActivity;
 import Model.UserStorageData;
 
 public class LoginActivity extends AppCompatActivity {
@@ -69,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         if (snapshot.hasChild("userInfo")) {
                                             Toast.makeText(getApplicationContext(), "login was good", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LoginActivity.this, AddHost.class);
+                                            Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
                                             intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                             startActivity(intent);
                                         } else {

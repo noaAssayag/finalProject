@@ -8,6 +8,7 @@
     tools:context=".searchNavigationMenue">
 
 
+
     <TextView
         android:id="@+id/textsearch"
         android:layout_width="wrap_content"

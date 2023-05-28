@@ -2,6 +2,7 @@ package donations;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -26,10 +27,13 @@ import Model.donations;
 public class donationActivity extends Activity {
 
     RecyclerView donationsView;
+
+    Button starchat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.donations_layout);
+
      //   donations donation = new donations("test","kkal 16", "home cooking","test object", R.drawable.anonymousman);
     //    donations donation2 = new donations("test","kkal 16", "home cooking","test object", drawable.);
         List<donations> donationList = new ArrayList<>();

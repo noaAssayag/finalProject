@@ -39,10 +39,10 @@
         </activity>
         <activity android:name=".personalQuestionsActivity"/>
         <activity
-            android:name="ChatClasses.chatMenuActivity"
+            android:name="com.example.solmatchfinalproject.ChatClasses.chatMenuActivity"
             android:exported="false" />
         <activity
-            android:name="ChatClasses.chatActivity"
+            android:name="com.example.solmatchfinalproject.ChatClasses.chatActivity"
             android:exported="false" />
         <activity
             android:name=".RegSecActivity"

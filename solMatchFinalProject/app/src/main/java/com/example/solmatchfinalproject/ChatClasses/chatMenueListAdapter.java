@@ -1,4 +1,4 @@
-package ChatClasses;
+package com.example.solmatchfinalproject.ChatClasses;
 
 import android.content.Context;
 import android.view.LayoutInflater;

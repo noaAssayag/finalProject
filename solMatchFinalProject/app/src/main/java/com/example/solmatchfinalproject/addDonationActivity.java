@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -56,6 +57,9 @@ public class addDonationActivity extends Activity {
     Uri imageURI;
     String URL;
     int i = 0;
+
+    private BottomNavigationHandler navigationHandler;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         long count = 0;
@@ -70,7 +74,9 @@ public class addDonationActivity extends Activity {
         addItem = findViewById(R.id.btnAddDonation);
         spinner = findViewById(R.id.catagorySpinner);
         String[] options = {"home cooking", "furniture", "food supplies","other"};
-
+        BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
+        navigationHandler = new BottomNavigationHandler(this,getApplicationContext());
+        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
 // Create an ArrayAdapter to populate the Spinner with the options
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

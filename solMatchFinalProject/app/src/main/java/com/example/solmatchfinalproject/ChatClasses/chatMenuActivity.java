@@ -1,4 +1,4 @@
-package ChatClasses;
+package com.example.solmatchfinalproject.ChatClasses;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,9 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.solmatchfinalproject.BottomNavigationHandler;
 import com.example.solmatchfinalproject.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +32,8 @@ public class chatMenuActivity extends AppCompatActivity {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     ArrayList<String> chatNames = null;
     String userName = null;
+    private BottomNavigationHandler navigationHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,9 @@ public class chatMenuActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance(app);
         FirebaseUser user = auth.getCurrentUser();
         String id = user.getUid();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
+        navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
+        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
 
         List<chatItemInfo> userChats = new ArrayList<chatItemInfo>();
         chatList = findViewById(R.id.chatList);

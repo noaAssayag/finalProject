@@ -36,6 +36,7 @@ public class UserInfoListAdapter extends ArrayAdapter<UserInfo> {
     DatabaseReference ref;
     FirebaseAuth firebaseAuth;
 
+    private boolean valid = true;
     private UserStorageData currentUser;
 
 
@@ -48,6 +49,14 @@ public class UserInfoListAdapter extends ArrayAdapter<UserInfo> {
     @Override
     public int getCount() {
         return dataList.size();
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     @Override
@@ -84,6 +93,7 @@ public class UserInfoListAdapter extends ArrayAdapter<UserInfo> {
                     // Set the image when not editing
                 } else {
                     isEditing=true;
+                    extratxt.setAlpha(1f);
                     extratxt.setTextColor(context.getResources().getColor(R.color.black));
                     extratxt.setEnabled(false);
                     btnEdit.setImageResource(R.drawable.baseline_mode_edit_24); // Set the image when editing
@@ -103,6 +113,47 @@ public class UserInfoListAdapter extends ArrayAdapter<UserInfo> {
                             currentUser.setType(snapshot.child("type").getValue().toString());
                             currentUser.setBirthday(snapshot.child("birthday").getValue().toString());
                             currentUser.setImage(snapshot.child("image").getValue().toString());
+                            switch (userInfo.getTitle()) {
+                                case R.string.name:
+                                    if (TextUtils.isEmpty(extratxt.getText()) || extratxt.getText().length() < 7 || extratxt.getText().toString().contains(" ")) {
+                                        Toast.makeText(context, "INVALID user name", Toast.LENGTH_SHORT).show();
+                                        valid = false;
+                                    } else {
+                                        currentUser.setUserName(extratxt.getText().toString());
+
+                                    }
+                                    break;
+                                case R.string.email:
+                                    if (TextUtils.isEmpty(extratxt.getText()) || !extratxt.getText().toString().contains("@") || !extratxt.getText().toString().matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")) {
+                                        Toast.makeText(context, "INVALID Email", Toast.LENGTH_SHORT).show();
+                                        valid = false;
+                                    } else {
+                                        currentUser.setEmail(extratxt.getText().toString());
+                                    }
+                                    break;
+                                case R.string.gender:
+                                    if (extratxt.getText().equals("Male") || extratxt.getText().equals("Female") || extratxt.getText().equals("Other")) {
+                                        currentUser.setGen(extratxt.getText().toString());
+                                        valid = false;
+                                    } else {
+                                        Toast.makeText(context, "INVALID Gen", Toast.LENGTH_SHORT).show();
+                                    }
+                                    break;
+                                case R.string.birthdate:
+                                    extratxt.setEnabled(true);
+                                    break;
+                                case R.string.password:
+                                    if (TextUtils.isEmpty(extratxt.getText()) || extratxt.getText().length() < 7) {
+                                        Toast.makeText(context, "INVALID Password", Toast.LENGTH_SHORT).show();
+                                        valid = false;
+                                    } else {
+                                        currentUser.setPassword(extratxt.getText().toString());
+                                    }
+                                    break;
+                            }
+                            if(valid) {
+                                db.getReference().child("Users").child(uid).setValue(currentUser);
+                            }
                         }
 
                         @Override
@@ -111,40 +162,6 @@ public class UserInfoListAdapter extends ArrayAdapter<UserInfo> {
                         }
                     });
 
-                    switch (userInfo.getTitle()) {
-                        case R.string.name:
-                            if (TextUtils.isEmpty(extratxt.getText()) || extratxt.getText().length() < 7 || extratxt.getText().toString().contains(" ")) {
-                                Toast.makeText(context, "INVALID user name", Toast.LENGTH_SHORT).show();
-                            } else {
-                                currentUser.setUserName(extratxt.getText().toString());
-                            }
-                            break;
-                        case R.string.email:
-                            if (TextUtils.isEmpty(extratxt.getText()) || !extratxt.getText().toString().contains("@") || !extratxt.getText().toString().matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")) {
-                                Toast.makeText(context, "INVALID Email", Toast.LENGTH_SHORT).show();
-                            } else {
-                                currentUser.setEmail(extratxt.getText().toString());
-                            }
-                            break;
-                        case R.string.gender:
-                            if (extratxt.getText().equals("Male") || extratxt.getText().equals("Female") || extratxt.getText().equals("Other")) {
-                                currentUser.setGen(extratxt.getText().toString());
-                            } else {
-                                Toast.makeText(context, "INVALID Gen", Toast.LENGTH_SHORT).show();
-                            }
-                            break;
-                        case R.string.birthdate:
-                            extratxt.setEnabled(true);
-                            break;
-                        case R.string.password:
-                            if (TextUtils.isEmpty(extratxt.getText()) || extratxt.getText().length() < 7) {
-                                Toast.makeText(context, "INVALID Password", Toast.LENGTH_SHORT).show();
-                            } else {
-                                currentUser.setPassword(extratxt.getText().toString());
-                            }
-                            break;
-                    }
-                    db.getReference().child("Users").child(uid).setValue(currentUser);
 
                 }
             }

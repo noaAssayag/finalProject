@@ -1,7 +1,6 @@
-package ChatClasses;
+package com.example.solmatchfinalproject.ChatClasses;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -18,8 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.example.solmatchfinalproject.BottomNavigationHandler;
 import com.example.solmatchfinalproject.R;
-import com.example.solmatchfinalproject.profileActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -62,6 +62,8 @@ public class chatActivity extends AppCompatActivity {
     private ListView messages;
     private TextView writeMessage;
     private Button sendButt;
+
+    private BottomNavigationHandler navigationHandler;
     List<chatItemInfo> userChats = new ArrayList<chatItemInfo>();
     FirebaseApp app = FirebaseApp.getInstance();
 
@@ -78,7 +80,9 @@ public class chatActivity extends AppCompatActivity {
         setContentView(R.layout.chat_layout);
         writeMessage = findViewById(R.id.messageEditText);
         sendButt = findViewById(R.id.sendButton);
-
+        BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
+        navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
+        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         messages = findViewById(R.id.chatMessages);
         reference.addValueEventListener(new ValueEventListener() {
             @Override

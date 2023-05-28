@@ -33,7 +33,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import Model.UserInfo;
 import Model.UserStorageData;
@@ -111,8 +110,9 @@ public class EditPersonalDetails extends Activity {
                 currentUser.setGen(snapshot.child("gen").getValue().toString());
                 currentUser.setType(snapshot.child("type").getValue().toString());
                 currentUser.setBirthday(snapshot.child("birthday").getValue().toString());
-                currentUser.setImage(snapshot.child("image").getValue().toString());
-
+                if(snapshot.hasChild("image")) {
+                    currentUser.setImage(snapshot.child("image").getValue().toString());
+                }
                 if (currentUser != null) {
                     if (currentUser.getUserName() == null) {
                         userInfos.add(new UserInfo(R.string.name, "" + R.string.namePro));
@@ -147,6 +147,7 @@ public class EditPersonalDetails extends Activity {
                     listView = (ListView) findViewById(R.id.listOfDetailsToEdit);
                     adapter = new UserInfoListAdapter(EditPersonalDetails.this, userInfos);
                     listView.setAdapter(adapter);
+
                     try {
                         setData(currentUser);
                     } catch (IllegalAccessException e) {
@@ -194,7 +195,7 @@ public class EditPersonalDetails extends Activity {
 
     public void setData(UserStorageData user) throws IllegalAccessException, InstantiationException {
         this.currentUser=user;
-        Glide.with(EditPersonalDetails.class.newInstance())
+        Glide.with(getApplicationContext())
                 .load(currentUser.getImage())
                 .listener(new RequestListener<Drawable>() {
                     @Override

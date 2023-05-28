@@ -2,15 +2,20 @@ package donations;
 
 
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +26,14 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.solmatchfinalproject.ChatClasses.chatActivity;
 import com.example.solmatchfinalproject.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -30,6 +42,10 @@ import Model.donations;
 public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donationViewHolder> {
     private List<donations> donationsList;
     Context context;
+
+    String userToSendMessage;
+
+    String username;
     // Return the size of your dataset (invoked by the layout manager)
     public donationAdapter(List<donations> donationsList,Context context)
     {
@@ -49,9 +65,74 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
+
         donations ci = donationsList.get(position);
         contactViewHolder.setData(ci);
+        username = contactViewHolder.userDonated;
         Log.i("adapter", "onBindViewHolder done!" + "position="+position);
+        contactViewHolder.startchat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                      if(snapshot.child("userName").getValue().toString().equals(username))
+                      {
+                          Toast.makeText(context,"you cant start chatting with yourself", Toast.LENGTH_SHORT);
+
+                      }
+                      else{
+                         userToSendMessage = snapshot.child("userName").getValue().toString();
+                          DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference().child("chats");
+                          chatReference.addValueEventListener(new ValueEventListener() {
+                              @Override
+                              public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                  String fullName;
+                                  for(DataSnapshot child: snapshot.getChildren())
+                                  {
+                                      fullName = child.getKey();
+                                      String[] parts = fullName.split("-");
+                                      String user1 = parts[0].trim();
+                                      String user2 = parts[1].trim();
+                                      if(user1.equals(userToSendMessage) && user2.equals(username) || user1.equals(username) && user2.equals(userToSendMessage))
+                                      {
+                                          Intent intent = new Intent(context, chatActivity.class);
+                                          intent.putExtra("chatID", fullName);
+                                          intent.putExtra("from", userToSendMessage);
+                                          intent.putExtra("to",username);
+                                          intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                          context.startActivity(intent);
+                                          return;
+                                      }
+                                  }
+                                  chatReference.child(username+"-"+userToSendMessage).setValue(null);
+                                  Intent intent = new Intent(context, chatActivity.class);
+                                  intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                  intent.putExtra("chatID", username+"-"+userToSendMessage);
+                                  intent.putExtra("from", userToSendMessage);
+                                  intent.putExtra("to",username);
+                                  context.startActivity(intent);
+                              }
+
+                              @Override
+                              public void onCancelled(@NonNull DatabaseError error) {
+
+                              }
+                          });
+                      }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
     }
 
     // Create new views (invoked by the layout manager)
@@ -77,6 +158,9 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
         private TextView catagory;
         private TextView desc;
         private donations di = null;
+        private Button startchat;
+
+        String userDonated;
 
         public donationViewHolder(@NonNull View rowView) {
             super(rowView);
@@ -85,14 +169,20 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
             location = rowView.findViewById(R.id.donationLocation);
             catagory = rowView.findViewById(R.id.donationCatagory);
             desc = rowView.findViewById(R.id.donationDescription);
+            startchat = rowView.findViewById(R.id.btnStartChat);
 
 
+        }
+
+        public String getUserDonated() {
+            return userDonated;
         }
 
         public void setData(donations di)
         {
 
             this.di = di;
+            userDonated = di.getUsername();
             Glide.with(context)
                     .load(di.getImg())
                     .listener(new RequestListener<Drawable>() {
