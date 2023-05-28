@@ -101,7 +101,7 @@ public class chatMenuActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Adapter adapter = parent.getAdapter();
                 chatMenueListAdapter mychat = (chatMenueListAdapter) adapter;
-                String fromName = mychat.getItem(0).getName();
+                String fromName = mychat.getItem(position).getName();
                 String chatName = chatNameFinder(fromName);
                 Intent intent = new Intent(chatMenuActivity.this, chatActivity.class);
                 intent.putExtra("chatID", chatName);

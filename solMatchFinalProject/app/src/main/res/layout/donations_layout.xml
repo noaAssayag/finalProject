@@ -16,6 +16,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/AllDonations"
         android:textColor="@color/black"
+        style="@style/TextViewStyle"
         android:textSize="36sp"
         android:textStyle="bold" />
 

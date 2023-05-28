@@ -62,24 +62,37 @@ public class chatActivity extends AppCompatActivity {
                 }
             });
 
+    int counter = 0;
+
     int i = 1;
+    long size = 0;
     private ListView messages;
     private TextView writeMessage;
     private Button sendButt;
 
     private TextView chatterName;
     private Button addHostButt;
+    boolean FLAG;
+
+    DataSnapshot addHostToReference;
 
     private BottomNavigationHandler navigationHandler;
     List<chatItemInfo> userChats = new ArrayList<chatItemInfo>();
     FirebaseApp app = FirebaseApp.getInstance();
-    Intent intent = getIntent();
+    Intent intent;
+    String hostNum;
+    DatabaseReference Usersreference;
+
+    String userToAddHostToUID;
+
+    Host newHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         HashMap<String, chat> messagedSent = new HashMap<>();
         askNotificationPermission();
         i = 1;
+        intent = getIntent();
         String chatId = intent.getStringExtra("chatID");
         System.out.println("the chatid is " + chatId);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("chats").child(chatId);
@@ -93,7 +106,7 @@ public class chatActivity extends AppCompatActivity {
         messages = findViewById(R.id.chatMessages);
         chatterName = findViewById(R.id.chatterName);
         addHostButt = findViewById(R.id.addHostButt);
-        chatterName.setText(intent.getStringExtra("from"));
+        chatterName.setText(intent.getStringExtra("to"));
 
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -159,7 +172,7 @@ public class chatActivity extends AppCompatActivity {
         addHostButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSimpleAlertDialog(v);
+                showSimpleAlertDialog();
             }
         });
     }
@@ -197,10 +210,10 @@ public class chatActivity extends AppCompatActivity {
         call.enqueue(callback);
     }
 
-    public void showSimpleAlertDialog(View view) {
+    public void showSimpleAlertDialog() {
 
         // 1. Instantiate an AlertDialog.Builder with its constructor
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // 2. Chain together various setter methods to set the dialog characteristics
         builder.setMessage(R.string.dialog_message);
@@ -210,20 +223,23 @@ public class chatActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
-                reference.addValueEventListener(new ValueEventListener() {
+
+                Usersreference = FirebaseDatabase.getInstance().getReference().child("Users");
+                Usersreference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot child:snapshot.getChildren())
+                        for(DataSnapshot addHostTo:snapshot.getChildren())
                         {
-                            if(child.child("userName").getValue().toString().equals(intent.getStringExtra("to")))
+                            if(addHostTo.child("userName").getValue().toString().equals(intent.getStringExtra("to")))
                             {
                                 DatabaseReference referenceHost = FirebaseDatabase.getInstance().getReference().child("Host")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                userToAddHostToUID = addHostTo.getKey();
+                               addHostToReference  = addHostTo;
                                 referenceHost.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        Host newHost = new Host();
+                                        newHost = new Host();
                                         newHost.setHostName(snapshot.child("hostName").getValue(String.class));
                                         newHost.setHostEmail(snapshot.child("hostEmail").getValue(String.class));
                                         newHost.setHostAddress(snapshot.child("hostAddress").getValue(String.class));
@@ -231,7 +247,29 @@ public class chatActivity extends AppCompatActivity {
                                         String imageUrl = snapshot.child("hostImage").getValue(String.class);
                                         newHost.setHostImg(imageUrl);
 
-                                        //  reference.child(child.getKey()).child("Host").;
+
+                                         Usersreference.child(addHostToReference.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                             @Override
+                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if(counter == 0) {
+                                                    if (snapshot.hasChild("Host")) {
+                                                        size = snapshot.child("Host").getChildrenCount() + 1;
+                                                        hostNum = Long.toString(size);
+                                                        Usersreference.child(addHostToReference.getKey()).child("Host").child(hostNum).setValue(newHost);
+
+
+                                                    } else {
+                                                        Usersreference.child(addHostToReference.getKey()).child("Host").child("1").setValue(newHost);
+                                                    }
+                                                    counter++;
+                                                }
+                                             }
+
+                                             @Override
+                                             public void onCancelled(@NonNull DatabaseError error) {
+
+                                             }
+                                         });
                                     }
 
                                     @Override
@@ -250,7 +288,11 @@ public class chatActivity extends AppCompatActivity {
                 });
 
                 Toast.makeText(getApplicationContext(), "User clicked OK button", Toast.LENGTH_SHORT).show();
+
+
             }
+
+
         });
         builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -266,5 +308,7 @@ public class chatActivity extends AppCompatActivity {
 
             }
         });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

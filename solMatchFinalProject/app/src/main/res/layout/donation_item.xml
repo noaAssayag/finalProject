@@ -5,59 +5,81 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="10dp"
-    tools:context="donations.donationActivity">
-    <ImageView
-        android:id="@+id/imgDonation"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginRight="10dp"
-        android:layout_centerVertical="true" />
+    tools:context="donations.donationActivity"
+    android:background="@drawable/gradient_bg">
+
     <TextView
         android:id="@+id/Donatorname"
-        android:layout_width="match_parent"
+        style="@style/TextViewStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_toEndOf="@+id/imgDonation"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="10dp"
         android:text="@string/ItemName"
         android:textSize="20dp"
         android:textColor="@color/black"
         android:textStyle="bold"/>
+
     <TextView
         android:id="@+id/donationLocation"
-        android:layout_width="match_parent"
+        style="@style/TextViewStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/imgDonation"
         android:layout_below="@+id/Donatorname"
-        android:layout_gravity="left"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="10dp"
         android:text="@string/location"/>
+
     <TextView
         android:id="@+id/donationCatagory"
-        android:layout_width="match_parent"
+        style="@style/TextViewStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/imgDonation"
         android:layout_below="@+id/donationLocation"
-        android:layout_gravity="left"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="10dp"
         android:text="@string/catagory"/>
+
+    <ImageView
+        android:id="@+id/imgDonation"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_above="@+id/btnStartChat"
+        android:layout_alignTop="@+id/donationCatagory"
+        android:layout_marginStart="203dp"
+        android:layout_marginLeft="203dp"
+        android:layout_marginTop="-43dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toEndOf="@+id/donationCatagory"
+        android:layout_toRightOf="@+id/donationCatagory" />
+
     <TextView
         android:id="@+id/donationDescription"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_toEndOf="@+id/imgDonation"
+        android:layout_width="224dp"
+        android:layout_height="39dp"
         android:layout_below="@+id/donationCatagory"
-        android:layout_gravity="left"
-        android:text="@string/description"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="10dp"
+        android:text="@string/description"
+        style="@style/TextViewStyle"/>
 
     <Button
         android:id="@+id/btnStartChat"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/donationDescription"
         android:layout_alignParentRight="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="16dp"
-        android:background="@color/black"
-        android:backgroundTint="#D0021B"
+        android:background="@drawable/rectangle_chatbox"
         android:text="@string/startChat"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
+        style="@style/TextViewStyle"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -66,5 +88,5 @@
         android:layout_below="@+id/btnStartChat"
         android:layout_marginTop="10dp"
         android:background="#DAD8D8"/>
-</RelativeLayout>
 
+</RelativeLayout>

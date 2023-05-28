@@ -46,6 +46,8 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
     String userToSendMessage;
 
     String username;
+
+    String fullName;
     // Return the size of your dataset (invoked by the layout manager)
     public donationAdapter(List<donations> donationsList,Context context)
     {
@@ -90,7 +92,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                           chatReference.addValueEventListener(new ValueEventListener() {
                               @Override
                               public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                  String fullName;
+
                                   for(DataSnapshot child: snapshot.getChildren())
                                   {
                                       fullName = child.getKey();

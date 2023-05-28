@@ -50,7 +50,7 @@ public class donationActivity extends Activity {
                 }
 
                 donationsView = findViewById(R.id.donationsRecycler);
-                GridLayoutManager llm = new GridLayoutManager(donationActivity.this, 2);
+                GridLayoutManager llm = new GridLayoutManager(donationActivity.this, 1);
                 llm.setOrientation(LinearLayoutManager.VERTICAL);
                 donationsView.setLayoutManager(llm);
                 donationAdapter adapter = new donationAdapter(donationList,getApplicationContext());

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.solmatchfinalproject.ChatClasses.chatActivity;
 import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -71,8 +72,8 @@ public class LoginActivity extends AppCompatActivity {
                                             intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                             startActivity(intent);
                                         } else {
-                                            Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
-                                            setContentView(R.layout.personal_questions_layout);
+                                            Intent intent = new Intent(LoginActivity.this, chatMenuActivity.class);
+                                            setContentView(R.layout.chat_menu);
                                             startActivity(intent);
                                         }
                                     }

@@ -1,34 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/chat_backround"
+        android:scaleType="centerCrop" />
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+
     tools:context="com.example.solmatchfinalproject.ChatClasses.chatActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@drawable/gradient_bg">
 
-    <TextView
-        android:id="@+id/chatterName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hello"
-        android:textSize="36dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="150dp"/>
+
+        <TextView
+            android:id="@+id/chatterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hello"
+            android:layout_marginRight="13dp"
+            android:textSize="24dp"
+            style="@style/TextViewStyle"/>
+
         <Button
             android:id="@+id/addHostButt"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="90dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right|center"
+            android:background="@color/black"
+            android:backgroundTint="@color/black"
             android:text="@string/AddItem"
-            android:background="@color/black"/>
-</LinearLayout>
+            />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/chatMessages"
@@ -43,7 +58,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:padding="16dp"
+        >
 
         <EditText
             android:id="@+id/messageEditText"
@@ -52,7 +68,8 @@
             android:layout_weight="1"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:hint="Type your message..." />
+            android:hint="Type your message..."
+            android:background="@drawable/rectangle_chatbox"/>
 
         <Button
             android:id="@+id/sendButton"
@@ -64,14 +81,15 @@
             android:backgroundTint="#404040"
             android:text="Send" />
     </LinearLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
 </LinearLayout>
+    </FrameLayout>
