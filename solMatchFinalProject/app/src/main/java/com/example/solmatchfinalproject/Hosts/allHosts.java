@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import Fragment.AlertDialogFragmentViewHost;
 import Fragment.MyAlertDialogFragmentListenerView;
@@ -53,7 +54,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snap : snapshot.getChildren()) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy, h:mm a", Locale.US);
                     try {
                         Date date = dateFormat.parse(snap.child("hostingDate").getValue(String.class));
                         Calendar currentDate = Calendar.getInstance();
@@ -66,6 +67,13 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                             newHost.setHostingDate(snap.child("hostingDate").getValue(String.class));
                             String imageUrl = snap.child("hostImg").getValue(String.class);
                             newHost.setHostImg(imageUrl);
+                            newHost.setAccommodation((boolean) snap.child("accommodation").getValue());
+                            newHost.setPets((boolean) snap.child("pets").getValue());
+                            newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
+                            newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
+                            newHost.setDescription(snap.child("description").getValue().toString());
+
+
                             list.add(newHost);
                         } else {
                             FirebaseDatabase database = FirebaseDatabase.getInstance();

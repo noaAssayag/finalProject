@@ -246,8 +246,8 @@ public class AddHost extends AppCompatActivity {
 
     private void updateDateAndTimeDisplay() {
         mDisplayDateTime.setText(DateUtils.formatDateTime(this,
-                mDateAndTime.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE
-                        | DateUtils.FORMAT_SHOW_TIME));
+                mDateAndTime.getTimeInMillis(), DateUtils.FORMAT_SHOW_YEAR
+                        | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

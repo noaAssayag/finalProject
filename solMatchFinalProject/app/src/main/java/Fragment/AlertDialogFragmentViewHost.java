@@ -76,27 +76,15 @@ public class AlertDialogFragmentViewHost extends DialogFragment {
         saveBtn=(Button) v.findViewById(R.id.saveBtn);
         cancelBtn=(Button) v.findViewById(R.id.cancelBtn);
         if (b != null) {
-            Host newHost=new Host();
+            Host newHost= (Host) b.getSerializable("Host");
             if(newHost.getDescription()==null||newHost.getDescription().isEmpty()||newHost.getDescription().equals(""))
             {
                 hostingDescription.setText(R.string.secTitleFragment);
             }
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users");
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot snap:snapshot.getChildren())
-                    {
-                        if(snap.child("userName").getValue().toString().equals(newHost.getHostEmail())){
-                            hostDetails.setText("Host details: UserName:"+snap.child("userName")+", host Email:"+snap.child("email")+", host birthdate:"+snap.child("birthday"));
-                        }
-                    }
-                }
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            else{
+                hostingDescription.setText(newHost.getDescription());
+            }
 
-                }
-            });
 
 
             hostingAddress.setText(newHost.getHostAddress());
@@ -123,17 +111,21 @@ public class AlertDialogFragmentViewHost extends DialogFragment {
             if(newHost.isAccommodation())
             {
                 checkboxaccomodation.setChecked(true);
+                checkboxaccomodation.setClickable(false);
             }
-            else if(newHost.isPets())
+            if(newHost.isPets())
             {
                 checkboxPets.setChecked(true);
+                checkboxPets.setClickable(false);
             }
-            else if(newHost.isPrivateRoom())
+             if(newHost.isPrivateRoom())
             {
                 checkboxprivateRoom.setChecked(true);
+                checkboxprivateRoom.setClickable(false);
             }
-            else if(newHost.isSecureEnv()) {
+             if(newHost.isSecureEnv()) {
                 checkboxsecureOption.setChecked(true);
+                checkboxsecureOption.setClickable(false);
             }
 
         }
