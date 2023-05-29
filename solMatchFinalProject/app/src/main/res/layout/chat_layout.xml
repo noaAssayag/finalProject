@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView
         android:layout_width="match_parent"
@@ -34,15 +34,7 @@
             android:textSize="24dp"
             style="@style/TextViewStyle"/>
 
-        <Button
-            android:id="@+id/addHostButt"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="right|center"
-            android:background="@color/black"
-            android:backgroundTint="@color/black"
-            android:text="@string/AddItem"
-            />
+
     </LinearLayout>
 
     <ListView
@@ -58,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="7dp"
         >
 
         <EditText
@@ -80,6 +72,13 @@
             android:height="48dp"
             android:backgroundTint="#404040"
             android:text="Send" />
+        <ImageButton
+            android:id="@+id/addHostButt"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="right|center"
+            android:text="@string/AddItem"
+            android:src="@drawable/ic_launcher_round" />
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

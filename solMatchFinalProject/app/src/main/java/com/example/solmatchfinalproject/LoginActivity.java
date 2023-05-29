@@ -73,8 +73,9 @@ public class LoginActivity extends AppCompatActivity {
                                             intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                             startActivity(intent);
                                         } else {
-                                            Intent intent = new Intent(LoginActivity.this, allHosts.class);
-                                            setContentView(R.layout.activity_all_hosts);
+
+                                            Intent intent = new Intent(LoginActivity.this, personalQuestionsActivity.class);
+                                            setContentView(R.layout.personal_questions_layout);
                                             startActivity(intent);
                                         }
                                     }
