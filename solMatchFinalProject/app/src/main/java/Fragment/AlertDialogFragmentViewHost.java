@@ -129,6 +129,23 @@ public class AlertDialogFragmentViewHost extends DialogFragment {
             }
 
         }
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onDialogPositiveClick(AlertDialogFragmentViewHost.this);
+            }
+        });
+
+
+
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onDialogNegativeClick(AlertDialogFragmentViewHost.this);
+                dismiss();
+            }
+        });
 
 
         return v;
