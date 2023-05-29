@@ -68,8 +68,8 @@ dependencies {
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.1"))
     // define any required OkHttp artifacts without version
     implementation("com.squareup.okhttp3:okhttp")
-    implementation ("com.google.firebase:firebase-database:20.0.6")
+    implementation("com.google.firebase:firebase-database:20.0.6")
+    implementation("com.squareup.picasso:picasso:2.71828")
 
-    implementation ("com.squareup.picasso:picasso:2.71828")
 
 }

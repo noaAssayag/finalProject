@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 
 public class donations {
-
-
     private String name;
     private String adress;
     private String catagory;

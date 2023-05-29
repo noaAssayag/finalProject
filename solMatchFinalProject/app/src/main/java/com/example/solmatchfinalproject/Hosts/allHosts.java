@@ -44,7 +44,6 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_hosts);
         recList = findViewById(R.id.cardList);
-
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);

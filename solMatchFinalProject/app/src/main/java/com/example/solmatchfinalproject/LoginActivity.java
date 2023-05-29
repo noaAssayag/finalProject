@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.solmatchfinalproject.ChatClasses.chatActivity;
 import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.example.solmatchfinalproject.Hosts.allHosts;
+import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -69,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         if (snapshot.hasChild("userInfo")) {
                                             Toast.makeText(getApplicationContext(), "login was good", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LoginActivity.this, allHosts.class);
+                                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                                             intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                             startActivity(intent);
                                         } else {
