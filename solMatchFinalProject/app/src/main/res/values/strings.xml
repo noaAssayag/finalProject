@@ -150,6 +150,10 @@
     <string name="cancel">cancel</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
+    <string name="personal_de">Personal Details</string>
+    <string name="noam_cohen_">name</string>
+    <string name="phone">Phone</string>
+    <string name="hosts">hostings</string>
 
 
 </resources>
