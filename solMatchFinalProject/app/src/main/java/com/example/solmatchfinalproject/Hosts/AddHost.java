@@ -1,39 +1,31 @@
 package com.example.solmatchfinalproject.Hosts;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.solmatchfinalproject.R;
+import com.example.solmatchfinalproject.profileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,18 +37,30 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.Calendar;
 
+import Model.Host;
+
 public class AddHost extends AppCompatActivity {
     int PICK_IMAGE_REQUEST = 100;
     TextView mDisplayDateTime;
     Calendar mDateAndTime = Calendar.getInstance();
     EditText address;
+    EditText description;
     ImageView locationImg;
     ImageButton btnAddImg;
+    Switch accommodationSwitch;
+    Switch petsSwitch;
+    Switch privateRoomSwitch;
+    Switch secureEnvSwitch;
+
     Button sub;
     FirebaseAuth auth;
     FirebaseDatabase db;
     DatabaseReference ref;
-    String uid, email, userName, hostDate, hostAddress;
+    String uid, email, userName, hostDate, hostAddress, hostDescription;
+    boolean accommodation = false;
+    boolean pets = false;
+    boolean privateRoom = false;
+    boolean secureEnv = false;
     Uri imageURILoc;
     String URL;
     String imageURLHost;
@@ -71,8 +75,13 @@ public class AddHost extends AppCompatActivity {
         mDisplayDateTime = (TextView) findViewById(R.id.txtPresDateAndTime);
         sub = (Button) findViewById(R.id.btnSubmit);
         address = (EditText) findViewById(R.id.hostAddress);
+        description=(EditText)findViewById(R.id.hostDescription);
         locationImg = (ImageView) findViewById(R.id.imageOfLocation);
         btnAddImg = (ImageButton) findViewById(R.id.uploadImage);
+        accommodationSwitch=(Switch)findViewById(R.id.accommodationSwitch);
+        petsSwitch=(Switch)findViewById(R.id.petsSwitch);
+        privateRoomSwitch=(Switch)findViewById(R.id.privateRoomSwitch);
+        secureEnvSwitch=(Switch)findViewById(R.id.secureEnvSwitch);
         updateDateAndTimeDisplay();
 
         btnAddImg.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +97,7 @@ public class AddHost extends AppCompatActivity {
             public void onClick(View v) {
                 hostDate = mDisplayDateTime.getText().toString();
                 hostAddress = address.getText().toString();
-                if (address == null || address.getText().toString().isEmpty() || hostDate.isEmpty() || validDate == false) {
+                if (hostAddress.isEmpty() || hostDate.isEmpty() || validDate == false) {
                     Toast.makeText(AddHost.this, "Please fill all the fileds", Toast.LENGTH_SHORT).show();
                     return;
                 } else if (locationImg.getDrawable() == null) {
@@ -104,7 +113,7 @@ public class AddHost extends AppCompatActivity {
                         public void onDataChange(DataSnapshot snapshot) {
                             email = snapshot.child("email").getValue().toString();
                             userName = snapshot.child("userName").getValue().toString();
-                            if(snapshot.child("image").getValue()!=null) {
+                            if (snapshot.child("image").getValue() != null) {
                                 imageURLHost = snapshot.child("image").getValue().toString();
                             }
                         }
@@ -123,30 +132,75 @@ public class AddHost extends AppCompatActivity {
                                 storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
+
                                         URL = uri.toString();
+                                        ref = db.getReference().child("Host").child(uid);
+                                        ref.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if(!description.getText().toString().isEmpty())
+                                                {
+                                                    hostDescription=description.getText().toString();
+                                                }
+                                                else
+                                                {
+                                                    hostDescription="";
+                                                }
+                                                Host newHost = new Host(imageURLHost, userName, email, hostAddress, hostDate, URL,hostDescription,accommodation,pets,privateRoom,secureEnv);
+                                                ref.setValue(newHost);
+                                                Toast.makeText(AddHost.this, "The host Added Succefully!", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(AddHost.this, profileActivity.class);
+                                                startActivity(intent);
+                                                setContentView(R.layout.activity_profile);                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
                                     }
                                 });
                             }
-                            ref = db.getReference().child("Host").child(uid);
-                            ref.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    Host newHost = new Host(imageURLHost, userName, email, hostAddress, hostDate, URL);
-                                    ref.setValue(newHost);
-                                    Toast.makeText(AddHost.this, "The host Added Succefully!", Toast.LENGTH_SHORT).show();
-                                }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
 
                         }
                     });
                 }
             }
         });
+    }
+    public void onAccommodationSwitch(View v)
+    {
+        if(accommodationSwitch.isChecked())
+        {
+            accommodation=true;
+        }
+
+    }
+    public void onPetsSwitch(View v)
+    {
+        if(petsSwitch.isChecked())
+        {
+            pets=true;
+        }
+
+    }
+    public void onPrivateRoomSwitch(View v)
+    {
+        if(privateRoomSwitch.isChecked())
+        {
+            privateRoom=true;
+        }
+
+    }
+    public void onSecureEnvSwitch(View v)
+    {
+        if(secureEnvSwitch.isChecked())
+        {
+            secureEnv=true;
+        }
+
     }
 
     public void onTimeClicked(View v) {

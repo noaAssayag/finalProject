@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
-import com.example.solmatchfinalproject.Hosts.Host;
+import Model.Host;
 import com.example.solmatchfinalproject.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
@@ -246,8 +246,6 @@ public class chatActivity extends AppCompatActivity {
                                         newHost.setHostingDate(snapshot.child("hostingDate").getValue(String.class));
                                         String imageUrl = snapshot.child("hostImage").getValue(String.class);
                                         newHost.setHostImg(imageUrl);
-
-
                                          Usersreference.child(addHostToReference.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                                              @Override
                                              public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -72,7 +72,6 @@ public class RegisterActivity extends Activity {
                         intent.putExtra("email", getEmail());
                         intent.putExtra("password", getPassword());
                         startActivity(intent);
-                        setContentView(layout.activity_reg_sec);
                     }
                 }
             }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.solmatchfinalproject.ChatClasses.chatActivity;
 import com.example.solmatchfinalproject.Hosts.AddHost;
+import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -68,12 +69,12 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         if (snapshot.hasChild("userInfo")) {
                                             Toast.makeText(getApplicationContext(), "login was good", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
+                                            Intent intent = new Intent(LoginActivity.this, allHosts.class);
                                             intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                             startActivity(intent);
                                         } else {
-                                            Intent intent = new Intent(LoginActivity.this, chatMenuActivity.class);
-                                            setContentView(R.layout.chat_menu);
+                                            Intent intent = new Intent(LoginActivity.this, allHosts.class);
+                                            setContentView(R.layout.activity_all_hosts);
                                             startActivity(intent);
                                         }
                                     }
@@ -86,6 +87,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
+                                mLoadingBar.hide();
+                                return;
                             }
                         }
                     });

@@ -25,9 +25,7 @@ import donations.donationAdapter;
 import Model.donations;
 
 public class donationActivity extends Activity {
-
     RecyclerView donationsView;
-
     Button starchat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

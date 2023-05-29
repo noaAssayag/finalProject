@@ -32,10 +32,12 @@
 					android:src="@drawable/anonymousman"
 					app:civ_border_color="#4B9289"
 					app:civ_border_width="2dp"
+					android:scaleType="centerInside"
+					android:adjustViewBounds="true"
 					app:civ_shadow="true"
 					app:civ_shadow_color="#4B9289"
 					app:civ_shadow_radius="10dp"
-					android:scaleType="centerCrop"/>
+					/>
 
 				<TextView
 					android:id="@+id/textViewTitleName"

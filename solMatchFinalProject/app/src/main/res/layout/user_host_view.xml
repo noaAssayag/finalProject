@@ -21,13 +21,14 @@
             android:gravity="center_vertical"
             android:text="contact det"
             android:textColor="@android:color/white"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/hostImg"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_below="@+id/title"
+            android:textColor="@color/black"
             android:layout_marginTop="10dp"/>
 
         <TextView
@@ -39,8 +40,9 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/hostImg"
             android:gravity="center_vertical"
+            android:textColor="@color/black"
             android:text="@string/name"
-            android:textSize="10dp" />
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/txtHostEmail"
@@ -51,8 +53,9 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
+            android:textColor="@color/black"
             android:text="@string/email"
-            android:textSize="10dp" />
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/txtHostAddress"
@@ -63,7 +66,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginRight="150dp"
             android:text="@string/hostAddress"
-            android:textSize="10dp" />
+            android:textColor="@color/black"
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/txtHostDate"
@@ -71,17 +75,19 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/txtHostEmail"
             android:layout_alignStart="@id/txtHostAddress"
+            android:textColor="@color/black"
             android:text="@string/hostingDate"
-            android:textSize="10dp" />
+            android:textSize="10sp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/hostBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtHostDate"
             android:layout_alignParentEnd="true"
-            android:text="Delete"
-            android:textSize="10dp" />
+            android:src="@drawable/baseline_chat_bubble_24"
+            android:text="chat"
+            android:textSize="10sp" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

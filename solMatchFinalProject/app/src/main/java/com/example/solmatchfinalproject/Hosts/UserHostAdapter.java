@@ -1,14 +1,12 @@
 package com.example.solmatchfinalproject.Hosts;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,18 +18,21 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.solmatchfinalproject.Hosts.Host;
+import Model.Host;
 import com.example.solmatchfinalproject.R;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
 public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHostViewHolder> {
     private static List<Host> hostList;
+    private final RecycleViewInterface recycleViewInterface;
     Context context;
-    public UserHostAdapter(List<Host> userHostingsList,Context context) {
+    public UserHostAdapter(List<Host> userHostingsList, Context context, RecycleViewInterface recycleViewInterface) {
 
         this.hostList = userHostingsList;
         this.context=context;
+        this.recycleViewInterface = recycleViewInterface;
     }
 
     @Override
@@ -53,7 +54,7 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
                 .inflate(R.layout.user_host_view, viewGroup, false);
         Log.i("adapter", "ContactViewHolder done!");
 
-        return new UserHostViewHolder(itemView);
+        return new UserHostViewHolder(itemView, recycleViewInterface);
     }
 
     public class UserHostViewHolder extends RecyclerView.ViewHolder {
@@ -62,10 +63,10 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
         private TextView vEmail;
         private TextView vAddress;
         private TextView vDate;
-        private Button vBtn;
+        private ImageButton vBtn;
         private Host userHosting = null;
 
-        public UserHostViewHolder(View v) {
+        public UserHostViewHolder(View v,RecycleViewInterface recycleViewInterface) {
             super(v);
             vName = v.findViewById(R.id.txtHostName);
             vEmail = v.findViewById(R.id.txtHostEmail);
@@ -76,8 +77,22 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
             vBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    hostList.remove(UserHostViewHolder.this.userHosting);
-                    UserHostAdapter.this.notifyDataSetChanged();
+
+                }
+            });
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(recycleViewInterface!=null)
+                    {
+                        int position=getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION)
+                        {
+                            recycleViewInterface.onItemClick(position);
+                        }
+
+
+                    }
                 }
             });
         }

@@ -2,15 +2,12 @@ package com.example.solmatchfinalproject;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.net.Uri;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,7 +22,6 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.solmatchfinalproject.Hosts.Host;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,7 +32,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import Model.UserInfo;
 import Model.UserStorageData;
-import Model.donations;
 //import notification.notificationService;
 
 public class EditPersonalDetails extends Activity {
