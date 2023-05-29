@@ -141,7 +141,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
 
     @Override
     public void onDialogNegativeClick(AlertDialogFragmentViewHost dialog) {
-        Toast.makeText(this, "onDialogNegativeClick " ,Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(this, "onDialogNegativeClick " ,Toast.LENGTH_SHORT).show();
     }
 }
 
