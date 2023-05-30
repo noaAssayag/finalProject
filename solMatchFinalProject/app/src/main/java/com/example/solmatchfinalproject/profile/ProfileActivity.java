@@ -74,6 +74,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = FirebaseDatabase.getInstance();
         setContentView(R.layout.profilev2);
         userImg = findViewById(R.id.userImg);
         userName = findViewById(R.id.userName);
