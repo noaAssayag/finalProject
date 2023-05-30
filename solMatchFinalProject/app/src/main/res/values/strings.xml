@@ -210,6 +210,10 @@
     <string name="aboutMe">About me</string>
     <string name="Apartment">Apartment</string>
     <string name="street">Street</string>
+    <string name="addhosting">Add hosting option</string>
+    <string name="addDonationoption">Add new donation</string>
+    <string name="addhostoption">Add new hosting proposel</string>
+    <string name="what_are_yo">What Are You Looking For?</string>
 
 
 </resources>

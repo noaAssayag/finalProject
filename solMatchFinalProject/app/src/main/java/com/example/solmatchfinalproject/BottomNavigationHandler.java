@@ -11,6 +11,7 @@ import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class BottomNavigationHandler implements BottomNavigationView.OnNavigationItemSelectedListener {
     Intent intent;
@@ -27,6 +28,7 @@ public class BottomNavigationHandler implements BottomNavigationView.OnNavigatio
         switch (item.getItemId()) {
             case R.id.myHome:
                 intent = new Intent(activity, ProfileActivity.class);
+                intent.putExtra("UID",FirebaseAuth.getInstance().getCurrentUser().getUid());
                 activity.startActivity(intent);
 
                 return true;

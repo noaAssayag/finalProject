@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -148,6 +149,8 @@ public class addDonationActivity extends Activity {
                                             email = snapshot.child("email").getValue().toString();
                                             donations formData = new donations(itemName.getText().toString(), adress.getText().toString(), selectedItem, ItemDescription.getText().toString(), URL, email);
                                             databaseRef.child(String.valueOf(i)).setValue(formData);
+                                            Intent intent = new Intent(addDonationActivity.this, ProfileActivity.class);
+                                            startActivity(intent);
 
                                         }
 

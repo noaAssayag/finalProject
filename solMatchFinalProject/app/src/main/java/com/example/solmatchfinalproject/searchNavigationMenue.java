@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -14,7 +15,7 @@ import donations.donationActivity;
 public class searchNavigationMenue extends Activity {
 
 
-    Button hosts,donations;
+    ImageButton hosts,donations;
     private BottomNavigationHandler navigationHandler;
 
     @Override

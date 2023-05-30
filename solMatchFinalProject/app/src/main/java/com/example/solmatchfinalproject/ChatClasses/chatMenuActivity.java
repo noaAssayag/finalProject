@@ -107,6 +107,7 @@ public class chatMenuActivity extends AppCompatActivity {
                 intent.putExtra("chatID", chatName);
                 intent.putExtra("to", fromName);
                 intent.putExtra("from", userName);
+                intent.putExtra("userToPresent",fromName);
                 startActivity(intent);
             }
         });

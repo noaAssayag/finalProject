@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,9 +91,12 @@ public class chatActivity extends AppCompatActivity {
     DatabaseReference Usersreference;
     BottomNavigationView menu;
 
+    LinearLayout profileLayout;
+
     String userToAddHostToUID;
 
-    Host newHost;
+    String UID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +119,26 @@ public class chatActivity extends AppCompatActivity {
         addHostButt = findViewById(R.id.addHostButt);
         menu = findViewById(R.id.menu);
         chatterName.setText(intent.getStringExtra("userToPresent"));
+        profileLayout = findViewById(R.id.profileLayout);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snap: snapshot.getChildren())
+                {
+                    if(snap.child("userName").getValue().toString().equals(intent.getStringExtra("userToPresent")))
+                    {
+                        UID = snap.getKey();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -139,6 +163,17 @@ public class chatActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        profileLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(chatActivity.this,ProfileActivity.class);
+                intent.putExtra("UID", UID);
+                intent.putExtra("status",1);
+                startActivity(intent);
             }
         });
         sendButt.setOnClickListener(new View.OnClickListener() {

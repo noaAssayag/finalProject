@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,11 +24,13 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.example.solmatchfinalproject.EditPersonalDetails;
+import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
 import com.example.solmatchfinalproject.Hosts.UserHostAdapter;
 import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.example.solmatchfinalproject.LoginActivity;
 import com.example.solmatchfinalproject.R;
+import com.example.solmatchfinalproject.addDonationActivity;
 import com.example.solmatchfinalproject.profileActivity;
 import com.example.solmatchfinalproject.searchNavigationMenue;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,7 +59,7 @@ import Model.donations;
 
 public class ProfileActivity extends AppCompatActivity implements RecycleViewInterface {
     ImageView userImg;
-    TextView userName, aboutme, titleDonations;
+    TextView userName, aboutme, titleDonations,addDonationPrompt,addHostingPrompt;
     EditText userEmail, birthDate;
     RecyclerView recDonations;
     BottomNavigationView menu;
@@ -67,9 +71,12 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
     FirebaseDatabase db;
     DatabaseReference ref;
     DatabaseReference hostsRef;
+    ImageButton addHost,AddDonation;
     List<Host> list = new ArrayList<>();
     List<donations> donationList = new ArrayList<>();
     boolean solider = true;
+
+    int status = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +91,14 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         birthDate = findViewById(R.id.birthDateEditTxt);
         recDonations = findViewById(R.id.donationsPromptRecycler);
         recHosts = findViewById(R.id.hostingPromptRecycler);
+        addHost = findViewById(R.id.newHostingButt);
+        AddDonation = findViewById(R.id.newDonationButt);
+        addDonationPrompt = findViewById(R.id.AddDonationOption);
+        addHostingPrompt = findViewById(R.id.AddhostOption);
         menu = findViewById(R.id.menu);
         auth = FirebaseAuth.getInstance();
-        uid = auth.getCurrentUser().getUid();
+        uid = getIntent().getStringExtra("UID");
+        status = getIntent().getIntExtra("status",0);
         ref = FirebaseDatabase.getInstance().getReference("Users").child(uid);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         LinearLayoutManager llm2 = new LinearLayoutManager(this);
@@ -102,9 +114,20 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                 userEmail.setText(snapshot.child("email").getValue().toString());
                 aboutme.setText(snapshot.child("userInfo").child("description").getValue().toString());
                 birthDate.setText(snapshot.child("birthday").getValue().toString());
-                if (snapshot.child("type").getValue().toString().equals("Solider")) {
+                if(status == 1)
+                {
+                    addHost.setVisibility(View.GONE);
+                    addDonationPrompt.setVisibility(View.GONE);
+                    addHostingPrompt.setVisibility(View.GONE);
+                    AddDonation.setVisibility(View.GONE);
+                }
+                if (snapshot.child("type").getValue().toString().equals("Soldier")) {
                     solider = true;
                     hostsRef = db.getReference("Users").child(uid).child("Host");
+                    addHost.setVisibility(View.GONE);
+                    addDonationPrompt.setVisibility(View.GONE);
+                    addHostingPrompt.setVisibility(View.GONE);
+                    AddDonation.setVisibility(View.GONE);
 
                 } else {
                     solider = false;
@@ -155,6 +178,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                         }
                     });
                 } else {
+                    titleDonations.setText("Hobbies");
                     ArrayList<String> hobbies = new ArrayList<>();
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("userInfo")
                             .child("hobbies");
@@ -211,6 +235,21 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                     overridePendingTransition(0, 0);
                     break;
                 }
+            }
+        });
+
+        addHost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, AddHost.class);
+                startActivity(intent);
+            }
+        });
+        AddDonation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, addDonationActivity.class);
+                startActivity(intent);
             }
         });
     }
