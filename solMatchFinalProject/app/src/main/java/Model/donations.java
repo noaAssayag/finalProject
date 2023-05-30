@@ -13,23 +13,23 @@ public class donations {
     private String catagory;
     private String description;
     private String img;
-    private String username;
+    private String email;
 
-    public donations(String name, String adress, String catagory, String description, String img,String username) {
+    public donations(String name, String adress, String catagory, String description, String img,String email) {
         this.name = name;
         this.adress = adress;
         this.catagory = catagory;
         this.description = description;
         this.img = img;
-        this.username = username;
+        this.email = email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String username) {
+        this.email = email;
     }
 
     public String getDescription() {

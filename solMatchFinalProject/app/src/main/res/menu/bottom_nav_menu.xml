@@ -4,9 +4,9 @@
     <item android:title="Home"
         android:icon="@drawable/baseline_home_24"
         android:id="@+id/myHome"/>
-    <item android:title="Calender"
-        android:icon="@drawable/baseline_calendar_today_24"
-        android:id="@+id/calInvite"/>
+    <item android:title="chat"
+        android:icon="@drawable/baseline_chat_bubble_24"
+        android:id="@+id/chatMenu"/>
     <item android:title="Search"
         android:icon="@drawable/baseline_search_24"
         android:id="@+id/search"/>

@@ -69,7 +69,7 @@ public class EditPersonalDetails extends Activity {
                     overridePendingTransition(0, 0);
                     break;
                 }
-                case R.id.calInvite: {
+                case R.id.chatMenu: {
                     startActivity(new Intent(getApplicationContext(), profileActivity.class));
                     overridePendingTransition(0, 0);
                     break;

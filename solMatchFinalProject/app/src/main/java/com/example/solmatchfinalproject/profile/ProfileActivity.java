@@ -20,6 +20,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
 import com.example.solmatchfinalproject.Hosts.UserHostAdapter;
@@ -27,6 +28,7 @@ import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.example.solmatchfinalproject.LoginActivity;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.profileActivity;
+import com.example.solmatchfinalproject.searchNavigationMenue;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -44,15 +46,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import donations.donationAdapter;
 import Model.donations;
 import Model.Host;
 import Model.UserStorageData;
 import Model.donations;
+
 public class ProfileActivity extends AppCompatActivity implements RecycleViewInterface {
     ImageView userImg;
-    TextView userName,userAddress;
-    EditText userEmail,phoneNumber;
+    TextView userName, aboutme, titleDonations;
+    EditText userEmail, birthDate;
     RecyclerView recDonations;
     BottomNavigationView menu;
     RecyclerView recHosts;
@@ -62,35 +66,54 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
     FirebaseAuth auth;
     FirebaseDatabase db;
     DatabaseReference ref;
+    DatabaseReference hostsRef;
     List<Host> list = new ArrayList<>();
     List<donations> donationList = new ArrayList<>();
-    boolean solider=true;
+    boolean solider = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profilev2);
-        userImg=findViewById(R.id.userImg);
-        userName=findViewById(R.id.userName);
-        userEmail=findViewById(R.id.userEmail);
-        userAddress=findViewById(R.id.userAddress);
-        phoneNumber=findViewById(R.id.phoneNumberText);
-        recDonations=findViewById(R.id.donationsPromptRecycler);
-        recHosts=findViewById(R.id.hostingPromptRecycler);
-        menu=findViewById(R.id.menu);
-
-        auth=FirebaseAuth.getInstance();
+        userImg = findViewById(R.id.userImg);
+        userName = findViewById(R.id.userName);
+        userEmail = findViewById(R.id.userEmail);
+        titleDonations = findViewById(R.id.donationPromptProfile);
+        aboutme = findViewById(R.id.aboutMe);
+        birthDate = findViewById(R.id.birthDateEditTxt);
+        recDonations = findViewById(R.id.donationsPromptRecycler);
+        recHosts = findViewById(R.id.hostingPromptRecycler);
+        menu = findViewById(R.id.menu);
+        auth = FirebaseAuth.getInstance();
         uid = auth.getCurrentUser().getUid();
-        ref= FirebaseDatabase.getInstance().getReference("Users").child(uid);
+        ref = FirebaseDatabase.getInstance().getReference("Users").child(uid);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        LinearLayoutManager llm2 = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        llm2.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recDonations.setLayoutManager(llm);
+        recHosts.setLayoutManager(llm2);
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 //we havent phone number and address for Users
                 userName.setText(snapshot.child("userName").getValue().toString());
                 userEmail.setText(snapshot.child("email").getValue().toString());
-                /*
-                userAddress.setText(snapshot.child("Address").getValue().toString());
-                phoneNumber.setText(snapshot.child("phoneNum").getValue().toString());*/
-                if(snapshot.hasChild("image")) {
+                aboutme.setText(snapshot.child("userInfo").child("description").getValue().toString());
+                birthDate.setText(snapshot.child("birthday").getValue().toString());
+                if (snapshot.child("type").getValue().toString().equals("Solider")) {
+                    solider = true;
+                    hostsRef = db.getReference("Users").child(uid).child("Host");
+
+                } else {
+                    solider = false;
+                    hostsRef = db.getReference("Host");
+                }
+                presentHost(hostsRef);
+                db = FirebaseDatabase.getInstance();
+
+
+                if (snapshot.hasChild("image")) {
                     Glide.with(getApplicationContext())
                             .load(snapshot.child("image").getValue().toString())
                             .listener(new RequestListener<Drawable>() {
@@ -109,21 +132,97 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                             })
                             .into(userImg);
                 }
+                if (!solider) {
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Donations");
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot child : snapshot.getChildren()) {
+                                if (child.child("email").getValue().toString().equals(userEmail.getText().toString())) {
+                                    donations donation = new donations(child.child("name").getValue().toString(), child.child("adress").getValue().toString(), child.child("catagory").getValue().toString(), child.child("description").getValue().toString(), child.child("img").getValue().toString(), child.child("email").getValue().toString());
+                                    donationList.add(donation);
+                                }
+                            }
+                            recDonations.setLayoutManager(llm);
+                            donationAdapter adapter = new donationAdapter(donationList, getApplicationContext());
+                            recDonations.setAdapter(adapter);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                } else {
+                    ArrayList<String> hobbies = new ArrayList<>();
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("userInfo")
+                            .child("hobbies");
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot snap : snapshot.getChildren()) {
+                                hobbies.add(snap.getValue().toString());
+                            }
+                            recDonations.setLayoutManager(llm);
+                            hobbiesListAdapter adapter = new hobbiesListAdapter(hobbies);
+                            recDonations.setAdapter(adapter);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
+
+
         });
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recDonations.setLayoutManager(llm);
-        recHosts.setLayoutManager(llm);
 
-        db = FirebaseDatabase.getInstance();
-        ref = db.getReference("Host");
-        ref.addValueEventListener(new ValueEventListener() {
+
+
+
+        menu.setOnItemReselectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.myHome: {
+                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    overridePendingTransition(0, 0);
+                    break;
+                }
+                case R.id.chatMenu: {
+                    startActivity(new Intent(getApplicationContext(), chatMenuActivity.class));
+                    overridePendingTransition(0, 0);
+                    break;
+                }
+                case R.id.search: {
+                    startActivity(new Intent(getApplicationContext(), searchNavigationMenue.class));
+                    overridePendingTransition(0, 0);
+                    break;
+                }
+                case R.id.logOut: {
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    overridePendingTransition(0, 0);
+                    break;
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+    public void presentHost(DatabaseReference hostsRef)
+    {
+        hostsRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snap : snapshot.getChildren()) {
@@ -133,21 +232,23 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                         Calendar currentDate = Calendar.getInstance();
                         Date today = currentDate.getTime();
                         if (date.after(today)) {
-                            Host newHost = new Host();
-                            newHost.setHostName(snap.child("hostName").getValue(String.class));
-                            newHost.setHostEmail(snap.child("hostEmail").getValue(String.class));
-                            newHost.setHostAddress(snap.child("hostAddress").getValue(String.class));
-                            newHost.setHostingDate(snap.child("hostingDate").getValue(String.class));
-                            String imageUrl = snap.child("hostImg").getValue(String.class);
-                            newHost.setHostImg(imageUrl);
-                            newHost.setAccommodation((boolean) snap.child("accommodation").getValue());
-                            newHost.setPets((boolean) snap.child("pets").getValue());
-                            newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
-                            newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
-                            newHost.setDescription(snap.child("description").getValue().toString());
+                            if (snap.getKey().equals(uid) || solider) {
+                                Host newHost = new Host();
+                                newHost.setHostName(snap.child("hostName").getValue(String.class));
+                                newHost.setHostEmail(snap.child("hostEmail").getValue(String.class));
+                                newHost.setHostAddress(snap.child("hostAddress").getValue(String.class));
+                                newHost.setHostingDate(snap.child("hostingDate").getValue(String.class));
+                                String imageUrl = snap.child("hostImg").getValue(String.class);
+                                newHost.setHostImg(imageUrl);
+                                newHost.setAccommodation((boolean) snap.child("accommodation").getValue());
+                                newHost.setPets((boolean) snap.child("pets").getValue());
+                                newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
+                                newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
+                                newHost.setDescription(snap.child("description").getValue().toString());
 
 
-                            list.add(newHost);
+                                list.add(newHost);
+                            }
                         } else {
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference ref = database.getReference().child("Host");
@@ -156,7 +257,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     for (DataSnapshot dataSnap : snapshot.getChildren()) {
                                         if (dataSnap.getKey().equals(snap.getKey())) {
-                                            ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            hostsRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
@@ -187,62 +288,12 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                 UserHostAdapter userHostAdapter = new UserHostAdapter(list, ProfileActivity.this, ProfileActivity.this);
                 recHosts.setAdapter(userHostAdapter);
             }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-        });
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Donations");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot child : snapshot.getChildren())
-                {
-                    donations donation = new donations(child.child("name").getValue().toString(),child.child("adress").getValue().toString(),child.child("catagory").getValue().toString(),child.child("description").getValue().toString(),child.child("img").getValue().toString(),child.child("username").getValue().toString());
-                    donationList.add(donation);
-                }
-
-                recDonations = findViewById(R.id.donationsRecycler);
-                GridLayoutManager llm = new GridLayoutManager(ProfileActivity.this, 1);
-                llm.setOrientation(LinearLayoutManager.VERTICAL);
-                recDonations.setLayoutManager(llm);
-                donationAdapter adapter = new donationAdapter(donationList,getApplicationContext());
-                recDonations.setAdapter(adapter);
-            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
-        menu.setOnItemReselectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.myHome: {
-                    startActivity(new Intent(getApplicationContext(), profileActivity.class));
-                    overridePendingTransition(0, 0);
-                    break;
-                }
-//                case R.id.calInvite: {
-//                    startActivity(new Intent(getApplicationContext(), profileActivity.class));
-//                    overridePendingTransition(0, 0);
-//                    break;
-//                }
-                case R.id.search: {
-                    startActivity(new Intent(getApplicationContext(), allHosts.class));
-                    overridePendingTransition(0, 0);
-                    break;
-                }
-                case R.id.logOut: {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    overridePendingTransition(0, 0);
-                    break;
-                }
-            }
-        });
-    }
-    @Override
-    public void onItemClick(int position) {
 
+        });
     }
 }

@@ -1,10 +1,9 @@
 package com.example.solmatchfinalproject.profile;
 
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,34 +12,24 @@ import com.example.solmatchfinalproject.R;
 
 import java.util.List;
 
-public class donationsListAdpater extends RecyclerView.Adapter<donationsListAdpater.ViewHolder> {
-    private List<Drawable> items;
-    private int type;
+public class hobbiesListAdapter extends RecyclerView.Adapter<hobbiesListAdapter.ViewHolder> {
+    private List<String> items;
 
-    public donationsListAdpater(List<Drawable> items,int type) {
+    public hobbiesListAdapter(List<String> items) {
         this.items = items;
-        this.type = type;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.profile_items_recyclerview, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.personal_hobbit_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Drawable drawable = items.get(position);
-        holder.imageView.setImageDrawable(drawable);
+        String item = items.get(position);
+        holder.hobbies.setText(item);
     }
 
     @Override
@@ -49,11 +38,11 @@ public class donationsListAdpater extends RecyclerView.Adapter<donationsListAdpa
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
+        TextView hobbies;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
+            hobbies = itemView.findViewById(R.id.hobbiesTextView);
         }
     }
 }

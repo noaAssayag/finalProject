@@ -240,14 +240,19 @@ public class chatActivity extends AppCompatActivity {
                                addHostToReference  = addHostTo;
                                 referenceHost.addValueEventListener(new ValueEventListener() {
                                     @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        newHost = new Host();
-                                        newHost.setHostName(snapshot.child("hostName").getValue(String.class));
-                                        newHost.setHostEmail(snapshot.child("hostEmail").getValue(String.class));
-                                        newHost.setHostAddress(snapshot.child("hostAddress").getValue(String.class));
-                                        newHost.setHostingDate(snapshot.child("hostingDate").getValue(String.class));
-                                        String imageUrl = snapshot.child("hostImage").getValue(String.class);
+                                    public void onDataChange(@NonNull DataSnapshot snap) {
+                                        Host newHost = new Host();
+                                        newHost.setHostName(snap.child("hostName").getValue(String.class));
+                                        newHost.setHostEmail(snap.child("hostEmail").getValue(String.class));
+                                        newHost.setHostAddress(snap.child("hostAddress").getValue(String.class));
+                                        newHost.setHostingDate(snap.child("hostingDate").getValue(String.class));
+                                        String imageUrl = snap.child("hostImg").getValue(String.class);
                                         newHost.setHostImg(imageUrl);
+                                        newHost.setAccommodation((boolean) snap.child("accommodation").getValue());
+                                        newHost.setPets((boolean) snap.child("pets").getValue());
+                                        newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
+                                        newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
+                                        newHost.setDescription(snap.child("description").getValue().toString());
                                          Usersreference.child(addHostToReference.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                                              @Override
                                              public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -29,7 +29,7 @@ public class BottomNavigationHandler implements BottomNavigationView.OnNavigatio
                 activity.startActivity(intent);
 
                 return true;
-            case R.id.calInvite:
+            case R.id.chatMenu:
                 intent = new Intent(activity, chatMenuActivity.class);
                 activity.startActivity(intent);
                 return true;

@@ -52,7 +52,7 @@ public class addDonationActivity extends Activity {
     Button addItem;
     Spinner spinner;
     String selectedItem = null;
-    String userName;
+    String email;
     String userId;
     Uri imageURI;
     String URL;
@@ -123,6 +123,41 @@ public class addDonationActivity extends Activity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     URL = uri.toString();
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+                                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Donations");
+                                    databaseRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            while(snapshot.hasChild(String.valueOf(i)))
+                                            {
+                                                i++;
+                                            }
+
+
+                                        }
+
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                                    ref.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            email = snapshot.child("email").getValue().toString();
+                                            donations formData = new donations(itemName.getText().toString(), adress.getText().toString(), selectedItem, ItemDescription.getText().toString(), URL, email);
+                                            databaseRef.child(String.valueOf(i)).setValue(formData);
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+
+                                    });
+
                                 }
                             });
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -132,40 +167,7 @@ public class addDonationActivity extends Activity {
 
 
                         }
-                        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Donations");
-                        databaseRef.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                while(snapshot.hasChild(String.valueOf(i)))
-                                {
-                                    i++;
-                                }
 
-
-                            }
-
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(userId);
-                        ref.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                userName = snapshot.child("userName").getValue().toString();
-                                donations formData = new donations(itemName.getText().toString(), adress.getText().toString(), selectedItem, ItemDescription.getText().toString(), URL, userName);
-                                databaseRef.child(String.valueOf(i)).setValue(formData);
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-
-                        });
 
                     }
                 });

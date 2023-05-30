@@ -184,7 +184,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
         {
 
             this.di = di;
-            userDonated = di.getUsername();
+            userDonated = di.getEmail();
             Glide.with(context)
                     .load(di.getImg())
                     .listener(new RequestListener<Drawable>() {
