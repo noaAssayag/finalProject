@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
     String userToSendMessage;
 
     String username;
+    String userPresented;
 
     String fullName;
     // Return the size of your dataset (invoked by the layout manager)
@@ -70,7 +72,11 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
 
         donations ci = donationsList.get(position);
         contactViewHolder.setData(ci);
-        username = contactViewHolder.userDonated;
+        int atIndex = contactViewHolder.userDonated.indexOf("@");
+
+// Extract the substring before the "@" symbol
+        userPresented  = contactViewHolder.userDonated.substring(0, atIndex);
+        username = contactViewHolder.userDonated.replace("@", "").replace(".", "");
         Log.i("adapter", "onBindViewHolder done!" + "position="+position);
         contactViewHolder.startchat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,13 +87,13 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                      if(snapshot.child("userName").getValue().toString().equals(username))
+                      if(snapshot.child("userName").getValue().toString().replace("@", "").replace(".", "").equals(username))
                       {
                           Toast.makeText(context,"you cant start chatting with yourself", Toast.LENGTH_SHORT);
 
                       }
                       else{
-                         userToSendMessage = snapshot.child("userName").getValue().toString();
+                         userToSendMessage = snapshot.child("userName").getValue().toString().replace("@", "").replace(".", "");
                           DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference().child("chats");
                           chatReference.addValueEventListener(new ValueEventListener() {
                               @Override
@@ -97,8 +103,8 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                                   {
                                       fullName = child.getKey();
                                       String[] parts = fullName.split("-");
-                                      String user1 = parts[0].trim();
-                                      String user2 = parts[1].trim();
+                                      String user1 = parts[0].trim().replace("@", "").replace(".", "");
+                                      String user2 = parts[1].trim().replace("@", "").replace(".", "");
                                       if(user1.equals(userToSendMessage) && user2.equals(username) || user1.equals(username) && user2.equals(userToSendMessage))
                                       {
                                           Intent intent = new Intent(context, chatActivity.class);
@@ -110,12 +116,13 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                                           return;
                                       }
                                   }
-                                  chatReference.child(username+"-"+userToSendMessage).setValue(null);
+                                  chatReference.child(username.replace("@", "").replace(".", "")+"-"+userToSendMessage.replace("@", "").replace(".", "")).setValue(null);
                                   Intent intent = new Intent(context, chatActivity.class);
                                   intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                                   intent.putExtra("chatID", username+"-"+userToSendMessage);
                                   intent.putExtra("from", userToSendMessage);
                                   intent.putExtra("to",username);
+                                  intent.putExtra("userToPresent",userPresented);
                                   context.startActivity(intent);
                               }
 
@@ -160,13 +167,13 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
         private TextView catagory;
         private TextView desc;
         private donations di = null;
-        private Button startchat;
+        private ImageButton startchat;
 
         String userDonated;
 
         public donationViewHolder(@NonNull View rowView) {
             super(rowView);
-            donationImage = rowView.findViewById(R.id.imgDonation);
+            donationImage = rowView.findViewById(R.id.imgdonation);
             donator = rowView.findViewById(R.id.Donatorname);
             location = rowView.findViewById(R.id.donationLocation);
             catagory = rowView.findViewById(R.id.donationCatagory);

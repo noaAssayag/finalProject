@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import donations.donationActivity;
@@ -30,7 +31,9 @@ public class searchNavigationMenue extends Activity {
         hosts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // need to make hosting page
+                Intent intent = new Intent(searchNavigationMenue.this, allHosts.class);
+                setContentView(R.layout.activity_all_hosts);
+                startActivity(intent);
             }
         });
 

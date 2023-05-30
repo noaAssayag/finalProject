@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.solmatchfinalproject.BottomNavigationHandler;
 import com.example.solmatchfinalproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +39,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
     ImageView img;
     RecyclerView recList;
     List<Host> list = new ArrayList<>();
+    private BottomNavigationHandler navigationHandler;
 
 
     @Override
@@ -48,6 +51,9 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
         db = FirebaseDatabase.getInstance();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
+        navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
+        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         ref = db.getReference("Host");
         ref.addValueEventListener(new ValueEventListener() {
             @Override

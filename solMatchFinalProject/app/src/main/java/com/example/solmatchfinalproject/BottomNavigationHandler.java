@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 
+import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
@@ -25,7 +26,7 @@ public class BottomNavigationHandler implements BottomNavigationView.OnNavigatio
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.myHome:
-                intent = new Intent(activity, profileActivity.class);
+                intent = new Intent(activity, ProfileActivity.class);
                 activity.startActivity(intent);
 
                 return true;

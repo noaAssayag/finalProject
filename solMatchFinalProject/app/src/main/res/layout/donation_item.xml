@@ -1,92 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="10dp"
-    tools:context="donations.donationActivity"
-    android:background="@drawable/gradient_bg">
+    android:layout_margin="5dp"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="10dp">
 
-    <TextView
-        android:id="@+id/Donatorname"
-        style="@style/TextViewStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/ItemName"
-        android:textSize="20dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/donationLocation"
-        style="@style/TextViewStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/Donatorname"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/location"/>
-
-    <TextView
-        android:id="@+id/donationCatagory"
-        style="@style/TextViewStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/donationLocation"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/catagory"/>
-
-    <ImageView
-        android:id="@+id/imgDonation"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_above="@+id/btnStartChat"
-        android:layout_alignTop="@+id/donationCatagory"
-        android:layout_marginStart="203dp"
-        android:layout_marginLeft="203dp"
-        android:layout_marginTop="-43dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="4dp"
-        android:layout_toEndOf="@+id/donationCatagory"
-        android:layout_toRightOf="@+id/donationCatagory" />
-
-    <TextView
-        android:id="@+id/donationDescription"
-        android:layout_width="224dp"
-        android:layout_height="39dp"
-        android:layout_below="@+id/donationCatagory"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/description"
-        style="@style/TextViewStyle"/>
-
-    <Button
-        android:id="@+id/btnStartChat"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_below="@+id/donationDescription"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/rectangle_chatbox"
-        android:text="@string/startChat"
-        android:textColor="@color/black"
-        style="@style/TextViewStyle"
-        android:textStyle="bold" />
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/btnStartChat"
-        android:layout_marginTop="10dp"
-        android:background="#DAD8D8"/>
+        android:layout_height="match_parent">
+        >
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#8C9EFF"
+            android:gravity="center_vertical"
+            android:text="contact det"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/imgdonation"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/title"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/Donatorname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/imgdonation"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:text="@string/name"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/donationCatagory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/Donatorname"
+            android:layout_toRightOf="@+id/imgdonation"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:text="@string/email"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/donationLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/Donatorname"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="150dp"
+            android:text="@string/hostAddress"
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/donationDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/donationCatagory"
+            android:layout_alignStart="@id/donationLocation"
+            android:textColor="@color/black"
+            android:text="@string/hostingDate"
+            android:textSize="10sp" />
+
+        <ImageButton
+            android:id="@+id/btnStartChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donationDescription"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/baseline_chat_bubble_24"
+            android:text="chat"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -23,7 +23,11 @@ import androidx.core.content.ContextCompat;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
 import Model.Host;
+
+import com.example.solmatchfinalproject.LoginActivity;
 import com.example.solmatchfinalproject.R;
+import com.example.solmatchfinalproject.profile.ProfileActivity;
+import com.example.solmatchfinalproject.searchNavigationMenue;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -84,6 +88,7 @@ public class chatActivity extends AppCompatActivity {
     Intent intent;
     String hostNum;
     DatabaseReference Usersreference;
+    BottomNavigationView menu;
 
     String userToAddHostToUID;
 
@@ -108,7 +113,8 @@ public class chatActivity extends AppCompatActivity {
         messages = findViewById(R.id.chatMessages);
         chatterName = findViewById(R.id.chatterName);
         addHostButt = findViewById(R.id.addHostButt);
-        chatterName.setText(intent.getStringExtra("to"));
+        menu = findViewById(R.id.menu);
+        chatterName.setText(intent.getStringExtra("userToPresent"));
 
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -177,6 +183,7 @@ public class chatActivity extends AppCompatActivity {
                 showSimpleAlertDialog();
             }
         });
+
     }
 
     private void askNotificationPermission() {
@@ -316,4 +323,5 @@ public class chatActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
 }

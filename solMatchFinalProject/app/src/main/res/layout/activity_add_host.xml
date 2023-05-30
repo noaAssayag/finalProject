@@ -1,223 +1,260 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/AddHostPage"
+                android:textColor="@color/log_in_to_chatbox_color"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/welcome_back__sign_in_using_your_social_account_or_email_to_continue_us2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Hello! Please fill the following fields to add a new host"
+                android:textAlignment="center"
+                android:textColor="@color/log_in_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtsetDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/setDate"
+                android:textColor="@color/forgot_password__color"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/dateBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:onClick="onDateClicked"
+                android:text="@string/ui_button_date_title" />
+
+            <TextView
+                android:id="@+id/txtsetTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/setTime"
+                android:textColor="@color/forgot_password__color"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/timeBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:onClick="onTimeClicked"
+                android:text="@string/ui_button_time_title" />
+
+            <TextView
+                android:id="@+id/txtPresDateAndTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtAddAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/Addaddress"
+                android:textColor="@color/forgot_password__color"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/hostAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:entries="@array/israeliCities" />
+
+                <EditText
+                    android:id="@+id/hostStreet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:hint="@string/street" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/hostApartmentNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="@string/Apartment" />
+
+
+            <TextView
+                android:id="@+id/txtDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/descriptionOfHost"
+                android:textColor="@color/forgot_password__color"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/hostDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:hint="Enter description of the host" />
+
+            <TextView
+                android:id="@+id/txtImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/imgOfLocation"
+                android:textColor="@color/forgot_password__color"
+                android:textSize="14sp" />
+
+            <ImageButton
+                android:id="@+id/uploadImage"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/baseline_file_upload_24"
+                android:tooltipText="@string/AddItem" />
+
+            <ImageView
+                android:id="@+id/imageOfLocation"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
+
+            <TextView
+                android:id="@+id/txtAccommodation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/titleSwitches"
+                android:textColor="@color/forgot_password__color"
+                android:textSize="14sp" />
+
+            <Switch
+                android:id="@+id/accommodationSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:onClick="onAccommodationSwitch"
+                android:text="@string/accommodationOption"></Switch>
+
+            <Switch
+                android:id="@+id/petsSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:onClick="onPetsSwitch"
+                android:text="@string/petsOption"></Switch>
+
+            <Switch
+                android:id="@+id/privateRoomSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:onClick="onPrivateRoomSwitch"
+                android:text="@string/privateRoomOption"></Switch>
+
+            <Switch
+                android:id="@+id/secureEnvSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:onClick="onSecureEnvSwitch"
+                android:text="@string/secureOption"></Switch>
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#404040"
+                android:text="@string/submit"
+                android:textColor="@color/white"
+                android:layout_marginBottom="40dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_nav_menu" />
 
-
-        <TextView
-            android:id="@+id/txtTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/AddHostPage"
-            android:textColor="@color/log_in_to_chatbox_color"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/welcome_back__sign_in_using_your_social_account_or_email_to_continue_us2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Hello! Please fill the following fields to add a new host"
-            android:textAlignment="center"
-            android:textColor="@color/log_in_color"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/txtsetDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/setDate"
-            android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
-
-        <Button
-            android:id="@+id/dateBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:onClick="onDateClicked"
-            android:text="@string/ui_button_date_title" />
-
-        <TextView
-            android:id="@+id/txtsetTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/setTime"
-            android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
-
-        <Button
-            android:id="@+id/timeBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:onClick="onTimeClicked"
-            android:text="@string/ui_button_time_title" />
-
-        <TextView
-            android:id="@+id/txtPresDateAndTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtAddAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/Addaddress"
-            android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/hostAddress"
-            style="@style/Widget.AppCompat.EditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:hint="Enter the host address" />
-
-        <TextView
-            android:id="@+id/txtDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/descriptionOfHost"
-            android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/hostDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:hint="Enter description of the host" />
-
-        <TextView
-            android:id="@+id/txtImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/imgOfLocation"
-            android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
-
-        <ImageButton
-            android:id="@+id/uploadImage"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/baseline_file_upload_24"
-            android:tooltipText="@string/AddItem" />
-
-        <ImageView
-            android:id="@+id/imageOfLocation"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
-
-        <TextView
-            android:id="@+id/txtAccommodation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/titleSwitches"
-            android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
-
-        <Switch
-            android:id="@+id/accommodationSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:onClick="onAccommodationSwitch"
-            android:text="@string/accommodationOption"></Switch>
-
-        <Switch
-            android:id="@+id/petsSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:onClick="onPetsSwitch"
-            android:text="@string/petsOption"></Switch>
-
-        <Switch
-            android:id="@+id/privateRoomSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:onClick="onPrivateRoomSwitch"
-            android:text="@string/privateRoomOption"></Switch>
-
-        <Switch
-            android:id="@+id/secureEnvSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:onClick="onSecureEnvSwitch"
-            android:text="@string/secureOption"></Switch>
-        <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#404040"
-            android:text="@string/submit"
-            android:textColor="@color/white" />
-
-    </LinearLayout>
-
-</ScrollView>
+</RelativeLayout>

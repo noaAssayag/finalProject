@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.solmatchfinalproject.BottomNavigationHandler;
 import com.example.solmatchfinalproject.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +29,7 @@ import Model.donations;
 public class donationActivity extends Activity {
     RecyclerView donationsView;
     Button starchat;
+    private BottomNavigationHandler navigationHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +40,16 @@ public class donationActivity extends Activity {
         List<donations> donationList = new ArrayList<>();
    //     donations.add(donation);
     //    donations.add(donation2);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
+        navigationHandler = new BottomNavigationHandler(this,getApplicationContext());
+        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Donations");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot child : snapshot.getChildren())
                 {
-                    donations donation = new donations(child.child("name").getValue().toString(),child.child("adress").getValue().toString(),child.child("catagory").getValue().toString(),child.child("description").getValue().toString(),child.child("img").getValue().toString(),child.child("username").getValue().toString());
+                    donations donation = new donations(child.child("name").getValue().toString(),child.child("adress").getValue().toString(),child.child("catagory").getValue().toString(),child.child("description").getValue().toString(),child.child("img").getValue().toString(),child.child("email").getValue().toString());
                     donationList.add(donation);
                 }
 

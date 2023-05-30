@@ -15,16 +15,20 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.solmatchfinalproject.BottomNavigationHandler;
 import com.example.solmatchfinalproject.R;
+import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.example.solmatchfinalproject.profileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,7 +47,9 @@ public class AddHost extends AppCompatActivity {
     int PICK_IMAGE_REQUEST = 100;
     TextView mDisplayDateTime;
     Calendar mDateAndTime = Calendar.getInstance();
-    EditText address;
+    Spinner cities;
+    EditText streets;
+    EditText apartNum;
     EditText description;
     ImageView locationImg;
     ImageButton btnAddImg;
@@ -66,6 +72,7 @@ public class AddHost extends AppCompatActivity {
     String imageURLHost;
     private Host newHost;
     private boolean validDate = true;
+    private BottomNavigationHandler navigationHandler;
 
 
     @Override
@@ -74,7 +81,9 @@ public class AddHost extends AppCompatActivity {
         setContentView(R.layout.activity_add_host);
         mDisplayDateTime = (TextView) findViewById(R.id.txtPresDateAndTime);
         sub = (Button) findViewById(R.id.btnSubmit);
-        address = (EditText) findViewById(R.id.hostAddress);
+        cities =(Spinner) findViewById(R.id.hostAddress);
+        streets=(EditText)findViewById(R.id.hostStreet);
+        apartNum=(EditText)findViewById(R.id.hostApartmentNum);
         description=(EditText)findViewById(R.id.hostDescription);
         locationImg = (ImageView) findViewById(R.id.imageOfLocation);
         btnAddImg = (ImageButton) findViewById(R.id.uploadImage);
@@ -82,6 +91,9 @@ public class AddHost extends AppCompatActivity {
         petsSwitch=(Switch)findViewById(R.id.petsSwitch);
         privateRoomSwitch=(Switch)findViewById(R.id.privateRoomSwitch);
         secureEnvSwitch=(Switch)findViewById(R.id.secureEnvSwitch);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
+        navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
+        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         updateDateAndTimeDisplay();
 
         btnAddImg.setOnClickListener(new View.OnClickListener() {
@@ -96,11 +108,16 @@ public class AddHost extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hostDate = mDisplayDateTime.getText().toString();
-                hostAddress = address.getText().toString();
-                if (hostAddress.isEmpty() || hostDate.isEmpty() || validDate == false) {
+                if (cities == null && cities.getSelectedItem() == null)  {
+                    Toast.makeText(AddHost.this, "Please choose a city", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(streets==null||streets.getText().toString().isEmpty()||apartNum==null||apartNum.getText().toString().isEmpty()|| hostDate.isEmpty() || validDate == false)
+                {
                     Toast.makeText(AddHost.this, "Please fill all the fileds", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (locationImg.getDrawable() == null) {
+                }
+                if (locationImg.getDrawable() == null) {
                     Toast.makeText(AddHost.this, "You must upload an image!", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
@@ -138,6 +155,7 @@ public class AddHost extends AppCompatActivity {
                                         ref.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                hostAddress=cities.getSelectedItem().toString()+", "+streets.getText().toString()+", "+apartNum.getText().toString();
                                                 if(!description.getText().toString().isEmpty())
                                                 {
                                                     hostDescription=description.getText().toString();
@@ -149,9 +167,9 @@ public class AddHost extends AppCompatActivity {
                                                 Host newHost = new Host(imageURLHost, userName, email, hostAddress, hostDate, URL,hostDescription,accommodation,pets,privateRoom,secureEnv);
                                                 ref.setValue(newHost);
                                                 Toast.makeText(AddHost.this, "The host Added Succefully!", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(AddHost.this, profileActivity.class);
+                                                Intent intent = new Intent(AddHost.this, ProfileActivity.class);
                                                 startActivity(intent);
-                                                setContentView(R.layout.activity_profile);                                            }
+                                                setContentView(R.layout.profilev2);                                            }
 
                                             @Override
                                             public void onCancelled(@NonNull DatabaseError error) {

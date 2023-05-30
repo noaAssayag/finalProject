@@ -1,6 +1,9 @@
 package com.example.solmatchfinalproject.Hosts;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +24,14 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import Model.Host;
+
+import com.example.solmatchfinalproject.ChatClasses.chatActivity;
 import com.example.solmatchfinalproject.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
@@ -28,6 +40,10 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
     private static List<Host> hostList;
     private final RecycleViewInterface recycleViewInterface;
     Context context;
+    String username;
+    String userPresented;
+    String userToSendMessage;
+    String fullName;
     public UserHostAdapter(List<Host> userHostingsList, Context context, RecycleViewInterface recycleViewInterface) {
 
         this.hostList = userHostingsList;
@@ -45,6 +61,76 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
         Host userHosting = hostList.get(position);
         holder.setData(userHosting);
         Log.i("adapter", "onBindViewHolder done!" + "position=" + position);
+        int atIndex = holder.userHosted.indexOf("@");
+
+// Extract the substring before the "@" symbol
+        userPresented  = holder.userHosted.substring(0, atIndex);
+        username = holder.userHosted.replace("@", "").replace(".", "");
+        Log.i("adapter", "onBindViewHolder done!" + "position="+position);
+        holder.vBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.child("userName").getValue().toString().replace("@", "").replace(".", "").equals(username))
+                        {
+                            Toast.makeText(context,"you cant start chatting with yourself", Toast.LENGTH_SHORT);
+
+                        }
+                        else{
+                            userToSendMessage = snapshot.child("userName").getValue().toString().replace("@", "").replace(".", "");
+                            DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference().child("chats");
+                            chatReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                    for(DataSnapshot child: snapshot.getChildren())
+                                    {
+                                        fullName = child.getKey();
+                                        String[] parts = fullName.split("-");
+                                        String user1 = parts[0].trim().replace("@", "").replace(".", "");
+                                        String user2 = parts[1].trim().replace("@", "").replace(".", "");
+                                        if(user1.equals(userToSendMessage) && user2.equals(username) || user1.equals(username) && user2.equals(userToSendMessage))
+                                        {
+                                            Intent intent = new Intent(context, chatActivity.class);
+                                            intent.putExtra("chatID", fullName);
+                                            intent.putExtra("from", userToSendMessage);
+                                            intent.putExtra("to",username);
+                                            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                            context.startActivity(intent);
+                                            return;
+                                        }
+                                    }
+                                    chatReference.child(username.replace("@", "").replace(".", "")+"-"+userToSendMessage.replace("@", "").replace(".", "")).setValue(null);
+                                    Intent intent = new Intent(context, chatActivity.class);
+                                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("chatID", username+"-"+userToSendMessage);
+                                    intent.putExtra("from", userToSendMessage);
+                                    intent.putExtra("to",username);
+                                    intent.putExtra("userToPresent",userPresented);
+                                    context.startActivity(intent);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -65,6 +151,7 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
         private TextView vDate;
         private ImageButton vBtn;
         private Host userHosting = null;
+        String userHosted;
 
         public UserHostViewHolder(View v,RecycleViewInterface recycleViewInterface) {
             super(v);
@@ -99,6 +186,7 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
 
         public void setData(Host userHosting) {
             this.userHosting = userHosting;
+            userHosted = userHosting.getHostEmail();
             vName.setText(userHosting.getHostName());
             vEmail.setText(userHosting.getHostEmail());
             vAddress.setText(userHosting.getHostAddress());
