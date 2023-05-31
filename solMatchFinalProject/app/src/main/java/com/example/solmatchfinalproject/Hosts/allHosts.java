@@ -39,7 +39,7 @@ import Model.Host;
 
 public class allHosts extends AppCompatActivity implements RecycleViewInterface, MyAlertDialogFragmentListenerView {
     FirebaseDatabase db;
-    DatabaseReference ref;
+    DatabaseReference ref,refUsers;
     ImageView img;
     Spinner filterByGen;
     Spinner filterByLoc;
@@ -125,9 +125,9 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                                         }
 
                                     }
-                                    if (filterByGen.getSelectedItem() != null && !(filterLoc.equals("noFilter"))) {
-                                        ref = db.getReference().child("Users");
-                                        ref.addValueEventListener(new ValueEventListener() {
+                                    if (filterByGen.getSelectedItem() != null && !(filterLoc.equals("Filter By city"))) {
+                                        refUsers = db.getReference().child("Users");
+                                        refUsers.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                 for (DataSnapshot snapUser : snapshot.getChildren()) {
@@ -147,7 +147,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                                             }
                                         });
                                     }
-                                    if (filterByGen.getSelectedItem() == null && filterByLoc.getSelectedItem() != null) {
+                                    if (filterByGen.getSelectedItem() == null || filterByGen.getSelectedItem().equals("Filter By Gender") && filterByLoc.getSelectedItem() == null || filterByLoc.getSelectedItem().equals("Filter By city")) {
                                         list.add(newHost);
 
                                     }

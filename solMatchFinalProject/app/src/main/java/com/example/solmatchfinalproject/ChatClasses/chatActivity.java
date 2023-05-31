@@ -274,7 +274,8 @@ public class chatActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot addHostTo:snapshot.getChildren())
                         {
-                            if(addHostTo.child("userName").getValue().toString().equals(intent.getStringExtra("to")))
+                            String debuging = intent.getStringExtra("to");
+                            if(addHostTo.child("email").getValue().toString().replace("@", "").replace(".", "").equals(intent.getStringExtra("to")))
                             {
                                 DatabaseReference referenceHost = FirebaseDatabase.getInstance().getReference().child("Host")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
