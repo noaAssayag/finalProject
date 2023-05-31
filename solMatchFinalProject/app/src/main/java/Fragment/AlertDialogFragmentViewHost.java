@@ -89,7 +89,7 @@ public class AlertDialogFragmentViewHost extends DialogFragment {
             hostingDate.setText(newHost.getHostingDate());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 Glide.with(getContext())
-                        .load(newHost.getHostImg())
+                        .load(newHost.getHostingLocImg())
                         .listener(new RequestListener<Drawable>() {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
