@@ -64,25 +64,26 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
         int atIndex = holder.userHosted.indexOf("@");
 
 // Extract the substring before the "@" symbol
-        userPresented  = holder.userHosted.substring(0, atIndex);
-        username = holder.userHosted.replace("@", "").replace(".", "");
+
         Log.i("adapter", "onBindViewHolder done!" + "position="+position);
         holder.vBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                userPresented  = holder.userHosted.substring(0, atIndex);
+                username = holder.userHosted.replace("@", "").replace(".", "");
 
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
                 reference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.child("userName").getValue().toString().replace("@", "").replace(".", "").equals(username))
+                        if(snapshot.child("email").getValue().toString().replace("@", "").replace(".", "").equals(username))
                         {
                             Toast.makeText(context,"you cant start chatting with yourself", Toast.LENGTH_SHORT);
 
                         }
                         else{
-                            userToSendMessage = snapshot.child("userName").getValue().toString().replace("@", "").replace(".", "");
+                            userToSendMessage = snapshot.child("email").getValue().toString().replace("@", "").replace(".", "");
                             DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference().child("chats");
                             chatReference.addValueEventListener(new ValueEventListener() {
                                 @Override
