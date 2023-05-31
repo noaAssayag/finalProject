@@ -95,11 +95,12 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                list = new ArrayList<>();
 
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                         for (DataSnapshot snap : snapshot.getChildren()) {
                             SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy, h:mm a", Locale.US);
                             try {
@@ -147,7 +148,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                                             }
                                         });
                                     }
-                                    if (filterByGen.getSelectedItem() == null || filterByGen.getSelectedItem().equals("Filter By Gender") && filterByLoc.getSelectedItem() == null || filterByLoc.getSelectedItem().equals("Filter By city")) {
+                                    if ((filterByGen.getSelectedItem().equals("Filter By Gender")) && (filterByLoc.getSelectedItem().equals("Filter By city"))) {
                                         list.add(newHost);
 
                                     }
