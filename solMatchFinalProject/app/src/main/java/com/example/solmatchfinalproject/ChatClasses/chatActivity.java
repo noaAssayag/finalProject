@@ -126,7 +126,7 @@ public class chatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot snap: snapshot.getChildren())
                 {
-                    if(snap.child("userName").getValue().toString().equals(intent.getStringExtra("userToPresent")))
+                    if(snap.child("email").getValue().toString().replace("@", "").replace(".", "").equals(intent.getStringExtra("userToPresent")))
                     {
                         UID = snap.getKey();
 

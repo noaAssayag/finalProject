@@ -53,7 +53,7 @@ public class chatMenuActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 chatNames = new ArrayList<>();
-                userName = snapshot.child("Users").child(id).child("userName").getValue().toString();
+                userName = snapshot.child("Users").child(id).child("email").getValue().toString().replace("@", "").replace(".", "");
                 for(DataSnapshot child: snapshot.child("chats").getChildren())
                 {
                     if(child.getValue().toString()!=null) {
@@ -96,21 +96,6 @@ public class chatMenuActivity extends AppCompatActivity {
             }
         });
 
-        chatList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Adapter adapter = parent.getAdapter();
-                chatMenueListAdapter mychat = (chatMenueListAdapter) adapter;
-                String fromName = mychat.getItem(position).getName();
-                String chatName = chatNameFinder(fromName);
-                Intent intent = new Intent(chatMenuActivity.this, chatActivity.class);
-                intent.putExtra("chatID", chatName);
-                intent.putExtra("to", fromName);
-                intent.putExtra("from", userName);
-                intent.putExtra("userToPresent",fromName);
-                startActivity(intent);
-            }
-        });
 
 
     }
@@ -126,7 +111,11 @@ public class chatMenuActivity extends AppCompatActivity {
         }
         return null;
     }
+
+    public String getUserName() {
+        return userName;
     }
+}
 
     // puting this code to add chat to data base for later
 

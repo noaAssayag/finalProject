@@ -1,7 +1,10 @@
 package com.example.solmatchfinalproject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -59,8 +62,8 @@ public class RegSecActivity extends Activity {
     private String image;
     Bitmap bitmapImage;
     private boolean valid;
-    private static final int REQUEST_IMAGE_CAPTURE = 11;
-    private static final int REQUEST_IMAGE_PICK = 2;
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
+    private static final int REQUEST_IMAGE_PICK = 11;
     private StorageReference storageRef;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     Uri imageURI;
@@ -248,21 +251,38 @@ public class RegSecActivity extends Activity {
 
 
     private void showImagePickerDialog() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        galleryIntent.setType("image/*");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Image Source");
+        builder.setItems(new CharSequence[]{"Take Picture", "Choose from Gallery"}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        dispatchTakePictureIntent();
+                        break;
+                    case 1:
+                        openGallery();
+                        break;
+                }
+            }
+        });
+        builder.show();
+    }
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
-
-        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
-            Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Picture");
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{takePictureIntent});
-            startActivityForResult(chooserIntent, REQUEST_IMAGE_PICK);
-        }
     }
 
+    private void openGallery() {
+        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        if (galleryIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(galleryIntent, REQUEST_IMAGE_PICK);
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -275,13 +295,29 @@ public class RegSecActivity extends Activity {
             userImg.setImageURI(imageURI);
 
             // Upload the image to Firebase Storage
-        }
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            // Call your method here or assign the URI to a variable for later use
+            // e.g., uploadImageToFirebaseStorage(imageURI);
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageURI = data.getData();
-            userImg.setImageBitmap(imageBitmap);
+            if (imageBitmap != null) {
+                // Convert the bitmap to a file or upload directly to Firebase Storage
+                // Call your method here or assign the URI to a variable for later use
+                // e.g., uploadImageToFirebaseStorage(imageURI);
+
+                imageURI = getImageUri(this, imageBitmap);
+                userImg.setImageURI(imageURI);
+            }
         }
     }
+
+    private Uri getImageUri(Context context, Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Image", null);
+        return Uri.parse(path);
+    }
+
+
 
 }

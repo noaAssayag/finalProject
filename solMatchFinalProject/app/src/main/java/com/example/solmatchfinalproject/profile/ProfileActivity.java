@@ -97,7 +97,13 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         addHostingPrompt = findViewById(R.id.AddhostOption);
         menu = findViewById(R.id.menu);
         auth = FirebaseAuth.getInstance();
-        uid = getIntent().getStringExtra("UID");
+       if(getIntent().getStringExtra("UID") == null)
+       {
+           uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+       }
+       else {
+           uid = getIntent().getStringExtra("UID");
+       }
         status = getIntent().getIntExtra("status",0);
         ref = FirebaseDatabase.getInstance().getReference("Users").child(uid);
         LinearLayoutManager llm = new LinearLayoutManager(this);
