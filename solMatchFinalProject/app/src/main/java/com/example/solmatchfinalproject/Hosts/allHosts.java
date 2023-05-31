@@ -128,7 +128,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                                         }
 
                                     }
-                                    if (filterByGen.getSelectedItem() != null && !(filterGen.equals("noFilter"))) {
+                                    if (filterByGen.getSelectedItem() != null && !(filterGen.equals("noFilter"))&&!filterByGen.getSelectedItem().equals("Filter By Gender")) {
                                         refUsers = db.getReference().child("Users");
                                         refUsers.addValueEventListener(new ValueEventListener() {
                                             @Override
