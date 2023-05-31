@@ -1,11 +1,13 @@
 <resources>
     <string name="app_name">solMatchFinalProject</string>
     <string-array name="genderReg">
+        <item>Filter By Gender</item>
         <item>Male</item>
         <item>Female</item>
         <item>Other</item>
     </string-array>
     <string-array name="israeliCities">
+        <item>Filter By city</item>
         <item>Jerusalem</item>
         <item>Tel Aviv</item>
         <item>Haifa</item>
@@ -60,6 +62,7 @@
     </string-array>
 
     <string-array name="typeReg">
+        <item>Filter By Type</item>
         <item>Host</item>
         <item>Soldier</item>
         <item>Professional</item>

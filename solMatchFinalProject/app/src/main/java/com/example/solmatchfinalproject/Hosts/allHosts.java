@@ -60,8 +60,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         ref = db.getReference("Host");
-        filterByGen.setSelection(-1);
-        filterByLoc.setSelection(-1);
+
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
