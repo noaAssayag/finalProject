@@ -115,6 +115,8 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                                     newHost.setHostingDate(snap.child("hostingDate").getValue(String.class));
                                     String imageUrl = snap.child("hostImg").getValue(String.class);
                                     newHost.setHostImg(imageUrl);
+                                    String imageUrlLoc = snap.child("hosttingLocImg").getValue(String.class);
+                                    newHost.setHostingLocImg(imageUrlLoc);
                                     newHost.setAccommodation((boolean) snap.child("accommodation").getValue());
                                     newHost.setPets((boolean) snap.child("pets").getValue());
                                     newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
