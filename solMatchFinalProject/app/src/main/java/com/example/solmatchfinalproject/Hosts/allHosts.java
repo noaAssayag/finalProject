@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -43,6 +45,9 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
     RecyclerView recList;
     List<Host> list = new ArrayList<>();
     private BottomNavigationHandler navigationHandler;
+    private String filterGen;
+    private String filterLoc;
+
 
 
     @Override
@@ -61,6 +66,42 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         ref = db.getReference("Host");
 
+        filterByLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                filterGen=selectedItem;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                filterGen="noFilter";
+            }
+        });
+        filterByLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                filterLoc=selectedItem;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                filterLoc="noFilter";
+            }
+        });
+        filterByGen.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                filterGen=selectedItem;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                filterGen="noFilter";
+            }
+        });
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -84,14 +125,13 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                             newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
                             newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
                             newHost.setDescription(snap.child("description").getValue().toString());
-                            if (filterByLoc.getSelectedItem() != null && !(filterByLoc.getSelectedItem().toString().isEmpty())) {
+                            if (filterByLoc.getSelectedItem() != null &&!(filterLoc.equals("noFilter"))) {
                                 if (filterByLoc.getSelectedItem().toString().equals(newHost.getHostAddress())) {
                                     list.add(newHost);
                                 }
 
                             }
-
-                            if (filterByGen.getSelectedItem() != null && !(filterByGen.getSelectedItem().toString().isEmpty())) {
+                            if (filterByGen.getSelectedItem() != null &&!(filterLoc.equals("noFilter"))) {
                                 ref = db.getReference().child("Users");
                                 ref.addValueEventListener(new ValueEventListener() {
                                     @Override
