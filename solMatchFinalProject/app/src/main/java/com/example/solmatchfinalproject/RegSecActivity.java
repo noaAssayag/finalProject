@@ -117,8 +117,8 @@ public class RegSecActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (getDate() != null && !getDate().isEmpty()) {
-                    if (sGender != null && sGender.getSelectedItem() != null) {
-                        if (sType != null && sType.getSelectedItem() != null) {
+                    if (sGender != null && sGender.getSelectedItem() != null&&!sGender.getSelectedItem().toString().equals("Filter By Type")) {
+                        if (sType != null && sType.getSelectedItem() != null&&!sType.getSelectedItem().toString().equals("Filter By Type")) {
                             if (checkDate()) {
                                 if (userImg.getDrawable() == null && sType.getSelectedItem().equals("Soldier")) {
                                     Toast.makeText(getApplicationContext(), "Soldier must add a profile image!", Toast.LENGTH_SHORT).show();

@@ -70,18 +70,6 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = parent.getItemAtPosition(position).toString();
-                filterGen=selectedItem;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                filterGen="noFilter";
-            }
-        });
-        filterByLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = parent.getItemAtPosition(position).toString();
                 filterLoc=selectedItem;
             }
 
@@ -102,6 +90,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                 filterGen="noFilter";
             }
         });
+
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -126,7 +115,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                             newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
                             newHost.setDescription(snap.child("description").getValue().toString());
                             if (filterByLoc.getSelectedItem() != null &&!(filterLoc.equals("noFilter"))) {
-                                if (filterByLoc.getSelectedItem().toString().equals(newHost.getHostAddress())) {
+                                if (filterByLoc.getSelectedItem().toString().equals(newHost.getHostAddress().split(",")[0])) {
                                     list.add(newHost);
                                 }
 
