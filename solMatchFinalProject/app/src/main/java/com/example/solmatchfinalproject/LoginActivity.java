@@ -70,13 +70,13 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         if (snapshot.hasChild("userInfo")) {
                                             Toast.makeText(getApplicationContext(), "login was good", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                                            Intent intent = new Intent(LoginActivity.this, AddHost.class);
                                             intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                             intent.putExtra("UID",UID);
                                             startActivity(intent);
                                         } else {
 
-                                            Intent intent = new Intent(LoginActivity.this, personalQuestionsActivity.class);
+                                            Intent intent = new Intent(LoginActivity.this, AddHost.class);
                                             setContentView(R.layout.personal_questions_layout);
                                             startActivity(intent);
                                         }

@@ -6,15 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.solmatchfinalproject.Hosts.allHosts;
+import com.example.solmatchfinalproject.profile.ProfileActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        Intent intent = new Intent(MainActivity.this, allHosts.class);
         startActivity(intent);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_all_hosts);
     }
 
 

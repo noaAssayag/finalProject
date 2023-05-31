@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -71,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
     FirebaseDatabase db;
     DatabaseReference ref;
     DatabaseReference hostsRef;
-    ImageButton addHost,AddDonation;
+    Button addHost,AddDonation;
     List<Host> list = new ArrayList<>();
     List<donations> donationList = new ArrayList<>();
     boolean solider = true;
@@ -93,8 +94,6 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         recHosts = findViewById(R.id.hostingPromptRecycler);
         addHost = findViewById(R.id.newHostingButt);
         AddDonation = findViewById(R.id.newDonationButt);
-        addDonationPrompt = findViewById(R.id.AddDonationOption);
-        addHostingPrompt = findViewById(R.id.AddhostOption);
         menu = findViewById(R.id.menu);
         auth = FirebaseAuth.getInstance();
         uid = getIntent().getStringExtra("UID");

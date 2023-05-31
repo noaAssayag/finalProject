@@ -17,11 +17,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Hosts.allHosts">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cardList"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="72dp"
+            android:text="@string/allHost"
+            android:textColor="@color/log_in_to_chatbox_color"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+            <Spinner
+                android:id="@+id/spinnerFilterByGender"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:entries="@array/genderReg" />
+            <Spinner
+                android:id="@+id/spinnerFilterByLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:entries="@array/israeliCities" />
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cardList"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView

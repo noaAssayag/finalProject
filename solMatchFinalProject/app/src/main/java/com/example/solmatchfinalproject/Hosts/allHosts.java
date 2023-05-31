@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
@@ -37,6 +38,8 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
     FirebaseDatabase db;
     DatabaseReference ref;
     ImageView img;
+    Spinner filterByGen;
+    Spinner filterByLoc;
     RecyclerView recList;
     List<Host> list = new ArrayList<>();
     private BottomNavigationHandler navigationHandler;
@@ -47,6 +50,8 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_hosts);
         recList = findViewById(R.id.cardList);
+        filterByGen = (Spinner) findViewById(R.id.spinnerFilterByGender);
+        filterByLoc = (Spinner) findViewById(R.id.spinnerFilterByLocation);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
@@ -55,6 +60,9 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         ref = db.getReference("Host");
+        filterByGen.setSelection(-1);
+        filterByLoc.setSelection(-1);
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -77,9 +85,41 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                             newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
                             newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
                             newHost.setDescription(snap.child("description").getValue().toString());
+                            if (filterByLoc.getSelectedItem() != null && !(filterByLoc.getSelectedItem().toString().isEmpty())) {
+                                if (filterByLoc.getSelectedItem().toString().equals(newHost.getHostAddress())) {
+                                    list.add(newHost);
+                                }
 
+                            }
 
-                            list.add(newHost);
+                            if (filterByGen.getSelectedItem() != null && !(filterByGen.getSelectedItem().toString().isEmpty())) {
+                                ref = db.getReference().child("Users");
+                                ref.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot snapUser : snapshot.getChildren()) {
+                                            if (snapUser.getKey().equals(snap.getKey())) {
+                                                if (snapUser.child("gen").getValue().toString().equals(filterByGen.getSelectedItem().toString())) {
+                                                    list.add(newHost);
+
+                                                }
+                                            }
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                            if(filterByGen.getSelectedItem() == null&&filterByLoc.getSelectedItem() != null)
+                            {
+                                list.add(newHost);
+
+                            }
+
                         } else {
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference ref = database.getReference().child("Host");
@@ -119,6 +159,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                 UserHostAdapter userHostAdapter = new UserHostAdapter(list, allHosts.this, allHosts.this);
                 recList.setAdapter(userHostAdapter);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -141,12 +182,12 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
 
     @Override
     public void onDialogPositiveClick(AlertDialogFragmentViewHost dialog) {
-        Toast.makeText(this, "This host addedd to wishList",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "This host addedd to wishList", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDialogNegativeClick(AlertDialogFragmentViewHost dialog) {
-     //   Toast.makeText(this, "onDialogNegativeClick " ,Toast.LENGTH_SHORT).show();
+        //   Toast.makeText(this, "onDialogNegativeClick " ,Toast.LENGTH_SHORT).show();
     }
 }
 

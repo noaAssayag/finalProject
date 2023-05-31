@@ -126,6 +126,7 @@
     <string name="reset_pass">Reset</string>
     <string name="regWithGoogle">register with your Google account</string>
 
+    <string name="allHost">Here you can watch all the hostings</string>
 
     <!-- String for profile Page-->
     <string name="name">Full Name</string>
@@ -204,16 +205,17 @@
     <string name="yes">yes</string>
     <string name="no">no</string>
     <string name="personal_de">Personal Details</string>
-    <string name="noam_cohen_">name</string>
+    <string name="userName">name</string>
     <string name="phone">Phone</string>
     <string name="hosts">hostings</string>
     <string name="aboutMe">About me</string>
-    <string name="Apartment">Apartment</string>
-    <string name="street">Street</string>
     <string name="addhosting">Add hosting option</string>
-    <string name="addDonationoption">Add new donation</string>
     <string name="addhostoption">Add new hosting proposel</string>
     <string name="what_are_yo">What Are You Looking For?</string>
+    <string name="street">Street</string>
+    <string name="Apartment">Apartment</string>
+    <string name="addHost">Add Host</string>
+    <string name="addDonationoption">Add Donation</string>
 
 
 </resources>
