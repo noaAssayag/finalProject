@@ -6,8 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class donations {
+public class donations implements Serializable {
     private String name;
     private String adress;
     private String catagory;

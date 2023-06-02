@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import Fragment.AlertDialogFragmentViewDonations;
 import Fragment.AlertDialogFragmentViewHost;
 import Fragment.MyAlertDialogFragmentListenerView;
 import Model.Host;
@@ -225,10 +226,8 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         Toast.makeText(this, "This host addedd to wishList", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onDialogNegativeClick(AlertDialogFragmentViewHost dialog) {
-        //   Toast.makeText(this, "onDialogNegativeClick " ,Toast.LENGTH_SHORT).show();
-    }
+
+
 }
 
 

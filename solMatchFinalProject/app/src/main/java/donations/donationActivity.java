@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
+import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
 import com.example.solmatchfinalproject.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -23,17 +25,24 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import Fragment.AlertDialogFragmentViewDonations;
+import Fragment.AlertDialogFragmentViewHost;
+import Fragment.AletListener;
+import Fragment.MyAlertDialogFragmentListenerView;
+import Model.Host;
 import donations.donationAdapter;
 import Model.donations;
 
-public class donationActivity extends Activity {
+public class donationActivity extends Activity  implements RecycleViewInterface, AletListener {
     RecyclerView donationsView;
     Button filter;
     Spinner categories;
     String filterSelected;
+    List<donations> donationList = new ArrayList<>();
 
     private BottomNavigationHandler navigationHandler;
     @Override
@@ -44,7 +53,6 @@ public class donationActivity extends Activity {
         categories = findViewById(R.id.spinnerFilterCatagory);
      //   donations donation = new donations("test","kkal 16", "home cooking","test object", R.drawable.anonymousman);
     //    donations donation2 = new donations("test","kkal 16", "home cooking","test object", drawable.);
-        List<donations> donationList = new ArrayList<>();
    //     donations.add(donation);
     //    donations.add(donation2);
         BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
@@ -64,7 +72,7 @@ public class donationActivity extends Activity {
                 GridLayoutManager llm = new GridLayoutManager(donationActivity.this, 1);
                 llm.setOrientation(LinearLayoutManager.VERTICAL);
                 donationsView.setLayoutManager(llm);
-                donationAdapter adapter = new donationAdapter(donationList,getApplicationContext());
+                donationAdapter adapter = new donationAdapter(donationList,getApplicationContext(),donationActivity.this);
                 donationsView.setAdapter(adapter);
                 filter.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -72,7 +80,7 @@ public class donationActivity extends Activity {
                         List<donations> FiltereddonationList = new ArrayList<>();
                         if(filterSelected == null || filterSelected.equals("Filter by category"))
                         {
-                            donationAdapter adapter = new donationAdapter(donationList,getApplicationContext());
+                            donationAdapter adapter = new donationAdapter(donationList,getApplicationContext(),donationActivity.this);
                             donationsView.setAdapter(adapter);
                             return;
                         }
@@ -83,7 +91,7 @@ public class donationActivity extends Activity {
                                 FiltereddonationList.add(donation);
                             }
                         }
-                        donationAdapter adapter = new donationAdapter(FiltereddonationList,getApplicationContext());
+                        donationAdapter adapter = new donationAdapter(FiltereddonationList,getApplicationContext(),donationActivity.this);
                         donationsView.setAdapter(adapter);
                     }
                 });
@@ -109,4 +117,22 @@ public class donationActivity extends Activity {
     });
 
     }
+
+    @Override
+    public void onItemClick(int position) {
+        donations newDonations = donationList.get(position);
+        AlertDialogFragmentViewDonations frag = new AlertDialogFragmentViewDonations();
+        Bundle b = new Bundle();
+        b.putSerializable("Donation", newDonations);
+        frag.setArguments(b);
+        frag.show(getFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void onDialogPositiveClick(AlertDialogFragmentViewDonations dialog) {
+        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+
+    }
+
+
 }

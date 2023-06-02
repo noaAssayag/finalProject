@@ -6,5 +6,5 @@ package Fragment;
 
 public interface MyAlertDialogFragmentListenerView {
     public void onDialogPositiveClick(AlertDialogFragmentViewHost dialog);
-    public void onDialogNegativeClick(AlertDialogFragmentViewHost dialog);
+
 }

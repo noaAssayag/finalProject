@@ -4,19 +4,18 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="4dip"
-    tools:context="Fragment.AlertDialogFragmentViewHost">
+    tools:context="Fragment.AlertDialogFragmentViewDonations">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/titleFragment"
+            android:text="@string/titleDonFragment"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"></TextView>
@@ -24,17 +23,17 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/hostingDescription"
+        android:id="@+id/donationUserEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center"
-        android:gravity="center"
-        android:text="@string/secTitleFragment"
-        android:textColor="@color/log_in_color"
+        android:gravity="left"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/black"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/hostDetails"
+        android:id="@+id/donationName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center"
@@ -43,8 +42,19 @@
         android:textColor="@color/black"
         android:textSize="14sp" />
 
+    <TextView
+        android:id="@+id/donationDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center"
+        android:gravity="center"
+        android:text="@string/secTitleFragment"
+        android:textColor="@color/log_in_color"
+        android:textSize="14sp" />
+
+
     <EditText
-        android:id="@+id/editTexthostingAddress"
+        android:id="@+id/donationLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
@@ -54,76 +64,33 @@
         android:ems="10" />
 
     <EditText
-        android:id="@+id/editTexthostingDate"
+        android:id="@+id/editTextCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:drawableLeft="@drawable/baseline_calendar_today_24" />
+        android:drawableLeft="@drawable/baseline_category_24" />
 
     <TextView
-        android:id="@+id/locationImage"
+        android:id="@+id/donationImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:text="@string/locationImg"
+        android:text="@string/donationImg"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="14sp" />
 
     <ImageView
-        android:id="@+id/imageOfLocation"
+        android:id="@+id/imageOfDonation"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="left"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:text="@string/Accommodationlocationdetails"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="14sp" />
-
-    <CheckBox
-        android:id="@+id/checkboxaccomodation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="16dp"
-        android:text="@string/accommodationOption" />
-
-    <CheckBox
-        android:id="@+id/checkboxPets"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/petsOption"
-        android:layout_gravity="left"
-        android:layout_marginLeft="16dp"/>
-
-    <CheckBox
-        android:id="@+id/checkboxprivateRoom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/privateRoomOption"
-        android:layout_gravity="left"
-        android:layout_marginLeft="16dp"/>
-
-    <CheckBox
-        android:id="@+id/checkboxsecureOption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/secureOption"
-        android:layout_gravity="left"
-        android:layout_marginLeft="16dp"/>
 
 
         <Button
@@ -137,7 +104,10 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_gravity="right"
-            />
+           />
+
+
+
 
 
 

@@ -1,4 +1,5 @@
 package Fragment;
+
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.graphics.drawable.Drawable;
@@ -13,9 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
@@ -24,18 +23,18 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.solmatchfinalproject.R;
-import Model.Host;
-import Model.UserStorageData;
-public class AlertDialogFragmentViewHost extends DialogFragment {
-    TextView hostingDescription,hostDetails;
-    EditText hostingAddress,hostingDate;
-    ImageView imageOfLocation;
-    CheckBox checkboxaccomodation,checkboxPets,checkboxprivateRoom,checkboxsecureOption;
-    Button saveBtn;
 
+import Model.Host;
+import Model.donations;
+
+public class AlertDialogFragmentViewDonations extends DialogFragment {
+    TextView donationUserEmail,donationDescription,donationName;
+    EditText category,donationLocation;
+    ImageView donationImg;
+    Button saveBtn;
     // Use this instance of the interface to deliver action events
-    MyAlertDialogFragmentListenerView mListener;
-    private UserStorageData user;
+    AletListener mListener;
+    private donations donation;
 
     // Override the Fragment.onAttach() method to instantiate the MyAlertDialogFragmentListenerEdit
     @Override
@@ -45,7 +44,7 @@ public class AlertDialogFragmentViewHost extends DialogFragment {
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the MyAlertDialogFragmentListener so we can send events to the host
-            mListener = (MyAlertDialogFragmentListenerView) activity;
+            mListener = (AletListener) activity;
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -54,34 +53,24 @@ public class AlertDialogFragmentViewHost extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle b = getArguments();
-        View v = inflater.inflate(R.layout.activity_alert_dialog_fragment_viewhost, null);
-        hostingDescription=(TextView)v.findViewById(R.id.hostingDescription);
-        hostDetails=(TextView)v.findViewById(R.id.hostDetails);
-        hostingAddress=(EditText)v.findViewById(R.id.editTexthostingAddress);
-        hostingDate=(EditText)v.findViewById(R.id.editTexthostingDate);
-        imageOfLocation=(ImageView) v.findViewById(R.id.imageOfLocation);
-        checkboxaccomodation=(CheckBox)v.findViewById(R.id.checkboxaccomodation);
-        checkboxPets=(CheckBox)v.findViewById(R.id.checkboxPets);
-        checkboxprivateRoom=(CheckBox)v.findViewById(R.id.checkboxprivateRoom);
-        checkboxsecureOption=(CheckBox)v.findViewById(R.id.checkboxsecureOption);
+        View v = inflater.inflate(R.layout.activity_alert_dialog_fragment_viewdonations, null);
+        donationUserEmail=v.findViewById(R.id.donationUserEmail);
+        donationDescription=v.findViewById(R.id.donationDescription);
+        donationName=v.findViewById(R.id.donationName);
+        category=v.findViewById(R.id.editTextCategory);
+        donationLocation=v.findViewById(R.id.donationLocation);
+        donationImg=v.findViewById(R.id.imageOfDonation);
         saveBtn=(Button) v.findViewById(R.id.saveBtn);
         if (b != null) {
-            Host newHost= (Host) b.getSerializable("Host");
-            if(newHost.getDescription()==null||newHost.getDescription().isEmpty()||newHost.getDescription().equals(""))
-            {
-                hostingDescription.setText(R.string.secTitleFragment);
-            }
-            else{
-                hostingDescription.setText(newHost.getDescription());
-            }
-
-
-
-            hostingAddress.setText(newHost.getHostAddress());
-            hostingDate.setText(newHost.getHostingDate());
+            donations newdonation= (donations) b.getSerializable("Donation");
+            donationUserEmail.setText(newdonation.getEmail());
+            donationDescription.setText(newdonation.getDescription());
+            donationLocation.setText(newdonation.getAdress());
+            donationName.setText(newdonation.getName());
+            category.setText(newdonation.getCatagory());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 Glide.with(getContext())
-                        .load(newHost.getHostingLocImg())
+                        .load(newdonation.getImg())
                         .listener(new RequestListener<Drawable>() {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -96,38 +85,26 @@ public class AlertDialogFragmentViewHost extends DialogFragment {
                                 return false; // Return false to allow Glide to handle the resource and display it
                             }
                         })
-                        .into(imageOfLocation);
-            }
-            if(newHost.isAccommodation())
-            {
-                checkboxaccomodation.setChecked(true);
-                checkboxaccomodation.setClickable(false);
-            }
-            if(newHost.isPets())
-            {
-                checkboxPets.setChecked(true);
-                checkboxPets.setClickable(false);
-            }
-             if(newHost.isPrivateRoom())
-            {
-                checkboxprivateRoom.setChecked(true);
-                checkboxprivateRoom.setClickable(false);
-            }
-             if(newHost.isSecureEnv()) {
-                checkboxsecureOption.setChecked(true);
-                checkboxsecureOption.setClickable(false);
+                        .into(donationImg);
             }
 
         }
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onDialogPositiveClick(AlertDialogFragmentViewHost.this);
+                mListener.onDialogPositiveClick(AlertDialogFragmentViewDonations.this);
             }
         });
+
+
+
+
+
+
         return v;
 
     }
+
 
 
 }

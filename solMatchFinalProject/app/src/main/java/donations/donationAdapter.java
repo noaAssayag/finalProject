@@ -28,6 +28,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.solmatchfinalproject.ChatClasses.chatActivity;
+import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
+import com.example.solmatchfinalproject.Hosts.UserHostAdapter;
 import com.example.solmatchfinalproject.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -50,11 +52,14 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
     String userPresented;
 
     String fullName;
+    private final RecycleViewInterface recycleViewInterface;
+
     // Return the size of your dataset (invoked by the layout manager)
-    public donationAdapter(List<donations> donationsList,Context context)
+    public donationAdapter(List<donations> donationsList,Context context,RecycleViewInterface recycleViewInterface)
     {
         this.donationsList = donationsList;
         this.context = context;
+        this.recycleViewInterface=recycleViewInterface;
 
     }
 
@@ -154,16 +159,15 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                 from(viewGroup.getContext()).
                 inflate(R.layout.donation_item, viewGroup, false);
         Log.i("adapter", "ContactViewHolder done!");
-
-        return new donationViewHolder(itemView);
+        return new donationViewHolder(itemView,recycleViewInterface);
     }
 
 
 
 
-    public class donationViewHolder extends RecyclerView.ViewHolder{
+    public class donationViewHolder extends RecyclerView.ViewHolder {
 
-        private  ImageView donationImage;
+        private ImageView donationImage;
         private TextView donator;
         private TextView location;
         private TextView catagory;
@@ -173,7 +177,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
 
         String userDonated;
 
-        public donationViewHolder(@NonNull View rowView) {
+        public donationViewHolder(@NonNull View rowView, RecycleViewInterface recycleViewInterface) {
             super(rowView);
             donationImage = rowView.findViewById(R.id.imgdonation);
             donator = rowView.findViewById(R.id.Donatorname);
@@ -182,15 +186,23 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
             desc = rowView.findViewById(R.id.donationDescription);
             startchat = rowView.findViewById(R.id.btnStartChat);
 
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (recycleViewInterface != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            recycleViewInterface.onItemClick(position);
+                        }
 
+
+                    }
+                }
+            });
         }
 
-        public String getUserDonated() {
-            return userDonated;
-        }
 
-        public void setData(donations di)
-        {
+        public void setData(donations di) {
 
             this.di = di;
             userDonated = di.getEmail();
@@ -217,5 +229,6 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
             catagory.setText(di.getCatagory());
             desc.setText(di.getDescription());
         }
+
     }
 }

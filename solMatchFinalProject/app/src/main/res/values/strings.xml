@@ -183,12 +183,15 @@
     <string name="secureOption">Secure environment?</string>
 
     <string name="titleFragment">Accommodation details</string>
+    <string name="titleDonFragment">Donations details</string>
+
     <string name="secTitleFragment"> Hello! Here you can view the details of the selected accommodation</string>
     <string name="locationImg">View the accommodation location image:</string>
+    <string name="donationImg">View the image of the donation:</string>
     <string name="Accommodationlocationdetails">Accommodation location details:</string>
 
     <string name="btnCancel">Cancel</string>
-    <string name="btnsave">Save</string>
+    <string name="btnsave">Ok</string>
     <string name="channel_name">solmatch</string>
     <string name="channel_description">solmatchdescription</string>
     <string name="ItenNamePrompt">Name</string>

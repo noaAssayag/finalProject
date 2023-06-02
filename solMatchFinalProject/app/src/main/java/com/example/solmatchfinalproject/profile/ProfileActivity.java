@@ -169,7 +169,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                                 }
                             }
                             recDonations.setLayoutManager(llm);
-                            donationAdapter adapter = new donationAdapter(donationList, getApplicationContext());
+                            donationAdapter adapter = new donationAdapter(donationList,ProfileActivity.this,ProfileActivity.this);
                             recDonations.setAdapter(adapter);
                         }
 
