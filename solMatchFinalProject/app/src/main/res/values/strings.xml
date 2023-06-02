@@ -1,4 +1,14 @@
 <resources>
+    <string-array name="professional_categories">
+        <item>Electrician</item>
+        <item>Plumber</item>
+        <item>Carpenter</item>
+        <item>Roofing Contractor</item>
+        <item>HVAC Technician</item>
+        <item>Locksmith</item>
+        <item>Flooring Specialist</item>
+    </string-array>
+
     <string name="app_name">solMatchFinalProject</string>
     <string-array name="genderReg">
         <item>Filter By Gender</item>
@@ -167,13 +177,19 @@
     <string name="hostAddress">Address</string>
 
     <string name="AddHostPage">Add Host Page</string>
+    <string name="AddProfessPage">Add Professional Page</string>
 
     <string name="ui_button_date_title">Set Date</string>
     <string name="ui_button_time_title">Set Time</string>
     <string name="Addaddress">Add Address</string>
+    <string name="AddCategory">Add Category</string>
+
     <string name="setDate">Choose the day of accommodation </string>
     <string name="setTime">Choose the time of accommodation</string>
     <string name="descriptionOfHost">please add description</string>
+
+    <string name="phuneNum">add phone number</string>
+
     <string name="imgOfLocation">Please add an image of the accommodation location to be displayed to the user. </string>
 
     <string name="titleSwitches">Please fill in the following details about the accommodation you are offering</string>
@@ -182,8 +198,8 @@
     <string name="privateRoomOption">Is the accommodation in a private room?</string>
     <string name="secureOption">Secure environment?</string>
 
-    <string name="titleFragment">Accommodation details</string>
-    <string name="titleDonFragment">Donations details</string>
+    <string name="titleFragment">Accommodation details:</string>
+    <string name="titleDonFragment">Donations details Page:</string>
 
     <string name="secTitleFragment"> Hello! Here you can view the details of the selected accommodation</string>
     <string name="locationImg">View the accommodation location image:</string>

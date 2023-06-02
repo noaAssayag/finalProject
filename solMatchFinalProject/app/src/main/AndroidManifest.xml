@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <meta-data
@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SolMatchFinalProject"
         tools:targetApi="31">
-
+        <activity
+            android:name=".AddDocprofessional"
+            android:exported="false" />
         <activity
             android:name=".profile.ProfileActivity"
             android:exported="false" />
@@ -34,8 +36,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".profile.ProfileActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".EditPersonalDetails"
             android:exported="false">
@@ -43,12 +46,12 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".personalQuestionsActivity"/>
+        <activity android:name=".personalQuestionsActivity" />
         <activity
-            android:name="com.example.solmatchfinalproject.ChatClasses.chatMenuActivity"
+            android:name=".ChatClasses.chatMenuActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.solmatchfinalproject.ChatClasses.chatActivity"
+            android:name=".ChatClasses.chatActivity"
             android:exported="false" />
         <activity
             android:name=".RegSecActivity"
