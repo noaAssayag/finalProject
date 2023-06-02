@@ -112,6 +112,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                                           intent.putExtra("chatID", fullName);
                                           intent.putExtra("from", userToSendMessage);
                                           intent.putExtra("to",username);
+                                          intent.putExtra("userToPresent",username);
                                           intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                                           context.startActivity(intent);
                                           return;
@@ -123,7 +124,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                                   intent.putExtra("chatID", username+"-"+userToSendMessage);
                                   intent.putExtra("from", userToSendMessage);
                                   intent.putExtra("to",username);
-                                  intent.putExtra("userToPresent",userPresented);
+                                  intent.putExtra("userToPresent",username);
                                   context.startActivity(intent);
                               }
 

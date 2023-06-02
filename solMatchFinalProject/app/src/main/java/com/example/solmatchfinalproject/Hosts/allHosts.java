@@ -138,10 +138,13 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                                                         if (snapUser.child("gen").getValue().toString().equals(filterByGen.getSelectedItem().toString())) {
                                                             list.add(newHost);
 
+
                                                         }
                                                     }
 
                                                 }
+                                                UserHostAdapter userHostAdapter = new UserHostAdapter(list, allHosts.this, allHosts.this);
+                                                recList.setAdapter(userHostAdapter);
                                             }
 
                                             @Override

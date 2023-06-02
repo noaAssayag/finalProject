@@ -6,6 +6,13 @@
         <item>Female</item>
         <item>Other</item>
     </string-array>
+    <string-array name="categories">
+        <item>Filter by category</item>
+        <item>home cooking</item>
+        <item>furniture</item>
+        <item>food supplies</item>
+        <item>other</item>
+    </string-array>
     <string-array name="israeliCities">
         <item>Filter By city</item>
         <item>Jerusalem</item>

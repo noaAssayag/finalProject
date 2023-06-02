@@ -122,16 +122,12 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                 if(status == 1)
                 {
                     addHost.setVisibility(View.GONE);
-                    addDonationPrompt.setVisibility(View.GONE);
-                    addHostingPrompt.setVisibility(View.GONE);
                     AddDonation.setVisibility(View.GONE);
                 }
                 if (snapshot.child("type").getValue().toString().equals("Soldier")) {
                     solider = true;
                     hostsRef = db.getReference("Users").child(uid).child("Host");
                     addHost.setVisibility(View.GONE);
-                    addDonationPrompt.setVisibility(View.GONE);
-                    addHostingPrompt.setVisibility(View.GONE);
                     AddDonation.setVisibility(View.GONE);
 
                 } else {

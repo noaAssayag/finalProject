@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         if (snapshot.hasChild("userInfo")) {
                                             Toast.makeText(getApplicationContext(), "login was good", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LoginActivity.this, AddHost.class);
+                                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                                             intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                             intent.putExtra("UID",UID);
                                             startActivity(intent);
