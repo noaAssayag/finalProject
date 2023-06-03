@@ -253,6 +253,8 @@
     <string name="Apartment">Apartment</string>
     <string name="addHost">Add Host</string>
     <string name="addDonationoption">Add Donation</string>
+    <string name="ViewProfessional">View Professional Details:</string>
+    <string name="descriptionProf">description</string>
 
     <string name="filter">Filter</string>
 

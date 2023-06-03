@@ -5,16 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
 import com.example.solmatchfinalproject.Hosts.UserHostAdapter;
 import com.example.solmatchfinalproject.Hosts.allHosts;
+import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,11 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Fragment.AlertDialogFragmentViewHost;
+import Fragment.AlertListenerProf;
 import Fragment.MyAlertDialogFragmentListenerView;
 import Model.Host;
 import Model.Professional;
 
-public class AllProfessional extends AppCompatActivity implements RecycleViewInterface, MyAlertDialogFragmentListenerView {
+public class AllProfessional extends AppCompatActivity implements RecycleViewInterface, AlertListenerProf {
     FirebaseDatabase db;
     DatabaseReference ref,refUsers;
     ImageView img;
@@ -39,6 +44,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
     Button btnFilter;
     RecyclerView recList;
     List<Professional> list = new ArrayList<>();
+    BottomNavigationView menu;
     private BottomNavigationHandler navigationHandler;
 
     @Override
@@ -53,9 +59,32 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
         db = FirebaseDatabase.getInstance();
-        BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
-        navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
-        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
+
+        menu = findViewById(R.id.menu);
+        menu.setOnItemReselectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.myHome: {
+                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    overridePendingTransition(0, 0);
+                    break;
+                }
+                case R.id.chatMenu: {
+                    startActivity(new Intent(getApplicationContext(), chatMenuActivity.class));
+                    overridePendingTransition(0, 0);
+                    break;
+                }
+                case R.id.search: {
+                    startActivity(new Intent(getApplicationContext(), searchNavigationMenue.class));
+                    overridePendingTransition(0, 0);
+                    break;
+                }
+                case R.id.logOut: {
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    overridePendingTransition(0, 0);
+                    break;
+                }
+            }
+        });
 
         ref = db.getReference("professional");
         filterByLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -128,17 +157,21 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
     }
 
     @Override
-    public void onDialogPositiveClick(AlertDialogFragmentViewHost dialog) {
+    public void onDialogPositiveClick(AlertDialogFragmentViewProf dialog) {
+        Toast.makeText(this, " ", Toast.LENGTH_SHORT).show();
 
     }
+
 
     @Override
     public void onItemClick(int position) {
-
+        Professional professional = list.get(position);
+        AlertDialogFragmentViewProf frag = new AlertDialogFragmentViewProf();
+        Bundle b = new Bundle();
+        b.putString("Description", professional.getDescription());
+        frag.setArguments(b);
+        frag.show(getFragmentManager(), "dialog");
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-        super.onPointerCaptureChanged(hasCapture);
-    }
+
 }
