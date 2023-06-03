@@ -14,9 +14,6 @@ public class Host implements Serializable {
     private String hostAddress;
     private String hostingDate;
     private String hostingLocImg;
-
-
-
     private String description;
     private boolean accommodation=false;
     private boolean pets=false;
