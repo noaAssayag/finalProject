@@ -39,13 +39,12 @@ import java.util.List;
 public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHostViewHolder> {
     private static List<Host> hostList;
     private final RecycleViewInterface recycleViewInterface;
-    Context context;
+    static Context context;
     String username;
     String userPresented;
     String userToSendMessage;
     String fullName;
     public UserHostAdapter(List<Host> userHostingsList, Context context, RecycleViewInterface recycleViewInterface) {
-
         this.hostList = userHostingsList;
         this.context=context;
         this.recycleViewInterface = recycleViewInterface;
@@ -144,7 +143,7 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
         return new UserHostViewHolder(itemView, recycleViewInterface);
     }
 
-    public class UserHostViewHolder extends RecyclerView.ViewHolder {
+    public static class UserHostViewHolder extends RecyclerView.ViewHolder {
         private ImageView vImg;
         private TextView vName;
         private TextView vEmail;

@@ -148,12 +148,15 @@
     <string name="regWithGoogle">register with your Google account</string>
 
     <string name="allHost">Here you can watch all the hostings</string>
+    <string name="allProf">Here you can watch all the Professional</string>
 
     <!-- String for profile Page-->
     <string name="name">Full Name</string>
     <string name="namePro">My Name</string>
 
     <string name="email">Email Address</string>
+    <string name="phoneNum">Phone Number</string>
+
     <string name="emailPro">My Email</string>
 
     <string name="password">Password</string>
@@ -176,6 +179,8 @@
 
     <string name="hostingDate">Date</string>
     <string name="hostAddress">Address</string>
+    <string name="category">Category</string>
+    <string name="avability">Avability</string>
 
     <string name="AddHostPage">Add Host Page</string>
     <string name="AddProfessPage">Add Professional Page</string>

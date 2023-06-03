@@ -2,7 +2,7 @@ package Model;
 
 public class Professional {
     String email;
-    String userNmae;
+    String userName;
     String imageUrl;
     String category;
     String address;
@@ -12,13 +12,17 @@ public class Professional {
 
     public Professional(String email, String userNmae, String imageUrl, String category, String address, String phoneNum, String description, String precAvailability) {
         this.email = email;
-        this.userNmae = userNmae;
+        this.userName = userNmae;
         this.imageUrl = imageUrl;
         this.category = category;
         this.address = address;
         this.phoneNum = phoneNum;
         this.description = description;
         this.precAvailability = precAvailability;
+    }
+
+    public Professional() {
+
     }
 
     public String getEmail() {
@@ -29,12 +33,12 @@ public class Professional {
         this.email = email;
     }
 
-    public String getUserNmae() {
-        return userNmae;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserNmae(String userNmae) {
-        this.userNmae = userNmae;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getImageUrl() {

@@ -77,16 +77,19 @@ public class AddDocprofessional extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (professCategory == null || !professCategory.getSelectedItem().toString().equals("Filter by category") || professCategory.getSelectedItem().toString().isEmpty()) {
+                if (professCategory == null || professCategory.getSelectedItem().toString().equals("Filter by category") || professCategory.getSelectedItem().toString().isEmpty()) {
                     Toast.makeText(AddDocprofessional.this, "Please choose a category", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (professAddress == null || !professAddress.getSelectedItem().toString().equals("Filter By city") || professAddress.getSelectedItem().toString().isEmpty()) {
+                } else if (professAddress == null || professAddress.getSelectedItem().toString().equals("Filter By city") || professAddress.getSelectedItem().toString().isEmpty()) {
                     Toast.makeText(AddDocprofessional.this, "Please choose a area", Toast.LENGTH_SHORT).show();
                     return;
                 } else if (professDescription.getText().toString().isEmpty() || professPhoneNum.getText().toString().isEmpty()) {
                     Toast.makeText(AddDocprofessional.this, "Please fill all the fileds", Toast.LENGTH_SHORT).show();
                     return;
-                } else {
+                }
+                else if(professPhoneNum.getText().toString().length()!=10){
+                    Toast.makeText(AddDocprofessional.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
+                }else {
                     auth = FirebaseAuth.getInstance();
                     uid = auth.getCurrentUser().getUid();
                     db = FirebaseDatabase.getInstance();

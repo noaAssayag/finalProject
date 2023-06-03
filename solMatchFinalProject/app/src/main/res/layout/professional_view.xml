@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#8C9EFF"
+            android:gravity="center_vertical"
+            android:text="contact det"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/profImg"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/title"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/txtProfName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/profImg"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:text="@string/name"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/txtProfEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtProfName"
+            android:layout_toRightOf="@+id/profImg"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:text="@string/email"
+            android:textSize="10sp" />
+        <TextView
+            android:id="@+id/txtPhoneNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtProfEmail"
+            android:layout_toRightOf="@+id/profImg"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:text="@string/phoneNum"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/txtCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/txtProfName"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="150dp"
+            android:text="@string/category"
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/txtHostAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/txtProfEmail"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/txtCategory"
+            android:layout_marginRight="150dp"
+            android:text="@string/hostAddress"
+            android:textColor="@color/black"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/txtAva"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/txtPhoneNum"
+            android:layout_alignStart="@id/txtHostAddress"
+            android:textColor="@color/black"
+            android:text="@string/avability"
+            android:textSize="10sp" />
+
+        <ImageButton
+            android:id="@+id/hostBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtAva"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/baseline_chat_bubble_24"
+            android:text="chat"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
