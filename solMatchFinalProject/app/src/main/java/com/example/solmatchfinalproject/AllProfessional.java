@@ -57,7 +57,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
         navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
 
-        ref = db.getReference("Professional");
+        ref = db.getReference("professional");
         filterByLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

@@ -42,7 +42,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/black"
             android:text="@string/name"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/txtProfEmail"
@@ -55,7 +55,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/black"
             android:text="@string/email"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
         <TextView
             android:id="@+id/txtPhoneNum"
             android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/black"
             android:text="@string/phoneNum"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/txtCategory"
@@ -79,7 +79,7 @@
             android:layout_marginRight="150dp"
             android:text="@string/category"
             android:textColor="@color/black"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/txtHostAddress"
@@ -92,7 +92,7 @@
             android:layout_marginRight="150dp"
             android:text="@string/hostAddress"
             android:textColor="@color/black"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/txtAva"
@@ -102,7 +102,7 @@
             android:layout_alignStart="@id/txtHostAddress"
             android:textColor="@color/black"
             android:text="@string/avability"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <ImageButton
             android:id="@+id/hostBtn"
@@ -112,7 +112,7 @@
             android:layout_alignParentEnd="true"
             android:src="@drawable/baseline_chat_bubble_24"
             android:text="chat"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

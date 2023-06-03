@@ -43,7 +43,7 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
                 .from(parent.getContext())
                 .inflate(R.layout.professional_view, parent, false);
         Log.i("adapter", "ContactViewHolder done!");
-        return new ProfessionalAdapter.profViewHolder(parent, recycleViewInterface);
+        return new ProfessionalAdapter.profViewHolder(itemView, recycleViewInterface);
     }
 
     @Override
