@@ -75,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
     Button addHost,AddDonation;
     List<Host> list = new ArrayList<>();
     List<donations> donationList = new ArrayList<>();
-    boolean solider = true;
+    String type = "solider";
 
     int status = 0;
 
@@ -125,14 +125,17 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                     AddDonation.setVisibility(View.GONE);
                 }
                 if (snapshot.child("type").getValue().toString().equals("Soldier")) {
-                    solider = true;
+                    type = "soldier";
                     hostsRef = db.getReference("Users").child(uid).child("Host");
                     addHost.setVisibility(View.GONE);
                     AddDonation.setVisibility(View.GONE);
 
-                } else {
-                    solider = false;
+                } else if (snapshot.child("type").getValue().toString().equals("Host")) {
+                    type = "host";
                     hostsRef = db.getReference("Host");
+                }
+                else {
+                    type="professional";
                 }
                 presentHost(hostsRef);
                 db = FirebaseDatabase.getInstance();
@@ -157,7 +160,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                             })
                             .into(userImg);
                 }
-                if (!solider) {
+                if (type.equals("host")) {
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Donations");
                     reference.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -178,7 +181,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
 
                         }
                     });
-                } else {
+                } else if(type.equals("soldier")) {
                     titleDonations.setText("Hobbies");
                     ArrayList<String> hobbies = new ArrayList<>();
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("userInfo")
@@ -209,10 +212,6 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
 
 
         });
-
-
-
-
 
         menu.setOnItemReselectedListener(item -> {
             switch (item.getItemId()) {
@@ -273,7 +272,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                         Calendar currentDate = Calendar.getInstance();
                         Date today = currentDate.getTime();
                         if (date.after(today)) {
-                            if (snap.getKey().equals(uid) || solider) {
+                            if (snap.getKey().equals(uid) || type.equals("soldier")) {
                                 Host newHost = new Host();
                                 newHost.setHostName(snap.child("hostName").getValue(String.class));
                                 newHost.setHostEmail(snap.child("hostEmail").getValue(String.class));
