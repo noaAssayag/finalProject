@@ -1,5 +1,6 @@
 <resources>
     <string-array name="professional_categories">
+        <item>Filter by category</item>
         <item>Electrician</item>
         <item>Plumber</item>
         <item>Carpenter</item>
@@ -189,6 +190,8 @@
     <string name="descriptionOfHost">please add description</string>
 
     <string name="phuneNum">add phone number</string>
+    <string name="availability">availability</string>
+    <string name="percentage">0%</string>
 
     <string name="imgOfLocation">Please add an image of the accommodation location to be displayed to the user. </string>
 

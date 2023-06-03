@@ -248,6 +248,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="16dp"
                 android:backgroundTint="#404040"
                 android:text="@string/submit"
                 android:textColor="@color/white"
