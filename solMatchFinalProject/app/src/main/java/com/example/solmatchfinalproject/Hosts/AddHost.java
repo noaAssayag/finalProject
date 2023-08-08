@@ -35,6 +35,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -123,20 +126,22 @@ public class AddHost extends AppCompatActivity {
                 } else {
                     auth = FirebaseAuth.getInstance();
                     uid = auth.getCurrentUser().getUid();
-                    db = FirebaseDatabase.getInstance();
-                    ref = db.getReference().child("Users").child(uid);
-                    ref.addValueEventListener(new ValueEventListener() {
+                    FirebaseFirestore dbFirestore = FirebaseFirestore.getInstance();
+                    dbFirestore.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            email = snapshot.child("email").getValue().toString();
-                            userName = snapshot.child("userName").getValue().toString();
-                            if (snapshot.child("image").getValue() != null) {
-                                imageURLHost = snapshot.child("image").getValue().toString();
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for(QueryDocumentSnapshot doc: task.getResult())
+                            {
+                                if(doc.getId().equals(uid))
+                                {
+                                    email = doc.get("email").toString();
+                                    userName = doc.get("userName").toString();
+                                    if(!doc.get("image").toString().isEmpty())
+                                    {
+                                        imageURLHost = doc.get("image").toString();
+                                    }
+                                }
                             }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
                         }
                     });
                     // Upload the image to Firebase Storage
@@ -151,29 +156,24 @@ public class AddHost extends AppCompatActivity {
                                     public void onSuccess(Uri uri) {
 
                                         URL = uri.toString();
-                                        ref = db.getReference().child("Host").child(uid);
-                                        ref.addValueEventListener(new ValueEventListener() {
+
+                                        hostAddress=cities.getSelectedItem().toString()+", "+streets.getText().toString()+", "+apartNum.getText().toString();
+                                        if(!description.getText().toString().isEmpty())
+                                        {
+                                            hostDescription=description.getText().toString();
+                                        }
+                                        else
+                                        {
+                                            hostDescription="";
+                                        }
+                                        Host newHost = new Host(imageURLHost, userName, email, hostAddress, hostDate, URL,hostDescription,accommodation,pets,privateRoom,secureEnv);
+                                        dbFirestore.collection("Host").document(uid).set(newHost).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                hostAddress=cities.getSelectedItem().toString()+", "+streets.getText().toString()+", "+apartNum.getText().toString();
-                                                if(!description.getText().toString().isEmpty())
-                                                {
-                                                    hostDescription=description.getText().toString();
-                                                }
-                                                else
-                                                {
-                                                    hostDescription="";
-                                                }
-                                                Host newHost = new Host(imageURLHost, userName, email, hostAddress, hostDate, URL,hostDescription,accommodation,pets,privateRoom,secureEnv);
-                                                ref.setValue(newHost);
-                                                Toast.makeText(AddHost.this, "The host Added Succefully!", Toast.LENGTH_SHORT).show();
+                                            public void onSuccess(Void unused) {
+                                                Toast.makeText(getApplicationContext(),"added host",Toast.LENGTH_LONG).show();
                                                 Intent intent = new Intent(AddHost.this, ProfileActivity.class);
                                                 startActivity(intent);
-                                                setContentView(R.layout.profilev2);                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-
+                                                setContentView(R.layout.profilev2);
                                             }
                                         });
 

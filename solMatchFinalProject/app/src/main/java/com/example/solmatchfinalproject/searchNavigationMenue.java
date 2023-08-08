@@ -15,7 +15,7 @@ import donations.donationActivity;
 public class searchNavigationMenue extends Activity {
 
 
-    ImageButton hosts,donations;
+    ImageButton hosts,donations,proffesionalButton;
     private BottomNavigationHandler navigationHandler;
 
     @Override
@@ -25,6 +25,7 @@ public class searchNavigationMenue extends Activity {
         hosts = findViewById(R.id.hostButton);
         donations = findViewById(R.id.donationsButton);
         BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
+        proffesionalButton = findViewById(R.id.proffesionalButton);
         navigationHandler = new BottomNavigationHandler(this,getApplicationContext());
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
 
@@ -45,6 +46,16 @@ public class searchNavigationMenue extends Activity {
                 Intent intent = new Intent(searchNavigationMenue.this, donationActivity.class);
                 setContentView(R.layout.donations_layout);
                 startActivity(intent);
+            }
+        });
+
+        proffesionalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(searchNavigationMenue.this, AllProfessional.class);
+                setContentView(R.layout.activity_all_professional);
+                startActivity(intent);
+
             }
         });
 

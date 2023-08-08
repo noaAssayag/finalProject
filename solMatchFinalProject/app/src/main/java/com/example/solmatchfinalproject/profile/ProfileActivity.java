@@ -35,6 +35,7 @@ import com.example.solmatchfinalproject.addDonationActivity;
 import com.example.solmatchfinalproject.profileActivity;
 import com.example.solmatchfinalproject.searchNavigationMenue;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +44,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -111,6 +114,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         llm2.setOrientation(LinearLayoutManager.HORIZONTAL);
         recDonations.setLayoutManager(llm);
         recHosts.setLayoutManager(llm2);
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {

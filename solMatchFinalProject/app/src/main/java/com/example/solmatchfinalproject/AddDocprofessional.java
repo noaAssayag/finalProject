@@ -16,6 +16,10 @@ import android.widget.Toast;
 
 import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +27,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.model.Document;
 
 import Model.Professional;
 
@@ -37,7 +47,7 @@ public class AddDocprofessional extends AppCompatActivity {
     private Button btnSubmit;
     private BottomNavigationView bottomNavigationView;
     FirebaseAuth auth;
-    FirebaseDatabase db;
+    FirebaseFirestore db;
     DatabaseReference refUser, refProfess;
     String uid,email,userName,imageUser;
     String precentageAva="0";
@@ -74,6 +84,7 @@ public class AddDocprofessional extends AppCompatActivity {
             }
         });
 
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,42 +103,37 @@ public class AddDocprofessional extends AppCompatActivity {
                 }else {
                     auth = FirebaseAuth.getInstance();
                     uid = auth.getCurrentUser().getUid();
-                    db = FirebaseDatabase.getInstance();
-                    refUser = db.getReference().child("Users").child(uid);
-                    refUser.addValueEventListener(new ValueEventListener() {
+                    db = FirebaseFirestore.getInstance();
+
+                    db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            email = snapshot.child("email").getValue().toString();
-                            userName = snapshot.child("userName").getValue().toString();
-                            if (snapshot.child("image").getValue() != null) {
-                                imageUser = snapshot.child("image").getValue().toString();
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for(QueryDocumentSnapshot doc: task.getResult())
+                            {
+                                if(doc.getId().equals(uid))
+                                {
+                                    email = doc.get("email").toString();
+                                    userName = doc.get("userName").toString();
+                                    if(!doc.get("image").toString().isEmpty())
+                                    {
+                                        imageUser = doc.get("image").toString();
+                                    }
+                                }
                             }
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                        }
                     });
-                    refProfess = db.getReference().child("professional").child(uid);
-                    refProfess.addValueEventListener(new ValueEventListener() {
+                    db.collection("professional").document(uid).set(new Professional(email,userName,imageUser,professCategory.getSelectedItem().toString()
+                            ,professAddress.getSelectedItem().toString()
+                            ,professPhoneNum.getText().toString()
+                            ,professDescription.getText().toString(),precentageAva)).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Professional professional= new Professional(email,userName,imageUser,professCategory.getSelectedItem().toString()
-                                    ,professAddress.getSelectedItem().toString()
-                                    ,professPhoneNum.getText().toString()
-                                    ,professDescription.getText().toString(),precentageAva);
-                            refProfess.setValue(professional);
-                            Toast.makeText(AddDocprofessional.this, "This is Added Succefully!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(AddDocprofessional.this, ProfileActivity.class);
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getApplicationContext(),"succes",Toast.LENGTH_LONG);
+                            Intent intent = new Intent(getApplicationContext(),profileActivity.class);
                             startActivity(intent);
-                            setContentView(R.layout.profilev2);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
                         }
                     });
+
                 }
             }
 

@@ -34,6 +34,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -108,6 +111,54 @@ public class addDonationActivity extends Activity {
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
             }
         });
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = R.drawable.anonymousman;
+                // Upload the image to Firebase Storage
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageURI.toString());
+                storageRef.putFile(imageURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        boolean check = task.isSuccessful();
+                        if (task.isSuccessful()) {
+                            storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    URL = uri.toString();
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            email = documentSnapshot.getString("email");
+                                            donations formData = new donations(itemName.getText().toString(), adress.getText().toString(), selectedItem, ItemDescription.getText().toString(), URL, email);
+
+                                            db.collection("donations").add(formData)
+                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
+                                                            Intent intent = new Intent(addDonationActivity.this, ProfileActivity.class);
+                                                            startActivity(intent);
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Toast.makeText(addDonationActivity.this, "Failed to add donation data", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                        }
+                                    });
+
+                                }
+                            });
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            userId = user.getUid();
+                        }
+                    }
+                });
+            }
+        });
 
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,51 +175,20 @@ public class addDonationActivity extends Activity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     URL = uri.toString();
-                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users").child(userId);
-                                    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Donations");
-                                    databaseRef.addValueEventListener(new ValueEventListener() {
+                                    FirebaseFirestore addDonationToFireStore = FirebaseFirestore.getInstance();
+                                    email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                                    donations formData = new donations(itemName.getText().toString(), adress.getText().toString(), selectedItem, ItemDescription.getText().toString(), URL, email);
+                                    addDonationToFireStore.collection("Donations").add(formData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                         @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            while(snapshot.hasChild(String.valueOf(i)))
-                                            {
-                                                i++;
-                                            }
-
-
-                                        }
-
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-                                    ref.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            email = snapshot.child("email").getValue().toString();
-                                            donations formData = new donations(itemName.getText().toString(), adress.getText().toString(), selectedItem, ItemDescription.getText().toString(), URL, email);
-                                            databaseRef.child(String.valueOf(i)).setValue(formData);
-                                            Intent intent = new Intent(addDonationActivity.this, ProfileActivity.class);
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            Toast.makeText(getApplicationContext(),"added donation succefully",Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(getApplicationContext(),profileActivity.class);
                                             startActivity(intent);
-
                                         }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-
                                     });
 
                                 }
                             });
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            userId = user.getUid();
-
-
-
-
                         }
 
 

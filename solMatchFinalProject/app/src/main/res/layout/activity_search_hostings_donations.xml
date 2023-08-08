@@ -86,7 +86,35 @@
             </RelativeLayout>
 
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp">
 
+            <RelativeLayout
+                android:layout_width="328dp"
+                android:layout_height="129dp"
+                android:layout_centerInParent="true">
+
+                <ImageButton
+                    android:id="@+id/proffesionalButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/search_view"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="PROFESSIONALS"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"

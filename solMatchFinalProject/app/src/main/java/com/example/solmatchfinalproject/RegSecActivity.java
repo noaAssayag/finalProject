@@ -33,6 +33,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -141,19 +143,22 @@ public class RegSecActivity extends Activity {
                                                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                                                     if (task.isSuccessful()) {
                                                                         String UID = auth.getUid();
-                                                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                                                        database.getReference().child("Users").child(UID).setValue(user);
+                                                                        FirebaseFirestore database = FirebaseFirestore.getInstance();
+                                                                        database.collection("Users").document(UID).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                Toast.makeText(getApplicationContext(),"User created with firestore",Toast.LENGTH_LONG).show();
+                                                                                Toast.makeText(getApplicationContext(), "User created successfully", Toast.LENGTH_SHORT).show();
+                                                                                Intent newIntent = new Intent(RegSecActivity.this, LoginActivity.class);
+                                                                                startActivity(newIntent);
+                                                                                setContentView(R.layout.activity_login);
+                                                                            }
+                                                                        });
                                                                         valid = true;
                                                                     } else {
                                                                         Toast.makeText(getApplicationContext(), "A user already exists with that email", Toast.LENGTH_SHORT).show();
                                                                         valid = false;
                                                                         return;
-                                                                    }
-                                                                    if (valid) {
-                                                                        Toast.makeText(getApplicationContext(), "User created successfully", Toast.LENGTH_SHORT).show();
-                                                                        Intent newIntent = new Intent(RegSecActivity.this, LoginActivity.class);
-                                                                        startActivity(newIntent);
-                                                                        setContentView(R.layout.activity_login);
                                                                     }
                                                                 }
                                                             });
