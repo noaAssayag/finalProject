@@ -8,14 +8,22 @@ public class users {
     private int phoneNum;
     private String adress;
     private Date birthDate;
-
-
+    private userPersonalInfo info;
     public users(int ID, String fullName, int phoneNum, String adress, Date birthDate) {
         this.ID = ID;
         this.fullName = fullName;
         this.phoneNum = phoneNum;
         this.adress = adress;
         this.birthDate = birthDate;
+    }
+
+    public users(int ID, String fullName, int phoneNum, String adress, Date birthDate, userPersonalInfo info) {
+        this.ID = ID;
+        this.fullName = fullName;
+        this.phoneNum = phoneNum;
+        this.adress = adress;
+        this.birthDate = birthDate;
+        this.info = info;
     }
 
     public int getID() {
@@ -56,5 +64,13 @@ public class users {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public userPersonalInfo getInfo() {
+        return info;
+    }
+
+    public void setInfo(userPersonalInfo info) {
+        this.info = info;
     }
 }
