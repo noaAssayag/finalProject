@@ -37,6 +37,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
@@ -44,7 +45,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import Model.UserStorageData;
 import Model.chat;
+import dataBase.DatabaseHelper;
 import notification.notificationMessage;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -97,6 +100,7 @@ public class chatActivity extends AppCompatActivity {
 
     String UID;
 
+    DatabaseHelper sqlDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,25 +124,15 @@ public class chatActivity extends AppCompatActivity {
         menu = findViewById(R.id.menu);
         chatterName.setText(intent.getStringExtra("userToPresent"));
         profileLayout = findViewById(R.id.profileLayout);
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot snap: snapshot.getChildren())
-                {
-                    if(snap.child("email").getValue().toString().replace("@", "").replace(".", "").equals(intent.getStringExtra("userToPresent")))
-                    {
-                        UID = snap.getKey();
-
-                    }
-                }
+        sqlDatabase = new DatabaseHelper(this);
+        List<UserStorageData> users = sqlDatabase.getAllUsers();
+        for(UserStorageData user:users)
+        {
+            if(user.getEmail().replace("@", "").replace(".", "").equals(intent.getStringExtra("userToPresent")))
+            {
+                UID = user.getUID();
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        }
 
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -266,74 +260,106 @@ public class chatActivity extends AppCompatActivity {
         // Add the buttons
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                UserStorageData userToAddToHost = null;
+                Host updatedHost = null;
+                List<Host> hosts = sqlDatabase.getAllHosts();
+                List<UserStorageData> users = sqlDatabase.getAllUsers();
+                for(UserStorageData user: users)
+                {
+                    if(user.getEmail().replace("@", "").replace(".", "").equals(intent.getStringExtra("to")))
+                    {
+                        userToAddToHost = user;
+                    }
+                }
+                for(Host host: hosts)
+                {
+                    if(host.getHostName().equals(sqlDatabase.getUserByUID(uid).getUserName())) {
+                        if (!userToAddToHost.equals(null)) {
+                            if (host.getListOfResidents().isEmpty()) {
 
-
-                Usersreference = FirebaseDatabase.getInstance().getReference().child("Users");
-                Usersreference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot addHostTo:snapshot.getChildren())
-                        {
-                            String debuging = intent.getStringExtra("to");
-                            if(addHostTo.child("email").getValue().toString().replace("@", "").replace(".", "").equals(intent.getStringExtra("to")))
+                                List<UserStorageData> list = new ArrayList<>();
+                                list.add(userToAddToHost);
+                                host.setListOfResidents(list);
+                                updatedHost = host;
+                            }
+                            else
                             {
-                                DatabaseReference referenceHost = FirebaseDatabase.getInstance().getReference().child("Host")
-                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                userToAddHostToUID = addHostTo.getKey();
-                               addHostToReference  = addHostTo;
-                                referenceHost.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snap) {
-                                        Host newHost = new Host();
-                                        newHost.setHostName(snap.child("hostName").getValue(String.class));
-                                        newHost.setHostEmail(snap.child("hostEmail").getValue(String.class));
-                                        newHost.setHostAddress(snap.child("hostAddress").getValue(String.class));
-                                        newHost.setHostingDate(snap.child("hostingDate").getValue(String.class));
-                                        String imageUrl = snap.child("hostImg").getValue(String.class);
-                                        newHost.setHostImg(imageUrl);
-                                        newHost.setAccommodation((boolean) snap.child("accommodation").getValue());
-                                        newHost.setPets((boolean) snap.child("pets").getValue());
-                                        newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
-                                        newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
-                                        newHost.setDescription(snap.child("description").getValue().toString());
-                                         Usersreference.child(addHostToReference.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                             @Override
-                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                if(counter == 0) {
-                                                    if (snapshot.hasChild("Host")) {
-                                                        size = snapshot.child("Host").getChildrenCount() + 1;
-                                                        hostNum = Long.toString(size);
-                                                        Usersreference.child(addHostToReference.getKey()).child("Host").child(hostNum).setValue(newHost);
-
-
-                                                    } else {
-                                                        Usersreference.child(addHostToReference.getKey()).child("Host").child("1").setValue(newHost);
-                                                    }
-                                                    counter++;
-                                                }
-                                             }
-
-                                             @Override
-                                             public void onCancelled(@NonNull DatabaseError error) {
-
-                                             }
-                                         });
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
+                                host.getListOfResidents().add(userToAddToHost);
+                                updatedHost = host;
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                sqlDatabase.updateHost(updatedHost);
+//                Usersreference = FirebaseDatabase.getInstance().getReference().child("Users");
+//                Usersreference.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        for(DataSnapshot addHostTo:snapshot.getChildren())
+//                        {
+//                            String debuging = intent.getStringExtra("to");
+//                            if(addHostTo.child("email").getValue().toString().replace("@", "").replace(".", "").equals(intent.getStringExtra("to")))
+//                            {
+//                                DatabaseReference referenceHost = FirebaseDatabase.getInstance().getReference().child("Host")
+//                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+//                                userToAddHostToUID = addHostTo.getKey();
+//                               addHostToReference  = addHostTo;
+//                                referenceHost.addValueEventListener(new ValueEventListener() {
+//                                    @Override
+//                                    public void onDataChange(@NonNull DataSnapshot snap) {
+//                                        Host newHost = new Host();
+//                                        newHost.setHostName(snap.child("hostName").getValue(String.class));
+//                                        newHost.setHostEmail(snap.child("hostEmail").getValue(String.class));
+//                                        newHost.setHostAddress(snap.child("hostAddress").getValue(String.class));
+//                                        newHost.setHostingDate(snap.child("hostingDate").getValue(String.class));
+//                                        String imageUrl = snap.child("hostImg").getValue(String.class);
+//                                        newHost.setHostImg(imageUrl);
+//                                        newHost.setAccommodation((boolean) snap.child("accommodation").getValue());
+//                                        newHost.setPets((boolean) snap.child("pets").getValue());
+//                                        newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
+//                                        newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
+//                                        newHost.setDescription(snap.child("description").getValue().toString());
+//                                         Usersreference.child(addHostToReference.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                                             @Override
+//                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                                if(counter == 0) {
+//                                                    if (snapshot.hasChild("Host")) {
+//                                                        size = snapshot.child("Host").getChildrenCount() + 1;
+//                                                        hostNum = Long.toString(size);
+//                                                        Usersreference.child(addHostToReference.getKey()).child("Host").child(hostNum).setValue(newHost);
+//
+//
+//                                                    } else {
+//                                                        Usersreference.child(addHostToReference.getKey()).child("Host").child("1").setValue(newHost);
+//                                                    }
+//                                                    counter++;
+//                                                }
+//                                             }
+//
+//                                             @Override
+//                                             public void onCancelled(@NonNull DatabaseError error) {
+//
+//                                             }
+//                                         });
+//                                    }
+//
+//                                    @Override
+//                                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                                    }
+//                                });
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
 
                 Toast.makeText(getApplicationContext(), "User clicked OK button", Toast.LENGTH_SHORT).show();
 
