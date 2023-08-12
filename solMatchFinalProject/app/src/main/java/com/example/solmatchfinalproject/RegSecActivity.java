@@ -47,6 +47,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import Model.UserStorageData;
+import dataBase.DatabaseHelper;
 
 public class RegSecActivity extends Activity {
     Spinner sType, sGender;
@@ -72,6 +73,8 @@ public class RegSecActivity extends Activity {
     String URL;
     UserStorageData user;
 
+    DatabaseHelper sqlDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +90,7 @@ public class RegSecActivity extends Activity {
         dateCal = findViewById(R.id.dateCal);
         finish = findViewById(R.id.btnSubmit);
         storageRef = FirebaseStorage.getInstance().getReference();
+        sqlDatabase = new DatabaseHelper(this);
 
         dateCal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,13 +141,15 @@ public class RegSecActivity extends Activity {
                                                         @Override
                                                         public void onSuccess(Uri uri) {
                                                             URL = uri.toString();
-                                                            user = new UserStorageData(getUserName(), getEmail(), getGen(), getDate(), getPassword(), URL, getType());
+
                                                             auth.createUserWithEmailAndPassword(getEmail(), getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                                                     if (task.isSuccessful()) {
                                                                         String UID = auth.getUid();
+                                                                        user = new UserStorageData(getUserName(), getEmail(), getGen(), getDate(), getPassword(), URL, getType(),UID);
                                                                         FirebaseFirestore database = FirebaseFirestore.getInstance();
+                                                                        sqlDatabase.insertUserData(user);
                                                                         database.collection("Users").document(UID).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                             @Override
                                                                             public void onComplete(@NonNull Task<Void> task) {

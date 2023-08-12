@@ -1,6 +1,8 @@
 package Model;
 
 public class Professional {
+
+    String UID;
     String email;
     String userName;
     String imageUrl;
@@ -10,7 +12,7 @@ public class Professional {
     String description;
     String precAvailability;
 
-    public Professional(String email, String userNmae, String imageUrl, String category, String address, String phoneNum, String description, String precAvailability) {
+    public Professional(String email, String userNmae, String imageUrl, String category, String address, String phoneNum, String description, String precAvailability,String UID) {
         this.email = email;
         this.userName = userNmae;
         this.imageUrl = imageUrl;
@@ -19,6 +21,15 @@ public class Professional {
         this.phoneNum = phoneNum;
         this.description = description;
         this.precAvailability = precAvailability;
+        this.UID = UID;
+    }
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 
     public Professional() {

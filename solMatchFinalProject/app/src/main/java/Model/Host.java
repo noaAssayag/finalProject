@@ -59,6 +59,8 @@ public class Host implements Serializable {
         this.secureEnv = secureEnv;
     }
 
+
+
     public String getHostImg() {
         return hostImg;
     }
@@ -113,33 +115,96 @@ public class Host implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public boolean isAccommodation() {
-        return accommodation;
+    public String isAccommodation() {
+        if(accommodation)
+        {
+            return "yes";
+        }
+        return "no";
     }
 
-    public void setAccommodation(boolean accommodation) {
+    public void setAccommodation(boolean accommodation)
+    {
         this.accommodation = accommodation;
     }
+    public void setAccommodationString(String accommodation) {
+        if(accommodation.equals("yes"))
+        {
+            this.accommodation = true;
+        }
+        else{
+            this.accommodation = false;
+        }
 
-    public boolean isPets() {
-        return pets;
     }
+
+    public void isPets(boolean pets)
+    {
+        this.pets = pets;
+    }
+    public String isPetsString() {
+        if(pets==true)
+        {
+            return "yes";
+        }
+        return "no";
+
+    }
+    public void setPetsString(String pets) {
+
+        if(pets.equals("yes"))
+        {
+            setPets(true);
+        }
+        else {
+            setPets(false);
+        }
+    }
+
 
     public void setPets(boolean pets) {
         this.pets = pets;
     }
 
-    public boolean isPrivateRoom() {
-        return privateRoom;
+    public String isPrivateRoom() {
+        if(privateRoom)
+        {
+            return "yes";
+        }
+        return "no";
     }
 
+    public void setPrivateRoomString(String privateRoom)
+    {
+        if(privateRoom.equals("yes"))
+        {
+            this.privateRoom = true;
+        }
+        else{
+            this.privateRoom = false;
+        }
+    }
     public void setPrivateRoom(boolean privateRoom) {
         this.privateRoom = privateRoom;
     }
 
-    public boolean isSecureEnv() {
-        return secureEnv;
+    public String isSecureEnv() {
+        if(secureEnv)
+        {
+            return "yes";
+        }
+        return "no";
     }
+
+    public void setSecureEnvString(String env)
+    {
+        if(env.equals("yes"))
+        {
+            secureEnv = true;
+        }
+        else secureEnv = false;
+    }
+
 
     public void setSecureEnv(boolean secureEnv) {
         this.secureEnv = secureEnv;

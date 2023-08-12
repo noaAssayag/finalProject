@@ -25,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import dataBase.DatabaseHelper;
+
 public class chatMenuActivity extends AppCompatActivity {
     chatMenueListAdapter adapter;
     ListView chatList;
@@ -32,6 +34,8 @@ public class chatMenuActivity extends AppCompatActivity {
     DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
     ArrayList<String> chatNames = null;
     String userName = null;
+
+    DatabaseHelper sqlDataBase;
     private BottomNavigationHandler navigationHandler;
 
 
@@ -45,7 +49,7 @@ public class chatMenuActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
         navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
-
+        sqlDataBase = new DatabaseHelper(this);
         List<chatItemInfo> userChats = new ArrayList<chatItemInfo>();
         chatList = findViewById(R.id.chatList);
         // we use valueEvent listener to recive the logged in user userName so we can get his chat history
@@ -53,7 +57,7 @@ public class chatMenuActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 chatNames = new ArrayList<>();
-                userName = snapshot.child("Users").child(id).child("email").getValue().toString().replace("@", "").replace(".", "");
+                userName = sqlDataBase.getUserByUID(id).getEmail().replace("@", "").replace(".", "");
                 for(DataSnapshot child: snapshot.child("chats").getChildren())
                 {
                     if(child.getValue().toString()!=null) {

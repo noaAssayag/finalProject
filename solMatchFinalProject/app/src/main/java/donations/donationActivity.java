@@ -34,6 +34,7 @@ import Fragment.AlertDialogFragmentViewHost;
 import Fragment.AletListener;
 import Fragment.MyAlertDialogFragmentListenerView;
 import Model.Host;
+import dataBase.DatabaseHelper;
 import donations.donationAdapter;
 import Model.donations;
 
@@ -44,6 +45,8 @@ public class donationActivity extends Activity  implements RecycleViewInterface,
     String filterSelected;
     List<donations> donationList = new ArrayList<>();
 
+    DatabaseHelper sqlDatabase;
+
     private BottomNavigationHandler navigationHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,14 @@ public class donationActivity extends Activity  implements RecycleViewInterface,
         setContentView(R.layout.donations_layout);
         filter = findViewById(R.id.btnFilterDoantions);
         categories = findViewById(R.id.spinnerFilterCatagory);
+        sqlDatabase = new DatabaseHelper(this);
+        donationList = sqlDatabase.getAllDonations();
+        donationsView = findViewById(R.id.donationsRecycler);
+        GridLayoutManager llm = new GridLayoutManager(donationActivity.this, 1);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        donationsView.setLayoutManager(llm);
+        donationAdapter adapter = new donationAdapter(donationList,getApplicationContext(),donationActivity.this);
+        donationsView.setAdapter(adapter);
      //   donations donation = new donations("test","kkal 16", "home cooking","test object", R.drawable.anonymousman);
     //    donations donation2 = new donations("test","kkal 16", "home cooking","test object", drawable.);
    //     donations.add(donation);
@@ -58,48 +69,26 @@ public class donationActivity extends Activity  implements RecycleViewInterface,
         BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
         navigationHandler = new BottomNavigationHandler(this,getApplicationContext());
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Donations");
-        reference.addValueEventListener(new ValueEventListener() {
+        filter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot child : snapshot.getChildren())
+            public void onClick(View v) {
+
+                List<donations> FiltereddonationList = new ArrayList<>();
+                if(filterSelected == null || filterSelected.equals("Filter by category"))
                 {
-                    donations donation = new donations(child.child("name").getValue().toString(),child.child("adress").getValue().toString(),child.child("catagory").getValue().toString(),child.child("description").getValue().toString(),child.child("img").getValue().toString(),child.child("email").getValue().toString());
-                    donationList.add(donation);
+                    donationAdapter adapter = new donationAdapter(donationList,getApplicationContext(),donationActivity.this);
+                    donationsView.setAdapter(adapter);
+                    return;
                 }
-
-                donationsView = findViewById(R.id.donationsRecycler);
-                GridLayoutManager llm = new GridLayoutManager(donationActivity.this, 1);
-                llm.setOrientation(LinearLayoutManager.VERTICAL);
-                donationsView.setLayoutManager(llm);
-                donationAdapter adapter = new donationAdapter(donationList,getApplicationContext(),donationActivity.this);
-                donationsView.setAdapter(adapter);
-                filter.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        List<donations> FiltereddonationList = new ArrayList<>();
-                        if(filterSelected == null || filterSelected.equals("Filter by category"))
-                        {
-                            donationAdapter adapter = new donationAdapter(donationList,getApplicationContext(),donationActivity.this);
-                            donationsView.setAdapter(adapter);
-                            return;
-                        }
-                        for(donations donation:donationList)
-                        {
-                            if(donation.getCatagory().equals(filterSelected))
-                            {
-                                FiltereddonationList.add(donation);
-                            }
-                        }
-                        donationAdapter adapter = new donationAdapter(FiltereddonationList,getApplicationContext(),donationActivity.this);
-                        donationsView.setAdapter(adapter);
+                for(donations donation:donationList)
+                {
+                    if(donation.getCatagory().equals(filterSelected))
+                    {
+                        FiltereddonationList.add(donation);
                     }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+                }
+                donationAdapter adapter = new donationAdapter(FiltereddonationList,getApplicationContext(),donationActivity.this);
+                donationsView.setAdapter(adapter);
             }
         });
 

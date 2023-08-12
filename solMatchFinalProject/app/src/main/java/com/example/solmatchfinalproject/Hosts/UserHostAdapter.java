@@ -24,6 +24,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import Model.Host;
+import dataBase.DatabaseHelper;
 
 import com.example.solmatchfinalproject.ChatClasses.chatActivity;
 import com.example.solmatchfinalproject.R;
@@ -44,10 +45,15 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
     String userPresented;
     String userToSendMessage;
     String fullName;
+
+    FirebaseAuth auth;
+    DatabaseHelper sqlDataBase;
     public UserHostAdapter(List<Host> userHostingsList, Context context, RecycleViewInterface recycleViewInterface) {
         this.hostList = userHostingsList;
         this.context=context;
         this.recycleViewInterface = recycleViewInterface;
+        sqlDataBase = new DatabaseHelper(context);
+        auth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -70,65 +76,52 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
             public void onClick(View v) {
                 userPresented  = holder.userHosted.substring(0, atIndex);
                 username = holder.userHosted.replace("@", "").replace(".", "");
+                userToSendMessage = sqlDataBase.getUserByUID(auth.getCurrentUser().getUid()).getEmail().replace("@", "").replace(".", "");
+                if(username.equals(userToSendMessage))
+                {
+                    Toast.makeText(context,"you cant start chatting with yourself", Toast.LENGTH_SHORT);
+                }
+                else{
+                    DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference().child("chats");
+                    chatReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
-                reference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.child("email").getValue().toString().replace("@", "").replace(".", "").equals(username))
-                        {
-                            Toast.makeText(context,"you cant start chatting with yourself", Toast.LENGTH_SHORT);
-
-                        }
-                        else{
-                            userToSendMessage = snapshot.child("email").getValue().toString().replace("@", "").replace(".", "");
-                            DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference().child("chats");
-                            chatReference.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                    for(DataSnapshot child: snapshot.getChildren())
-                                    {
-                                        fullName = child.getKey();
-                                        String[] parts = fullName.split("-");
-                                        String user1 = parts[0].trim().replace("@", "").replace(".", "");
-                                        String user2 = parts[1].trim().replace("@", "").replace(".", "");
-                                        if(user1.equals(userToSendMessage) && user2.equals(username) || user1.equals(username) && user2.equals(userToSendMessage))
-                                        {
-                                            Intent intent = new Intent(context, chatActivity.class);
-                                            intent.putExtra("chatID", fullName);
-                                            intent.putExtra("from", userToSendMessage);
-                                            intent.putExtra("to",username);
-                                            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                                            context.startActivity(intent);
-                                            return;
-                                        }
-                                    }
-                                    chatReference.child(username.replace("@", "").replace(".", "")+"-"+userToSendMessage.replace("@", "").replace(".", "")).setValue(null);
+                            for(DataSnapshot child: snapshot.getChildren())
+                            {
+                                fullName = child.getKey();
+                                String[] parts = fullName.split("-");
+                                String user1 = parts[0].trim().replace("@", "").replace(".", "");
+                                String user2 = parts[1].trim().replace("@", "").replace(".", "");
+                                if(user1.equals(userToSendMessage) && user2.equals(username) || user1.equals(username) && user2.equals(userToSendMessage))
+                                {
                                     Intent intent = new Intent(context, chatActivity.class);
-                                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("chatID", username+"-"+userToSendMessage);
+                                    intent.putExtra("chatID", fullName);
                                     intent.putExtra("from", userToSendMessage);
                                     intent.putExtra("to",username);
-                                    intent.putExtra("userToPresent",userPresented);
+                                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                                     context.startActivity(intent);
+                                    return;
                                 }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
+                            }
+                            chatReference.child(username.replace("@", "").replace(".", "")+"-"+userToSendMessage.replace("@", "").replace(".", "")).setValue(null);
+                            Intent intent = new Intent(context, chatActivity.class);
+                            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra("chatID", username+"-"+userToSendMessage);
+                            intent.putExtra("from", userToSendMessage);
+                            intent.putExtra("to",username);
+                            intent.putExtra("userToPresent",userPresented);
+                            context.startActivity(intent);
                         }
 
-                    }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
 
-                    }
-                });
+                }
+
             }
         });
     }

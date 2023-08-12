@@ -45,6 +45,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.Calendar;
 
 import Model.Host;
+import dataBase.DatabaseHelper;
 
 public class AddHost extends AppCompatActivity {
     int PICK_IMAGE_REQUEST = 100;
@@ -77,6 +78,7 @@ public class AddHost extends AppCompatActivity {
     private boolean validDate = true;
     private BottomNavigationHandler navigationHandler;
 
+    private DatabaseHelper sqlDataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,7 @@ public class AddHost extends AppCompatActivity {
         navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         updateDateAndTimeDisplay();
+        sqlDataBase = new DatabaseHelper(this);
 
         btnAddImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +173,7 @@ public class AddHost extends AppCompatActivity {
                                         dbFirestore.collection("Host").document(uid).set(newHost).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
+                                                sqlDataBase.insertHostData(newHost);
                                                 Toast.makeText(getApplicationContext(),"added host",Toast.LENGTH_LONG).show();
                                                 Intent intent = new Intent(AddHost.this, ProfileActivity.class);
                                                 startActivity(intent);

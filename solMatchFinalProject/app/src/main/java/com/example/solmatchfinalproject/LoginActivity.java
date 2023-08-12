@@ -17,6 +17,7 @@ import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,16 +29,32 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
+import Model.Host;
 import Model.UserStorageData;
+import Model.donations;
+import dataBase.DatabaseHelper;
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    FirebaseFirestore databse = FirebaseFirestore.getInstance();
+
+    ArrayList<UserStorageData> users;
+    ArrayList<Host> hosts;
+    ArrayList<donations> donationsList;
     TextView signIn, forgotPassword;
     EditText inputUserEmail, inputpassword;
     Button btnLogin;
     Button google;
     private ProgressDialog mLoadingBar;
+
+    DatabaseHelper sqlData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +67,10 @@ public class LoginActivity extends AppCompatActivity {
         google = findViewById(R.id.googleButt);
         forgotPassword = findViewById(R.id.textViewForgetPassword);
         mLoadingBar = new ProgressDialog(this);
+        users = new ArrayList<>();
+        hosts = new ArrayList<>();
+        donationsList = new ArrayList<>();
+        sqlData = new DatabaseHelper(this);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,28 +86,66 @@ public class LoginActivity extends AppCompatActivity {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 String UID = user.getUid();
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(UID);
-                                ref.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if (snapshot.hasChild("userInfo")) {
-                                            Toast.makeText(getApplicationContext(), "login was good", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                                            intent.putExtra("UserEmail", inputUserEmail.getText().toString());
-                                            intent.putExtra("UID",UID);
-                                            startActivity(intent);
-                                        } else {
 
-                                            Intent intent = new Intent(LoginActivity.this, personalQuestionsActivity.class);
-                                            setContentView(R.layout.personal_questions_layout);
-                                            startActivity(intent);
+                                databse.collection("Users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    for(QueryDocumentSnapshot snapshot: queryDocumentSnapshots)
+                                    {
+                                        UserStorageData user = snapshot.toObject(UserStorageData.class);
+                                        users.add(user);
+                                    }
+                                    sqlData.compareAndUpdateUsers(users);
+                                    databse.collection("Host").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                          for(QueryDocumentSnapshot snapshot: queryDocumentSnapshots)
+                                          {
+                                            Host host = snapshot.toObject(Host.class);
+                                            hosts.add(host);
+                                          }
+                                          sqlData.compareAndUpdateHosts(hosts);
+                                          databse.collection("Donations").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                              @Override
+                                              public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                  for(QueryDocumentSnapshot snapshot:queryDocumentSnapshots)
+                                                  {
+                                                      donations donation = snapshot.toObject(donations.class);
+                                                      donationsList.add(donation);
+                                                  }
+                                                  sqlData.compareAndUpdateDonations(donationsList);
+                                              }
+                                          });
                                         }
+                                    });
+                                        ref.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.hasChild("userInfo")) {
+                                                    Toast.makeText(getApplicationContext(), "login was good", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                                                    intent.putExtra("UserEmail", inputUserEmail.getText().toString());
+                                                    intent.putExtra("UID",UID);
+                                                    startActivity(intent);
+                                                } else {
+
+                                                    Intent intent = new Intent(LoginActivity.this, personalQuestionsActivity.class);
+                                                    setContentView(R.layout.personal_questions_layout);
+                                                    startActivity(intent);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
                                     }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
 
-                                    }
                                 });
+
+
 
                             } else {
                                 Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();

@@ -55,6 +55,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import dataBase.DatabaseHelper;
 import donations.donationAdapter;
 import Model.donations;
 import Model.Host;
@@ -80,6 +81,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
     List<donations> donationList = new ArrayList<>();
     String type = "solider";
 
+    private DatabaseHelper sqlDatabase;
     int status = 0;
 
     @Override
@@ -99,6 +101,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         AddDonation = findViewById(R.id.newDonationButt);
         menu = findViewById(R.id.menu);
         auth = FirebaseAuth.getInstance();
+        sqlDatabase = new DatabaseHelper(this);
        if(getIntent().getStringExtra("UID") == null)
        {
            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -106,6 +109,8 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
        else {
            uid = getIntent().getStringExtra("UID");
        }
+       UserStorageData user = sqlDatabase.getUserByUID(uid);
+
         status = getIntent().getIntExtra("status",0);
         ref = FirebaseDatabase.getInstance().getReference("Users").child(uid);
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -115,35 +120,46 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         recDonations.setLayoutManager(llm);
         recHosts.setLayoutManager(llm2);
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+        userName.setText(user.getUserName());
+        userEmail.setText(user.getEmail());
+        birthDate.setText(user.getBirthday());
+        if(status == 1)
+        {
+            addHost.setVisibility(View.GONE);
+            AddDonation.setVisibility(View.GONE);
+        }
+        if (user.getType().equals("Soldier")) {
+            type = "soldier";
+            hostsRef = db.getReference("Users").child(uid).child("Host");
+            addHost.setVisibility(View.GONE);
+            AddDonation.setVisibility(View.GONE);
+            presentHostSql(0,user.getUID());
+
+        } else if (user.getType().equals("Host")) {
+            type = "host";
+            hostsRef = db.getReference("Host");
+            presentHostSql(1,user.getEmail());
+            List<donations> allDonations = new ArrayList<>();
+            allDonations =  sqlDatabase.getAllDonations();
+            for(donations donations: allDonations)
+            {
+                if(donations.getEmail().equals(user.getEmail()))
+                {
+                    donationList.add(donations);
+                }
+            }
+            recDonations.setLayoutManager(llm);
+            donationAdapter adapter = new donationAdapter(donationList,ProfileActivity.this,ProfileActivity.this);
+            recDonations.setAdapter(adapter);
+        }
+        else {
+            type="professional";
+        }
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                //we havent phone number and address for Users
-                userName.setText(snapshot.child("userName").getValue().toString());
-                userEmail.setText(snapshot.child("email").getValue().toString());
-                aboutme.setText(snapshot.child("userInfo").child("description").getValue().toString());
-                birthDate.setText(snapshot.child("birthday").getValue().toString());
-                if(status == 1)
-                {
-                    addHost.setVisibility(View.GONE);
-                    AddDonation.setVisibility(View.GONE);
-                }
-                if (snapshot.child("type").getValue().toString().equals("Soldier")) {
-                    type = "soldier";
-                    hostsRef = db.getReference("Users").child(uid).child("Host");
-                    addHost.setVisibility(View.GONE);
-                    AddDonation.setVisibility(View.GONE);
-
-                } else if (snapshot.child("type").getValue().toString().equals("Host")) {
-                    type = "host";
-                    hostsRef = db.getReference("Host");
-                }
-                else {
-                    type="professional";
-                }
-                presentHost(hostsRef);
-                db = FirebaseDatabase.getInstance();
-
 
                 if (snapshot.hasChild("image")) {
                     Glide.with(getApplicationContext())
@@ -164,28 +180,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                             })
                             .into(userImg);
                 }
-                if (type.equals("host")) {
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Donations");
-                    reference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot child : snapshot.getChildren()) {
-                                if (child.child("email").getValue().toString().equals(userEmail.getText().toString())) {
-                                    donations donation = new donations(child.child("name").getValue().toString(), child.child("adress").getValue().toString(), child.child("catagory").getValue().toString(), child.child("description").getValue().toString(), child.child("img").getValue().toString(), child.child("email").getValue().toString());
-                                    donationList.add(donation);
-                                }
-                            }
-                            recDonations.setLayoutManager(llm);
-                            donationAdapter adapter = new donationAdapter(donationList,ProfileActivity.this,ProfileActivity.this);
-                            recDonations.setAdapter(adapter);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                } else if(type.equals("soldier")) {
+                if(type.equals("soldier")) {
                     titleDonations.setText("Hobbies");
                     ArrayList<String> hobbies = new ArrayList<>();
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("userInfo")
@@ -339,5 +334,39 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
             }
 
         });
+    }
+
+    public void presentHostSql(int userType,String Email)
+    {
+        List<Host> hosts = sqlDatabase.getAllHosts();
+        List<Host> releventHosts = new ArrayList<>();
+        if(userType==0)
+        {
+
+            for(Host host:hosts)
+            {
+                for(UserStorageData user: host.getListOfResidents())
+                {
+                    if(user.getUID().equals(Email))
+                    {
+                        releventHosts.add(host);
+                    }
+                }
+            }
+        }
+        else if(userType==1)
+        {
+            for(Host host:hosts)
+            {
+                if(host.getHostEmail().equals(Email))
+                {
+                    releventHosts.add(host);
+                }
+            }
+        }
+        UserHostAdapter userHostAdapter = new UserHostAdapter(releventHosts, ProfileActivity.this, ProfileActivity.this);
+        recHosts.setAdapter(userHostAdapter);
+
+
     }
 }

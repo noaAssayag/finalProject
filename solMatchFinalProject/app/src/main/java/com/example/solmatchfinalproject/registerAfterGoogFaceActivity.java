@@ -73,7 +73,7 @@ public class registerAfterGoogFaceActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     DatabaseReference users = FirebaseDatabase.getInstance().getReference("Users");
-                    UserStorageData storageData = new UserStorageData(UID, getName(), null,gender,getDate(),null,type);
+                    UserStorageData storageData = new UserStorageData(UID, getName(), null,gender,getDate(),null,type,UID);
                     users.child(UID).setValue(storageData);
                     Toast.makeText(getApplicationContext(),"Register Successfully",Toast.LENGTH_SHORT).show();
                     Intent newIntent = new Intent(registerAfterGoogFaceActivity.this,EditPersonalDetails.class);

@@ -98,22 +98,22 @@ public class AlertDialogFragmentViewHost extends DialogFragment {
                         })
                         .into(imageOfLocation);
             }
-            if(newHost.isAccommodation())
+            if(newHost.isAccommodation().equals("yes"))
             {
                 checkboxaccomodation.setChecked(true);
                 checkboxaccomodation.setClickable(false);
             }
-            if(newHost.isPets())
+            if(newHost.isPetsString().equals("yes"))
             {
                 checkboxPets.setChecked(true);
                 checkboxPets.setClickable(false);
             }
-             if(newHost.isPrivateRoom())
+             if(newHost.isPrivateRoom().equals("yes"))
             {
                 checkboxprivateRoom.setChecked(true);
                 checkboxprivateRoom.setClickable(false);
             }
-             if(newHost.isSecureEnv()) {
+             if(newHost.isSecureEnv().equals("yes")) {
                 checkboxsecureOption.setChecked(true);
                 checkboxsecureOption.setClickable(false);
             }

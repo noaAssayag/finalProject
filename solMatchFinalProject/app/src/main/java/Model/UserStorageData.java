@@ -3,7 +3,7 @@ package Model;
 import android.graphics.Bitmap;
 
 public class UserStorageData {
-    private int UID;
+    private String UID;
     private String userName;
     private String email;
     private String gen;
@@ -12,7 +12,7 @@ public class UserStorageData {
     private String image=null;
     private String type;
 
-    public UserStorageData(String userName, String email, String gen, String birthday,String password,String image, String type) {
+    public UserStorageData(String userName, String email, String gen, String birthday,String password,String image, String type,String UID) {
         this.userName = userName;
         this.email = email;
         this.gen = gen;
@@ -20,17 +20,18 @@ public class UserStorageData {
         this.password=password;
         this.image=image;
         this.type = type;
+        this.UID = UID;
     }
     public UserStorageData()
     {
 
     }
 
-    public int getUID() {
+    public String getUID() {
         return UID;
     }
 
-    public void setUID(int UID) {
+    public void setUID(String UID) {
         this.UID = UID;
     }
 

@@ -47,6 +47,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import Model.donations;
+import dataBase.DatabaseHelper;
 
 public class addDonationActivity extends Activity {
     int PICK_IMAGE_REQUEST = 100;
@@ -60,6 +61,8 @@ public class addDonationActivity extends Activity {
     String userId;
     Uri imageURI;
     String URL;
+
+    DatabaseHelper sqlDatabase;
     int i = 0;
 
     private BottomNavigationHandler navigationHandler;
@@ -77,6 +80,8 @@ public class addDonationActivity extends Activity {
         uploadImage = findViewById(R.id.uploadImageButt);
         addItem = findViewById(R.id.btnAddDonation);
         spinner = findViewById(R.id.catagorySpinner);
+        sqlDatabase = new DatabaseHelper(this);
+
         String[] options = {"home cooking", "furniture", "food supplies","other"};
         BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
         navigationHandler = new BottomNavigationHandler(this,getApplicationContext());
@@ -137,6 +142,7 @@ public class addDonationActivity extends Activity {
                                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                         @Override
                                                         public void onSuccess(DocumentReference documentReference) {
+                                                            sqlDatabase.insertDonationData(formData);
                                                             Intent intent = new Intent(addDonationActivity.this, ProfileActivity.class);
                                                             startActivity(intent);
                                                         }
@@ -181,6 +187,7 @@ public class addDonationActivity extends Activity {
                                     addDonationToFireStore.collection("Donations").add(formData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                         @Override
                                         public void onSuccess(DocumentReference documentReference) {
+
                                             Toast.makeText(getApplicationContext(),"added donation succefully",Toast.LENGTH_LONG).show();
                                             Intent intent = new Intent(getApplicationContext(),profileActivity.class);
                                             startActivity(intent);

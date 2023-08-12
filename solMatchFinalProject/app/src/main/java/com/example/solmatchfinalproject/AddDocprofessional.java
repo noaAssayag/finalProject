@@ -35,6 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
 
 import Model.Professional;
+import dataBase.DatabaseHelper;
 
 public class AddDocprofessional extends AppCompatActivity {
     private Spinner professCategory;
@@ -50,6 +51,7 @@ public class AddDocprofessional extends AppCompatActivity {
     FirebaseFirestore db;
     DatabaseReference refUser, refProfess;
     String uid,email,userName,imageUser;
+    DatabaseHelper sqlDataBase;
     String precentageAva="0";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class AddDocprofessional extends AppCompatActivity {
         seekBar = findViewById(R.id.seek_bar);
         btnSubmit=findViewById(R.id.btnSubmit);
         bottomNavigationView = findViewById(R.id.menu);
-
+        sqlDataBase = new DatabaseHelper(this);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -122,12 +124,14 @@ public class AddDocprofessional extends AppCompatActivity {
                             }
                         }
                     });
-                    db.collection("professional").document(uid).set(new Professional(email,userName,imageUser,professCategory.getSelectedItem().toString()
+                    Professional professional = new Professional(email,userName,imageUser,professCategory.getSelectedItem().toString()
                             ,professAddress.getSelectedItem().toString()
                             ,professPhoneNum.getText().toString()
-                            ,professDescription.getText().toString(),precentageAva)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            ,professDescription.getText().toString(),precentageAva,uid);
+                    db.collection("professional").document(uid).set(professional).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            sqlDataBase.insertProfessionalData(professional);
                             Toast.makeText(getApplicationContext(),"succes",Toast.LENGTH_LONG);
                             Intent intent = new Intent(getApplicationContext(),profileActivity.class);
                             startActivity(intent);

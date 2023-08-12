@@ -37,6 +37,7 @@ import Fragment.AlertDialogFragmentViewDonations;
 import Fragment.AlertDialogFragmentViewHost;
 import Fragment.MyAlertDialogFragmentListenerView;
 import Model.Host;
+import dataBase.DatabaseHelper;
 
 public class allHosts extends AppCompatActivity implements RecycleViewInterface, MyAlertDialogFragmentListenerView {
     FirebaseDatabase db;
@@ -50,6 +51,10 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
     private BottomNavigationHandler navigationHandler;
     private String filterGen;
     private String filterLoc;
+
+    private DatabaseHelper sqlDatabase;
+
+    private List<Host> allHostsList;
 
 
     @Override
@@ -68,6 +73,10 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         ref = db.getReference("Host");
+        sqlDatabase = new DatabaseHelper(this);
+        allHostsList = sqlDatabase.getAllHosts();
+        UserHostAdapter userHostAdapter = new UserHostAdapter(allHostsList, allHosts.this, allHosts.this);
+        recList.setAdapter(userHostAdapter);
 
         filterByLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -97,123 +106,165 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
             @Override
             public void onClick(View v) {
                 list = new ArrayList<>();
-
-                ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        for (DataSnapshot snap : snapshot.getChildren()) {
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy, h:mm a", Locale.US);
-                            try {
-                                Date date = dateFormat.parse(snap.child("hostingDate").getValue(String.class));
-                                Calendar currentDate = Calendar.getInstance();
-                                Date today = currentDate.getTime();
-                                if (date.after(today)) {
-                                    Host newHost = new Host();
-                                    newHost.setHostName(snap.child("hostName").getValue(String.class));
-                                    newHost.setHostEmail(snap.child("hostEmail").getValue(String.class));
-                                    newHost.setHostAddress(snap.child("hostAddress").getValue(String.class));
-                                    newHost.setHostingDate(snap.child("hostingDate").getValue(String.class));
-                                    String imageUrl = snap.child("hostImg").getValue(String.class);
-                                    newHost.setHostImg(imageUrl);
-                                    String imageUrlLoc = snap.child("hostingLocImg").getValue(String.class);
-                                    newHost.setHostingLocImg(imageUrlLoc);
-                                    newHost.setAccommodation((boolean) snap.child("accommodation").getValue());
-                                    newHost.setPets((boolean) snap.child("pets").getValue());
-                                    newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
-                                    newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
-                                    newHost.setDescription(snap.child("description").getValue().toString());
-                                    if (filterByLoc.getSelectedItem() != null && !(filterLoc.equals("noFilter"))) {
-                                        if (filterByLoc.getSelectedItem().toString().equals(newHost.getHostAddress().split(",")[0])) {
-                                            list.add(newHost);
-                                        }
-
-                                    }
-                                    if (filterByGen.getSelectedItem() != null && !(filterGen.equals("noFilter"))&&!filterByGen.getSelectedItem().equals("Filter By Gender")) {
-                                        refUsers = db.getReference().child("Users");
-                                        refUsers.addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                for (DataSnapshot snapUser : snapshot.getChildren()) {
-                                                    if (snapUser.getKey().equals(snap.getKey())) {
-                                                        if (snapUser.child("gen").getValue().toString().equals(filterByGen.getSelectedItem().toString())) {
-                                                            list.add(newHost);
-
-
-                                                        }
-                                                    }
-
-                                                }
-                                                UserHostAdapter userHostAdapter = new UserHostAdapter(list, allHosts.this, allHosts.this);
-                                                recList.setAdapter(userHostAdapter);
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-
-                                            }
-                                        });
-                                    }
-                                    if ((filterByGen.getSelectedItem().equals("Filter By Gender")) && (filterByLoc.getSelectedItem().equals("Filter By city"))) {
-                                        list.add(newHost);
-
-                                    }
-
-                                } else {
-                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                    DatabaseReference ref = database.getReference().child("Host");
-                                    ref.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot dataSnap : snapshot.getChildren()) {
-                                                if (dataSnap.getKey().equals(snap.getKey())) {
-                                                    ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-
-                                                            } else {
-                                                                // Data removal failed
-                                                                // Handle the error
-                                                            }
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-
-                                    });
-                                }
-                            } catch (ParseException e) {
-                                e.printStackTrace();
+                if(!filterLoc.equals("noFilter") || !filterGen.equals("noFilter"))
+                {
+                    for(Host host: allHostsList)
+                    {
+                        if(!filterLoc.equals("noFilter"))
+                        {
+                            if(filterByLoc.getSelectedItem().toString().equals(host.getHostAddress().split(",")[0]))
+                            {
+                                list.add(host);
                             }
 
                         }
-                        // Populate the RecyclerView with the retrieved list of hosts
-                        UserHostAdapter userHostAdapter = new UserHostAdapter(list, allHosts.this, allHosts.this);
-                        recList.setAdapter(userHostAdapter);
+                        if(!filterGen.equals("noFilter"))
+                        {
+                            if(!list.isEmpty())
+                            {
+                                for(Host host1:allHostsList)
+                                {
+                                    if(!sqlDatabase.getUserByEmail(host1.getHostEmail()).getGen().equals(filterGen))
+                                    {
+                                        list.remove(host1);
+                                    }
+                                }
+                            }
+                            else {
+                                for(Host host2: allHostsList)
+                                {
+                                    if(!sqlDatabase.getUserByEmail(host2.getHostEmail()).getGen().equals(filterGen))
+                                    {
+                                        list.add(host2);
+                                    }
+                                }
+                            }
+                        }
                     }
+                    allHostsList.clear();
+                    allHostsList = list;
+                    userHostAdapter.notifyDataSetChanged();
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
+                }
 
-                });
             }
         });
+//                ref.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                        for (DataSnapshot snap : snapshot.getChildren()) {
+//                            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy, h:mm a", Locale.US);
+//                            try {
+//                                Date date = dateFormat.parse(snap.child("hostingDate").getValue(String.class));
+//                                Calendar currentDate = Calendar.getInstance();
+//                                Date today = currentDate.getTime();
+//                                if (date.after(today)) {
+//                                    Host newHost = new Host();
+//                                    newHost.setHostName(snap.child("hostName").getValue(String.class));
+//                                    newHost.setHostEmail(snap.child("hostEmail").getValue(String.class));
+//                                    newHost.setHostAddress(snap.child("hostAddress").getValue(String.class));
+//                                    newHost.setHostingDate(snap.child("hostingDate").getValue(String.class));
+//                                    String imageUrl = snap.child("hostImg").getValue(String.class);
+//                                    newHost.setHostImg(imageUrl);
+//                                    String imageUrlLoc = snap.child("hostingLocImg").getValue(String.class);
+//                                    newHost.setHostingLocImg(imageUrlLoc);
+//                                    newHost.setAccommodation((boolean) snap.child("accommodation").getValue());
+//                                    newHost.setPets((boolean) snap.child("pets").getValue());
+//                                    newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
+//                                    newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
+//                                    newHost.setDescription(snap.child("description").getValue().toString());
+//                                    if (filterByLoc.getSelectedItem() != null && !(filterLoc.equals("noFilter"))) {
+//                                        if (filterByLoc.getSelectedItem().toString().equals(newHost.getHostAddress().split(",")[0])) {
+//                                            list.add(newHost);
+//                                        }
+//
+//                                    }
+//                                    if (filterByGen.getSelectedItem() != null && !(filterGen.equals("noFilter"))&&!filterByGen.getSelectedItem().equals("Filter By Gender")) {
+//                                        refUsers = db.getReference().child("Users");
+//                                        refUsers.addValueEventListener(new ValueEventListener() {
+//                                            @Override
+//                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                                for (DataSnapshot snapUser : snapshot.getChildren()) {
+//                                                    if (snapUser.getKey().equals(snap.getKey())) {
+//                                                        if (snapUser.child("gen").getValue().toString().equals(filterByGen.getSelectedItem().toString())) {
+//                                                            list.add(newHost);
+//
+//
+//                                                        }
+//                                                    }
+//
+//                                                }
+//                                                UserHostAdapter userHostAdapter = new UserHostAdapter(list, allHosts.this, allHosts.this);
+//                                                recList.setAdapter(userHostAdapter);
+//                                            }
+//
+//                                            @Override
+//                                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                                            }
+//                                        });
+//                                    }
+//                                    if ((filterByGen.getSelectedItem().equals("Filter By Gender")) && (filterByLoc.getSelectedItem().equals("Filter By city"))) {
+//                                        list.add(newHost);
+//
+//                                    }
+//
+//                                } else {
+//                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+//                                    DatabaseReference ref = database.getReference().child("Host");
+//                                    ref.addValueEventListener(new ValueEventListener() {
+//                                        @Override
+//                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                            for (DataSnapshot dataSnap : snapshot.getChildren()) {
+//                                                if (dataSnap.getKey().equals(snap.getKey())) {
+//                                                    ref.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                        @Override
+//                                                        public void onComplete(@NonNull Task<Void> task) {
+//                                                            if (task.isSuccessful()) {
+//
+//                                                            } else {
+//                                                                // Data removal failed
+//                                                                // Handle the error
+//                                                            }
+//                                                        }
+//                                                    });
+//                                                }
+//                                            }
+//                                        }
+//
+//                                        @Override
+//                                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                                        }
+//
+//                                    });
+//                                }
+//                            } catch (ParseException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                        }
+//                        // Populate the RecyclerView with the retrieved list of hosts
+//                        UserHostAdapter userHostAdapter = new UserHostAdapter(list, allHosts.this, allHosts.this);
+//                        recList.setAdapter(userHostAdapter);
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//
+//                });
+
 
     }
     //   public Host(String hostImg, String hostName, String hostEmail, String hostAddress, String hostingDate, String hostingLocImg, boolean accommodation, boolean pets, boolean privateRoom, boolean secureEnv) {
 
     @Override
     public void onItemClick(int position) {
-        Host newHost = list.get(position);
+        Host newHost = allHostsList.get(position);
         AlertDialogFragmentViewHost frag = new AlertDialogFragmentViewHost();
         Bundle b = new Bundle();
         b.putSerializable("Host", newHost);

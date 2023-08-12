@@ -34,6 +34,7 @@ import Fragment.AlertListenerProf;
 import Fragment.MyAlertDialogFragmentListenerView;
 import Model.Host;
 import Model.Professional;
+import dataBase.DatabaseHelper;
 
 public class AllProfessional extends AppCompatActivity implements RecycleViewInterface, AlertListenerProf {
     FirebaseDatabase db;
@@ -43,7 +44,9 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
     Spinner filterByLoc;
     Button btnFilter;
     RecyclerView recList;
-    List<Professional> list = new ArrayList<>();
+    List<Professional> allProfessionalList = new ArrayList<>();
+
+    DatabaseHelper sqlDatabase;
     BottomNavigationView menu;
     private BottomNavigationHandler navigationHandler;
 
@@ -60,6 +63,10 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
         recList.setLayoutManager(llm);
         db = FirebaseDatabase.getInstance();
 
+        sqlDatabase = new DatabaseHelper(this);
+        allProfessionalList = sqlDatabase.getAllProfessionals();
+        ProfessionalAdapter adapter = new ProfessionalAdapter(allProfessionalList, AllProfessional.this, AllProfessional.this);
+        recList.setAdapter(adapter);
         menu = findViewById(R.id.menu);
         menu.setOnItemReselectedListener(item -> {
             switch (item.getItemId()) {
@@ -111,45 +118,87 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                list=new ArrayList<>();
-                ref.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot snap : snapshot.getChildren())
+                 List<Professional> filteredList = new ArrayList<>();
+                if(!filterByLoc.getSelectedItem().toString().equals("noFilter") || !filterByCategory.getSelectedItem().toString().equals("noFilter"))
+                {
+                    for(Professional pro: allProfessionalList)
+                    {
+                        if(!filterByLoc.getSelectedItem().toString().equals("noFilter"))
                         {
-                            Professional professional=new Professional();
-                            professional.setUserName(snap.child("userName").getValue().toString());
-                            professional.setEmail(snap.child("email").getValue().toString());
-                            professional.setPhoneNum(snap.child("phoneNum").getValue().toString());
-                            professional.setCategory(snap.child("category").getValue().toString());
-                            professional.setAddress(snap.child("address").getValue().toString());
-                            professional.setDescription(snap.child("description").getValue().toString());
-                            professional.setPrecAvailability(snap.child("precAvailability").getValue().toString());
-                            professional.setImageUrl(snap.child("imageUrl").getValue().toString());
+                            if(filterByLoc.getSelectedItem().toString().equals(pro.getAddress().split(",")[0]))
+                            {
+                                filteredList.add(pro);
+                            }
 
-                            if (filterByLoc.getSelectedItem() != null && !(filterByLoc.getSelectedItem().toString().equals("Filter By city"))) {
-                                if (filterByLoc.getSelectedItem().toString().equals(professional.getAddress())) {
-                                    list.add(professional);
+                        }
+                        if(!filterByCategory.getSelectedItem().toString().equals("noFilter"))
+                        {
+                            if(!filteredList.isEmpty())
+                            {
+                                for(Professional pro1: allProfessionalList)
+                                {
+                                    if(!pro1.getCategory().equals(filterByCategory.getSelectedItem().toString()))
+                                    {
+                                        filteredList.remove(pro1);
+                                    }
                                 }
                             }
-                            if (filterByCategory.getSelectedItem() != null && !(filterByCategory.getSelectedItem().toString().equals("Filter by category"))) {
-                                if (filterByCategory.getSelectedItem().toString().equals(professional.getCategory())) {
-                                    list.add(professional);
+                            else {
+                                for(Professional pro2: allProfessionalList)
+                                {
+                                    if(!pro2.getCategory().equals(filterByCategory.getSelectedItem().toString()))
+                                    {
+                                        filteredList.add(pro2);
+                                    }
                                 }
-                            }
-                            if ((filterByCategory.getSelectedItem().equals("Filter by category")) && (filterByLoc.getSelectedItem().equals("Filter By city"))) {
-                                list.add(professional);
                             }
                         }
-                        ProfessionalAdapter adapter = new ProfessionalAdapter(list, AllProfessional.this, AllProfessional.this);
-                        recList.setAdapter(adapter);
+                        allProfessionalList.clear();
+                        allProfessionalList = filteredList;
+                        adapter.notifyDataSetChanged();
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
+
+                }
+//                ref.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        for (DataSnapshot snap : snapshot.getChildren())
+//                        {
+//                            Professional professional=new Professional();
+//                            professional.setUserName(snap.child("userName").getValue().toString());
+//                            professional.setEmail(snap.child("email").getValue().toString());
+//                            professional.setPhoneNum(snap.child("phoneNum").getValue().toString());
+//                            professional.setCategory(snap.child("category").getValue().toString());
+//                            professional.setAddress(snap.child("address").getValue().toString());
+//                            professional.setDescription(snap.child("description").getValue().toString());
+//                            professional.setPrecAvailability(snap.child("precAvailability").getValue().toString());
+//                            professional.setImageUrl(snap.child("imageUrl").getValue().toString());
+//
+//                            if (filterByLoc.getSelectedItem() != null && !(filterByLoc.getSelectedItem().toString().equals("Filter By city"))) {
+//                                if (filterByLoc.getSelectedItem().toString().equals(professional.getAddress())) {
+//                                    list.add(professional);
+//                                }
+//                            }
+//                            if (filterByCategory.getSelectedItem() != null && !(filterByCategory.getSelectedItem().toString().equals("Filter by category"))) {
+//                                if (filterByCategory.getSelectedItem().toString().equals(professional.getCategory())) {
+//                                    list.add(professional);
+//                                }
+//                            }
+//                            if ((filterByCategory.getSelectedItem().equals("Filter by category")) && (filterByLoc.getSelectedItem().equals("Filter By city"))) {
+//                                list.add(professional);
+//                            }
+//                        }
+//                        ProfessionalAdapter adapter = new ProfessionalAdapter(list, AllProfessional.this, AllProfessional.this);
+//                        recList.setAdapter(adapter);
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
             }
         });
 
@@ -165,7 +214,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
 
     @Override
     public void onItemClick(int position) {
-        Professional professional = list.get(position);
+        Professional professional = allProfessionalList.get(position);
         AlertDialogFragmentViewProf frag = new AlertDialogFragmentViewProf();
         Bundle b = new Bundle();
         b.putString("Description", professional.getDescription());
