@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                                 String UID = user.getUid();
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(UID);
 
+                                // hello
                                 databse.collection("Users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                     @Override
                                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
