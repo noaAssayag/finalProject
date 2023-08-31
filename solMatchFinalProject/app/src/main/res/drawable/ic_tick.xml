@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <path
+        android:fillColor="@color/colorBtSignIn"
+        android:pathData="M20,20m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M31.28,12L15.28,28"
+        android:strokeWidth="4"
+        android:strokeColor="#fff"
+        android:strokeLineCap="round" />
+    <path
+        android:fillColor="@color/colorBtSignIn"
+        android:pathData="M15.28,28L8.72,21.43"
+        android:strokeWidth="4"
+        android:strokeColor="#fff"
+        android:strokeLineCap="round" />
+</vector>

@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegSecActivity">
-
-    <LinearLayout
+    android:scrollbars="none"
+    android:background="@drawable/bg_gradient"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="86dp"
-        tools:layout_editor_absoluteY="339dp">
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gradient"
+        tools:context=".auth.RegSecActivity">
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -20,94 +19,115 @@
             android:layout_gravity="center|top"
             android:layout_marginTop="72dp"
             android:text="@string/sign_up_with_email_string"
-            android:textColor="@color/log_in_to_chatbox_color"
+            android:textColor="@color/white"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/textViewType"
             android:layout_width="81dp"
             android:layout_height="24dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
             android:text="@string/type"
-            android:textColor="@color/your_email_color"
-            android:textSize="18sp" />
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitle"/>
 
         <Spinner
             android:id="@+id/spinnerType"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:entries="@array/typeReg" />
+            android:layout_marginTop="5dp"
+            android:entries="@array/typeReg"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/textViewType"/>
 
         <TextView
             android:id="@+id/textViewGender"
             android:layout_width="81dp"
             android:layout_height="24dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
             android:text="@string/gender"
-            android:textColor="@color/your_email_color"
-            android:textSize="18sp" />
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerType"
+           />
 
         <Spinner
             android:id="@+id/spinnerGender"
+            android:entries="@array/genderReg"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:entries="@array/genderReg" />
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/textViewGender"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/linear"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerGender"
+            >
 
             <TextView
                 android:id="@+id/textViewBd"
-                android:layout_width="81dp"
-                android:layout_height="24dp"
-                android:layout_gravity="left"
-                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/birthdate"
-                android:textColor="@color/your_email_color"
+                android:textColor="@color/white"
                 android:textSize="18sp"
-                tools:layout_editor_absoluteX="27dp"
-                tools:layout_editor_absoluteY="338dp" />
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                app:layout_constraintStart_toStartOf="@+id/gl_start" />
 
             <TextView
                 android:id="@+id/dateCal"
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="16dp"
-                android:drawableLeft="@drawable/baseline_calendar_today_24" />
+                android:drawableLeft="@drawable/baseline_calendar_month_24"
+              />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/lin"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/linear">
 
             <TextView
                 android:id="@+id/textViewUploadAnImg"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_gravity="left"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="10dp"
                 android:text="@string/addProfImg"
-                android:textColor="@color/your_email_color"
+                android:layout_width="81dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
                 android:textSize="18sp"
-                tools:layout_editor_absoluteX="27dp"
-                tools:layout_editor_absoluteY="338dp" />
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                app:layout_constraintStart_toStartOf="@+id/gl_start"
+                app:layout_constraintTop_toBottomOf="@+id/linear"
+                />
 
             <ImageButton
                 android:id="@+id/btnUploadImg"
@@ -123,35 +143,46 @@
             android:id="@+id/userImg"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="16dp"
-            android:src="@drawable/baseline_image_24">
+            android:src="@drawable/baseline_image_24"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/lin">
         </ImageView>
 
         <Button
             android:id="@+id/btnSubmit"
-            android:layout_width="260dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#404040"
             android:text="@string/submit"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/colorBtSignIn"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
             android:textColor="@color/white"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/userImg"
+            app:boxStrokeColor="@color/white"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05839416" />
 
-            />
-    </LinearLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="24dp" />
 
-    <!--    <ImageView-->
-    <!--        android:id="@+id/line_42__stroke_4"-->
-    <!--        android:layout_width="50dp"-->
-    <!--        android:layout_height="8dp"-->
-    <!--        android:layout_marginStart="120dp"-->
-    <!--        android:layout_marginEnd="241dp"-->
-    <!--        android:contentDescription="line_42_stroke"-->
-    <!--        android:src="@drawable/line_42_stroke"-->
-    <!--        app:layout_constraintBottom_toBottomOf="@+id/textViewTitle"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.0"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/textViewTitle"-->
-    <!--        app:layout_constraintVertical_bias="0.652" />-->
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

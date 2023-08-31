@@ -42,13 +42,13 @@ public class RegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(layout.activity_register);
 
-        linkToLogin = (TextView) findViewById(R.id.textViewBackToLogin);
-        inputUserName = (EditText) findViewById(R.id.inputUserName);
-        inputEmail = (EditText) findViewById(R.id.inputEmail);
-        inputPassword = (EditText) findViewById(R.id.inputPassword);
-        inputRePassword = (EditText) findViewById(R.id.inputRePassword);
+        linkToLogin = (TextView) findViewById(R.id.bt_sign_in);
+        inputUserName = (EditText) findViewById(R.id.et_name);
+        inputEmail = (EditText) findViewById(R.id.et_email);
+        inputPassword = (EditText) findViewById(R.id.et_password);
+        inputRePassword = (EditText) findViewById(R.id.et_confirm_password);
         mLoadingBar = new ProgressDialog(RegisterActivity.this);
-        btnRegister = (Button) findViewById(id.btnRegister);
+        btnRegister = (Button) findViewById(id.bt_sign_up);
         linkToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

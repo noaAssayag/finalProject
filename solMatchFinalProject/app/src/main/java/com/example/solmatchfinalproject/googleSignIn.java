@@ -56,8 +56,6 @@ public class googleSignIn extends LoginActivity {
                 .requestEmail()
                 .build();
         FirebaseApp.initializeApp(this);
-        google = findViewById(R.id.googleButt);
-
         // using google methods
         // this checks if there is a user allready logged in
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);

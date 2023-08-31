@@ -42,13 +42,12 @@ import dataBase.DatabaseHelper;
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
-
     FirebaseFirestore databse = FirebaseFirestore.getInstance();
 
     ArrayList<UserStorageData> users;
     ArrayList<Host> hosts;
     ArrayList<donations> donationsList;
-    TextView signIn, forgotPassword;
+    Button signIn, forgotPassword;
     EditText inputUserEmail, inputpassword;
     Button btnLogin;
     Button google;
@@ -60,12 +59,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        signIn = (TextView) findViewById(R.id.textViewSignUp);
-        inputUserEmail = (EditText) findViewById(R.id.inputLogEmail);
-        inputpassword = (EditText) findViewById(R.id.inputLogPassword);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        google = findViewById(R.id.googleButt);
-        forgotPassword = findViewById(R.id.textViewForgetPassword);
+        inputUserEmail = (EditText) findViewById(R.id.et_email);
+        inputpassword = (EditText) findViewById(R.id.et_password);
+        btnLogin = (Button) findViewById(R.id.bt_login);
+        forgotPassword = findViewById(R.id.bt_forgot_password);
+        signIn=findViewById(R.id.bt_dont_have_account);
         mLoadingBar = new ProgressDialog(this);
         users = new ArrayList<>();
         hosts = new ArrayList<>();
@@ -86,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 String UID = user.getUid();
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(UID);
-
                                 // hello
                                 databse.collection("Users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                     @Override
@@ -164,15 +161,9 @@ public class LoginActivity extends AppCompatActivity {
         });
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                auth.sendPasswordResetEmail(inputUserEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "email was sent to you with information", Toast.LENGTH_LONG);
-                        }
-                    }
-                });
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginActivity.this,ForgetPassword.class);
+                startActivity(intent);
             }
         });
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -183,13 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
-        google.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, googleSignIn.class);
-                startActivity(intent);
-            }
-        });
+
     }
 
     private boolean checkCredentials() {

@@ -32,6 +32,174 @@
 		<item name="android:letterSpacing">-0.01</item>
 		<item name="android:textColor">#5A5A5A</item>
 	</style>
+	<style name="MyEtStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+		<item name="colorPrimary">@color/white</item>
+
+	</style>
+	<style name="ShapeAppearance.circular.image" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+		<item name="cornerSize">50%</item>
+		<item name="cornerFamily">rounded</item>
+	</style>
+
+	<style name="MyToolbarStyle" parent="AppTheme">
+		<item name="android:textColorSecondary">@color/white</item>
+	</style>
+
+	<style name="CheckBoxTintTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+		<item name="colorAccent">@color/colorBgSideView</item>
+		<item name="android:fontFamily">fonts/ClanPro-Medium.otf</item>
+		<item name="android:textSize">18sp</item>
+	</style>
+
+	<style name="Theme.ForgotPassword" parent="AppTheme">
+		<item name="colorPrimary">@color/black</item>
+	</style>
+
+
+	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+	<style name="AppTheme.NoActionBar">
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
+	</style>
+
+	<style name="MyPrimaryButton" parent="@android:style/Widget.Button">
+		<item name="android:textColor">@color/btn_text_color</item>
+		<item name="android:fontFamily">fonts/ClanPro-Medium.otf</item>
+	</style>
+
+	<style name="MyTextViewStyle" parent="android:Widget.TextView">
+		<item name="android:textColor">@color/tv_color</item>
+		<item name="android:textSize">18dp</item>
+		<item name="android:fontFamily">fonts/ClanPro-Medium.otf</item>
+	</style>
+
+	<!-- <style parent="android:Widget.EditText" name="MyEditTextStyle">
+         <item name="android:textColor">@color/btn_color</item>
+         &lt;!&ndash;<item name="colorControlNormal">#1b419b</item>&ndash;&gt;
+         <item name="android:background">@null</item>
+         <item name="android:textCursorDrawable">@null</item>
+         <item name="android:cursorVisible">true</item>
+
+     </style>-->
+
+	<style name="progressIndicatorStyle">
+		<item name="android:indeterminate">true</item>
+		<item name="android:indeterminateDuration">1500</item>
+		<item name="android:indeterminateOnly">true</item>
+		<item name="android:minHeight">16dip</item>
+		<item name="android:maxHeight">16dip</item>
+	</style>
+
+	<style name="Toolbar" parent="Theme.AppCompat.Light">
+		<item name="android:tint">@color/white</item>
+		<item name="android:textColorSecondary">@android:color/white</item>
+		<item name="actionMenuTextColor">@android:color/white</item>
+	</style>
+
+	<style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+		<item name="android:layout_height">match_parent</item>
+		<item name="colorAccent">@color/colorPrimary</item>
+	</style>
+
+	<style name="MyTitleTextStyle">
+		<item name="android:textColor">@color/colorPrimary</item>
+		<item name="android:textAppearance">@color/colorPrimaryDark</item>
+	</style>
+
+	<style name="Transparent" parent="android:Theme.Light">
+		<item name="android:windowIsTranslucent">true</item>
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:windowContentOverlay">@null</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowIsFloating">true</item>
+		<item name="android:backgroundDimEnabled">false</item>
+	</style>
+
+	<!-- Base application theme. -->
+	<style name="Mytheme" parent="Theme.AppCompat.Light.NoActionBar">
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="android:textAppearance">@color/colorPrimaryDark</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="android:windowBackground">@color/white</item>
+		<item name="colorAccent">@color/white</item>
+		<item name="colorControlNormal">#c5c5c5</item>
+		<item name="colorControlActivated">@color/colorPrimaryDark</item>
+		<item name="colorControlHighlight">@color/colorAccent</item>
+		<item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+
+	</style>
+
+	<style name="RatingBar" parent="Theme.AppCompat">
+		<item name="colorControlNormal">@color/offline</item>
+		<item name="colorControlActivated">@color/colorPrimary</item>
+	</style>
+
+	<style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+		<!--buttons color-->
+		<item name="colorAccent">#421</item>
+		<!--title and message color-->
+		<item name="android:textColorPrimary">@android:color/holo_blue_light</item>
+		<!--dialog background-->
+		<item name="android:windowBackground">@android:color/white</item>
+	</style>
+
+	<style name="NavigationDrawerStyle">
+		<item name="android:textSize">20sp</item><!-- text size in menu-->
+		<item name="android:listPreferredItemHeightSmall">60dp</item><!-- item size in menu-->
+		<item name="android:fontFamily">fonts/ClanPro-NarrBook.otf</item>
+		<!--<item name="colorControlHighlight">@android:color/white</item>-->
+	</style>
+
+
+
+	<style name="Theme.App.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+		<item name="colorControlNormal">#c5c5c5</item>
+		<item name="colorControlActivated">@color/colorAccent</item>
+		<item name="colorControlHighlight">@color/colorAccent</item>
+	</style>
+
+	<style name="textStyle" parent="@android:style/Widget.Button">
+		<item name="android:fontFamily">fonts/Bariol_Bold.otf</item>
+	</style>
+
+	<style name="StyledTextInputLayoutTheme" parent="@android:style/TextAppearance">
+		<item name="android:textColor">@color/tv_color</item>
+		<item name="android:textColorHint">@color/black</item>
+		<item name="android:colorActivatedHighlight">@color/chat_text</item>
+	</style>
+
+	<style name="CommentsDialog" parent="@android:style/Theme.Dialog">
+		<item name="android:windowAnimationStyle">@style/CommentsDialogAnimation</item>
+	</style>
+
+	<style name="CommentsDialogAnimation">
+		<item name="android:windowEnterAnimation">@android:anim/bounce_interpolator</item>
+		<item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+	</style>
+
+	<!--Chat-->
+	<style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+		<item name="boxStrokeColor">@color/black</item>
+		<item name="boxStrokeWidth">1dp</item>
+		<item name="boxCornerRadiusBottomStart">5dp</item>
+		<item name="boxCornerRadiusBottomEnd">5dp</item>
+		<item name="boxCornerRadiusTopStart">5dp</item>
+		<item name="boxCornerRadiusTopEnd">5dp</item>
+		<item name="colorControlNormal">@color/black</item>
+		<item name="colorControlActivated">@color/black</item>
+		<item name="colorControlHighlight">@color/black</item>
+	</style>
+
+	<style name="Theme.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+		<item name="colorPrimary">@color/white</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="windowActionBar">false</item>
+		<item name="android:windowFullscreen">true</item>
+		<item name="android:windowContentOverlay">@null</item>
+	</style>
 
 
 

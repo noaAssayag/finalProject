@@ -257,5 +257,13 @@
     <string name="descriptionProf">description</string>
 
     <string name="filter">Filter</string>
+    <string name="signIn">Sign In</string>
+    <string name="forgotPasswordTxt">Forgot Password?\n</string>
+    <string name="dontHaveAccountTxt">Dont have an account? SIGN UP</string>
+    <string name="enterMailTxt">Enter your mail ID for recovery</string>
+    <string name="Error">You must fill Email field</string>
+    <string name="signUp">Sign Up</string>
+    <string name="confirmPassword">confirm password\n</string>
+    <string name="message_already_have_account">Already have an account? SIGN IN</string>
 
 </resources>
