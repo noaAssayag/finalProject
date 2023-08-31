@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_gradient"
-        tools:context=".auth.RegSecActivity">
+    >
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -96,14 +96,15 @@
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 app:layout_constraintStart_toStartOf="@+id/gl_start" />
-
             <TextView
                 android:id="@+id/dateCal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_marginTop="5dp"
                 android:drawableLeft="@drawable/baseline_calendar_month_24"
-              />
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@+id/textViewBd"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -154,7 +155,7 @@
         </ImageView>
 
         <Button
-            android:id="@+id/btnSubmit"
+            android:id="@+id/btnSubmitReg"
             android:text="@string/submit"
             android:layout_width="0dp"
             android:layout_height="60dp"
