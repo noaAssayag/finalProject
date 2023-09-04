@@ -64,8 +64,7 @@ import Model.donations;
 
 public class ProfileActivity extends AppCompatActivity implements RecycleViewInterface {
     ImageView userImg;
-    TextView userName, aboutme, titleDonations,addDonationPrompt,addHostingPrompt;
-    EditText userEmail, birthDate;
+    EditText userName, userEmail, birthDate;
     RecyclerView recDonations;
     BottomNavigationView menu;
     RecyclerView recHosts;
@@ -89,17 +88,15 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         super.onCreate(savedInstanceState);
         db = FirebaseDatabase.getInstance();
         setContentView(R.layout.profilev2);
-        userImg = findViewById(R.id.userImg);
-        userName = findViewById(R.id.userName);
-        userEmail = findViewById(R.id.userEmail);
-        titleDonations = findViewById(R.id.donationPromptProfile);
-        aboutme = findViewById(R.id.aboutMe);
+        userImg = findViewById(R.id.iv_profile);
+        userName = findViewById(R.id.et_name);
+        userEmail = findViewById(R.id.et_email);
         birthDate = findViewById(R.id.birthDateEditTxt);
         recDonations = findViewById(R.id.donationsPromptRecycler);
         recHosts = findViewById(R.id.hostingPromptRecycler);
         addHost = findViewById(R.id.newHostingButt);
         AddDonation = findViewById(R.id.newDonationButt);
-        menu = findViewById(R.id.menu);
+       // menu = findViewById(R.id.menu);
         auth = FirebaseAuth.getInstance();
         sqlDatabase = new DatabaseHelper(this);
        if(getIntent().getStringExtra("UID") == null)
@@ -180,29 +177,29 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                             })
                             .into(userImg);
                 }
-                if(type.equals("soldier")) {
-                    titleDonations.setText("Hobbies");
-                    ArrayList<String> hobbies = new ArrayList<>();
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("userInfo")
-                            .child("hobbies");
-                    reference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot snap : snapshot.getChildren()) {
-                                hobbies.add(snap.getValue().toString());
-                            }
-                            recDonations.setLayoutManager(llm);
-                            hobbiesListAdapter adapter = new hobbiesListAdapter(hobbies);
-                            recDonations.setAdapter(adapter);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-                }
+//                if(type.equals("soldier")) {
+//                    titleDonations.setText("Hobbies");
+//                    ArrayList<String> hobbies = new ArrayList<>();
+//                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("userInfo")
+//                            .child("hobbies");
+//                    reference.addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                            for (DataSnapshot snap : snapshot.getChildren()) {
+//                                hobbies.add(snap.getValue().toString());
+//                            }
+//                            recDonations.setLayoutManager(llm);
+//                            hobbiesListAdapter adapter = new hobbiesListAdapter(hobbies);
+//                            recDonations.setAdapter(adapter);
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError error) {
+//
+//                        }
+//                    });
+//
+//                }
             }
 
             @Override
@@ -212,30 +209,30 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
 
         });
 
-        menu.setOnItemReselectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.myHome: {
-                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                    overridePendingTransition(0, 0);
-                    break;
-                }
-                case R.id.chatMenu: {
-                    startActivity(new Intent(getApplicationContext(), chatMenuActivity.class));
-                    overridePendingTransition(0, 0);
-                    break;
-                }
-                case R.id.search: {
-                    startActivity(new Intent(getApplicationContext(), searchNavigationMenue.class));
-                    overridePendingTransition(0, 0);
-                    break;
-                }
-                case R.id.logOut: {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    overridePendingTransition(0, 0);
-                    break;
-                }
-            }
-        });
+//        menu.setOnItemReselectedListener(item -> {
+//            switch (item.getItemId()) {
+//                case R.id.myHome: {
+//                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+//                    overridePendingTransition(0, 0);
+//                    break;
+//                }
+//                case R.id.chatMenu: {
+//                    startActivity(new Intent(getApplicationContext(), chatMenuActivity.class));
+//                    overridePendingTransition(0, 0);
+//                    break;
+//                }
+//                case R.id.search: {
+//                    startActivity(new Intent(getApplicationContext(), searchNavigationMenue.class));
+//                    overridePendingTransition(0, 0);
+//                    break;
+//                }
+//                case R.id.logOut: {
+//                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+//                    overridePendingTransition(0, 0);
+//                    break;
+//                }
+//            }
+//        });
 
         addHost.setOnClickListener(new View.OnClickListener() {
             @Override

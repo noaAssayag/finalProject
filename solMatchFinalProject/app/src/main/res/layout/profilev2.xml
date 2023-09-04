@@ -1,215 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shadow">
-
-    <RelativeLayout
+    android:background="@drawable/bg_gradient"
+    android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|top">
+        android:layout_height="wrap_content">
 
-        <ScrollView
+        <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gradient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/menu">
+            android:layout_height="?actionBarSize">
 
-            <LinearLayout
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/top_app_bar"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:navigationIcon="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center|top"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/personal_de"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/sans"
-                    android:gravity="center_horizontal"
-                    android:text="@string/personal_de"
-                    android:textAppearance="@style/personal_de"
-                    android:textColor="#292929" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/userImg"
-                        android:layout_width="104.25dp"
-                        android:layout_height="104.25dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:src="@drawable/anonymousman" />
-
-                    <TextView
-                        android:id="@+id/userName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/userImg"
-                        android:text="@string/userName"
-                        android:textAppearance="@style/personal_de"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/userImg"
-                        android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@id/userName"
-                        android:src="@drawable/baseline_mode_edit_24" />
-
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <Button
-                            android:id="@+id/newDonationButt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="48dp"
-                            android:layout_gravity="left"
-                            android:layout_marginLeft="16dp"
-                            android:drawableLeft="@drawable/baseline_add_circle_24"
-                            android:text="@string/addDonationoption" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <Button
-                            android:id="@+id/newHostingButt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="48dp"
-                            android:layout_gravity="right"
-                            android:layout_marginRight="16dp"
-                            android:drawableLeft="@drawable/baseline_add_business_24"
-                            android:text="@string/addHost" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
+                android:layout_centerInParent="true"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:text="@string/profile"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
 
-                <TextView
-                    android:id="@+id/aboutMe"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/aboutMe"
-                    android:textAppearance="@style/personal_de"
-                    android:textSize="18dp" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_dummy_user"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout" />
+        <LinearLayout
+            android:id="@+id/buttonContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_profile">
+
+            <!-- First Button -->
+            <Button
+                android:id="@+id/newHostingButt"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_margin="20dp"
+                android:paddingBottom="10dp"
+                android:gravity="center"
+                android:text="@string/addHost"
+                android:drawableLeft="@drawable/baseline_add_circle_outline_24"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                android:textColor="@android:color/white"
+                app:backgroundTint="@color/colorBtSignIn" />
+
+            <!-- Second Button -->
+            <Button
+                android:id="@+id/newDonationButt"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_margin="20dp"
+                android:paddingBottom="10dp"
+                android:gravity="center"
+                android:text="@string/addDonationoption"
+                android:drawableLeft="@drawable/baseline_add_circle_outline_24"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                android:textColor="@android:color/white"
+                app:backgroundTint="@color/colorBtSignIn" />
+        </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_update_pic"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/outline_edit_24"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
+        app:layout_constraintEnd_toEndOf="@+id/iv_profile"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/iv_profile"
+        app:layout_constraintTop_toTopOf="@+id/iv_profile"
+        app:layout_constraintVertical_bias="0.78" />
 
 
-                <TextView
-                    android:id="@+id/email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="16dp"
-                    android:text="@string/email"
-                    android:textAppearance="@style/personal_de"
-                    android:textSize="18dp" />
 
-                <EditText
-                    android:id="@+id/userEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@drawable/profile_rectangle" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/name"
+        app:hintEnabled="true"
+        android:textColorHint="@color/white"
+        android:enabled="false"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/buttonContainer">
 
-                <TextView
-                    android:id="@+id/birthDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="left"
-                    android:text="@string/birthdate"
-                    android:textAppearance="@style/personal_de"
-                    android:textSize="18dp" />
-
-                <EditText
-                    android:id="@+id/birthDateEditTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@drawable/profile_rectangle" />
-
-                <TextView
-                    android:id="@+id/donationPromptProfile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="left"
-                    android:text="@string/AllDonations"
-                    android:textAppearance="@style/personal_de"
-                    android:textSize="18dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/donationsPromptRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="2dp" />
-
-                <TextView
-                    android:id="@+id/hostingsPromptProfile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="16dp"
-                    android:gravity="left"
-                    android:text="@string/hosts"
-                    android:textAppearance="@style/personal_de"
-                    android:textSize="18dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/hostingPromptRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="16dp" />
-            </LinearLayout>
-        </ScrollView>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/menu"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            app:menu="@menu/bottom_nav_menu" />
-    </RelativeLayout>
-</FrameLayout>
+            android:background="@null"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:textSize="18dp"
+            android:text=""
+            app:backgroundTint="@android:color/transparent"
+            android:imeOptions="actionNext"
+            android:inputType="textCapWords"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@android:color/white" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:hint="@string/birthdate"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/birthDateEditTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:backgroundTint="@android:color/transparent"
+            android:text=""
+            android:textSize="18dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:imeOptions="actionDone"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:hint="@string/email"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_phone">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@android:color/transparent"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:text=""
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:textSize="18dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textColor="@color/white"
+            tools:layout_editor_absoluteX="94dp"
+            tools:layout_editor_absoluteY="421dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/donationPromptProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginTop="15dp"
+        android:gravity="left"
+        android:text="@string/AllDonations"
+        android:textAppearance="@style/personal_de"
+        android:textSize="18dp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_email"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/donationsPromptRecycler"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/donationPromptProfile"/>
+
+    <TextView
+        android:id="@+id/hostingsPromptProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginTop="15dp"
+        android:gravity="left"
+        android:text="@string/hosts"
+        android:textAppearance="@style/personal_de"
+        android:textSize="18dp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/donationsPromptRecycler"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hostingPromptRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/gl_end"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/hostingsPromptProfile"/>
+
+        <Button
+            android:id="@+id/bt_save"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:text="Edit"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/colorBtSignIn"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/hostingPromptRecycler" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

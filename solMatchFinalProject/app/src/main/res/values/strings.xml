@@ -117,7 +117,7 @@
     <string name="_9_41_string">9:41</string>
     <string name="sign_up_with_email_string">Sign up with Email</string>
     <string name="get_chatting_with_friends_and_family_today_by_signing_up_for_our_chat_app__string">Get chatting with friends and family today by signing up for our chat app!</string>
-
+    <string name="profile">Profile</string>
     <string name="confirm_password_string">Confirm Password</string>
     <string name="create_an_account_string">Create an account</string>
     <string name="your_name_string">your name</string>
@@ -251,8 +251,8 @@
     <string name="what_are_yo">What Are You Looking For?</string>
     <string name="street">Street</string>
     <string name="Apartment">Apartment</string>
-    <string name="addHost">Add Host</string>
-    <string name="addDonationoption">Add Donation</string>
+    <string name="addHost">Host</string>
+    <string name="addDonationoption">Donation</string>
     <string name="ViewProfessional">View Professional Details:</string>
     <string name="descriptionProf">description</string>
 

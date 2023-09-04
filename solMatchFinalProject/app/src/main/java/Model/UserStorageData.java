@@ -11,8 +11,11 @@ public class UserStorageData {
     private String password;
     private String image=null;
     private String type;
+    private userPersonalInfo info;
 
-    public UserStorageData(String userName, String email, String gen, String birthday,String password,String image, String type,String UID) {
+
+    public UserStorageData(String UID,String userName, String email, String gen, String birthday,String password,String image, String type) {
+        this.UID=UID;
         this.userName = userName;
         this.email = email;
         this.gen = gen;
@@ -20,11 +23,22 @@ public class UserStorageData {
         this.password=password;
         this.image=image;
         this.type = type;
-        this.UID = UID;
     }
     public UserStorageData()
     {
 
+    }
+
+    public UserStorageData(String UID,String userName, String email, String gen, String birthday, String password, String image, String type, userPersonalInfo info) {
+        this.UID = UID;
+        this.userName = userName;
+        this.email = email;
+        this.gen = gen;
+        this.birthday = birthday;
+        this.password = password;
+        this.image = image;
+        this.type = type;
+        this.info = info;
     }
 
     public String getUID() {
@@ -86,5 +100,12 @@ public class UserStorageData {
 
     public void setType(String type) {
         this.type = type;
+    }
+    public userPersonalInfo getInfo() {
+        return info;
+    }
+
+    public void setInfo(userPersonalInfo info) {
+        this.info = info;
     }
 }

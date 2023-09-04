@@ -11,6 +11,10 @@ public class userPersonalInfo {
         this.hobbies = hobbies;
         this.description = description;
     }
+    public userPersonalInfo()
+    {
+
+    }
 
     public ArrayList<String> getHobbies() {
         return hobbies;

@@ -29,9 +29,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
 
@@ -39,16 +41,15 @@ import Model.Host;
 import Model.UserStorageData;
 import Model.donations;
 import dataBase.DatabaseHelper;
-
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
-    FirebaseFirestore databse = FirebaseFirestore.getInstance();
+    FirebaseFirestore database = FirebaseFirestore.getInstance();
 
     ArrayList<UserStorageData> users;
     ArrayList<Host> hosts;
     ArrayList<donations> donationsList;
     Button signIn, forgotPassword;
-    EditText inputUserEmail, inputpassword;
+    EditText inputUserEmail, inputPassword;
     Button btnLogin;
     Button google;
     private ProgressDialog mLoadingBar;
@@ -59,16 +60,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        inputUserEmail = (EditText) findViewById(R.id.et_email);
-        inputpassword = (EditText) findViewById(R.id.et_password);
-        btnLogin = (Button) findViewById(R.id.bt_login);
+        inputUserEmail = findViewById(R.id.et_email);
+        inputPassword = findViewById(R.id.et_password);
+        btnLogin = findViewById(R.id.bt_login);
         forgotPassword = findViewById(R.id.bt_forgot_password);
-        signIn=findViewById(R.id.bt_dont_have_account);
+        signIn = findViewById(R.id.bt_dont_have_account);
         mLoadingBar = new ProgressDialog(this);
         users = new ArrayList<>();
         hosts = new ArrayList<>();
         donationsList = new ArrayList<>();
         sqlData = new DatabaseHelper(this);
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,95 +79,69 @@ public class LoginActivity extends AppCompatActivity {
                     mLoadingBar.setMessage("Please wait while we check your credentials");
                     mLoadingBar.setCanceledOnTouchOutside(false);
                     mLoadingBar.show();
-                    auth.signInWithEmailAndPassword(inputUserEmail.getText().toString(), inputpassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                String UID = user.getUid();
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Users").child(UID);
-                                // hello
-                                databse.collection("Users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                    for(QueryDocumentSnapshot snapshot: queryDocumentSnapshots)
-                                    {
-                                        UserStorageData user = snapshot.toObject(UserStorageData.class);
-                                        users.add(user);
+
+                    auth.signInWithEmailAndPassword(inputUserEmail.getText().toString(), inputPassword.getText().toString())
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                        String UID = user.getUid();
+                                        database.collection("Users").document(UID).get()
+                                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                        if (documentSnapshot.exists()) {
+                                                            UserStorageData userData = documentSnapshot.toObject(UserStorageData.class);
+                                                            users.add(userData);
+
+                                                            // Rest of your code for user data retrieval
+                                                            // You can access userData fields like this:
+                                                            // String userName = userData.getUserName();
+
+                                                            sqlData.compareAndUpdateUsers(users);
+                                                            // Fetch other data here (hosts, donations, etc.)
+
+                                                            // Check if user has userInfo
+                                                            if (documentSnapshot.contains("info")) {
+                                                                Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_SHORT).show();
+                                                                Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                                                                intent.putExtra("UserEmail", inputUserEmail.getText().toString());
+                                                                startActivity(intent);
+                                                            } else {
+                                                                // Redirect to personalQuestionsActivity
+                                                                Intent intent = new Intent(LoginActivity.this, personalQuestionsActivity.class);
+                                                                startActivity(intent);
+                                                            }
+                                                        } else {
+                                                            // Handle the case where the document doesn't exist
+                                                            Toast.makeText(getApplicationContext(), "User data not found", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "The credentials don't match any user", Toast.LENGTH_SHORT).show();
+                                        mLoadingBar.hide();
                                     }
-                                    sqlData.compareAndUpdateUsers(users);
-                                    databse.collection("Host").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                          for(QueryDocumentSnapshot snapshot: queryDocumentSnapshots)
-                                          {
-                                            Host host = snapshot.toObject(Host.class);
-                                            hosts.add(host);
-                                          }
-                                          sqlData.compareAndUpdateHosts(hosts);
-                                          databse.collection("Donations").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                              @Override
-                                              public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                  for(QueryDocumentSnapshot snapshot:queryDocumentSnapshots)
-                                                  {
-                                                      donations donation = snapshot.toObject(donations.class);
-                                                      donationsList.add(donation);
-                                                  }
-                                                  sqlData.compareAndUpdateDonations(donationsList);
-                                              }
-                                          });
-                                        }
-                                    });
-                                        ref.addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                if (snapshot.hasChild("userInfo")) {
-                                                    Toast.makeText(getApplicationContext(), "login was good", Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                                                    intent.putExtra("UserEmail", inputUserEmail.getText().toString());
-                                                    intent.putExtra("UID",UID);
-                                                    startActivity(intent);
-                                                } else {
-
-                                                    Intent intent = new Intent(LoginActivity.this, personalQuestionsActivity.class);
-                                                    setContentView(R.layout.personal_questions_layout);
-                                                    startActivity(intent);
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-
-                                            }
-                                        });
-                                    }
-
-
-                                });
-
-
-
-                            } else {
-                                Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
-                                mLoadingBar.hide();
-                                return;
-                            }
-                        }
-                    });
+                                }
+                            });
 
                 } else {
                     mLoadingBar.hide();
-                    Toast.makeText(getApplicationContext(), "the credentials dont match any user", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "The credentials don't match any user", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(LoginActivity.this,ForgetPassword.class);
+                Intent intent = new Intent(LoginActivity.this, ForgetPassword.class);
                 startActivity(intent);
             }
         });
+
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,18 +150,17 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     private boolean checkCredentials() {
         String email = inputUserEmail.getText().toString();
-        String password = inputpassword.getText().toString();
+        String password = inputPassword.getText().toString();
 
         if (email.isEmpty() || !email.contains("@")) {
-            showError(inputUserEmail, "Email in not valid!");
+            showError(inputUserEmail, "Email is not valid!");
             return false;
         } else if (password.isEmpty() || password.length() < 7) {
-            showError(inputpassword, "password must be 7 character");
+            showError(inputPassword, "Password must be at least 7 characters");
             return false;
         }
         return true;

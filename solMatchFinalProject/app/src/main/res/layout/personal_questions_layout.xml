@@ -46,18 +46,21 @@
     <TextView
         android:id="@+id/personalInfoPrompt"
         android:text="@string/tellUs"
-        android:layout_width="305dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_gravity="center_horizontal|center"
+        android:layout_gravity="left"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:layout_marginTop="10dp"/>
     <EditText
         android:id="@+id/inputPersonalInfo"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="left"
+        android:textColor="@color/white"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:inputType="text" />
