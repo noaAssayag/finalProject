@@ -6,44 +6,53 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:context=".personalQuestionsActivity"
+    android:background="@drawable/bg_gradient"
     >
 
     <TextView
         android:id="@+id/intrestsPrompt"
+        android:text="@string/intrests"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/intrests"
-        android:textColor="@color/black"
-        android:textSize="36sp"
+        android:layout_marginTop="68dp"
         android:textStyle="bold"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"/>
+        android:textColor="@color/white"
+        android:textSize="25sp"/>
 
     <TextView
         android:id="@+id/promptInterests"
-        android:layout_width="305dp"
-        android:layout_height="50dp"
         android:text="@string/intretsDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_gravity="center_horizontal|center"
         android:gravity="center"
-        android:textColor="@color/log_in_color"
+        android:textColor="@color/white"
         android:textSize="14sp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_marginTop="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/hobbiesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#80FFC0CB"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="16dp"
+        android:radius="8dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/bg_btn_blue"/>
     <TextView
         android:id="@+id/personalInfoPrompt"
+        android:text="@string/tellUs"
         android:layout_width="305dp"
         android:layout_height="50dp"
-        android:text="@string/tellUs"
+        android:layout_gravity="center_horizontal|center"
         android:gravity="center"
-        android:textColor="@color/log_in_color"
+        android:textColor="@color/white"
         android:textSize="14sp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_marginTop="10dp"/>
     <EditText
         android:id="@+id/inputPersonalInfo"
         android:layout_width="match_parent"
@@ -60,10 +69,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:backgroundTint="@color/colorBtSignIn"
         android:text="@string/next"
         android:textColor="@color/white"
-        android:background="@color/black"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginTop="18dp"/>
 
 </LinearLayout>

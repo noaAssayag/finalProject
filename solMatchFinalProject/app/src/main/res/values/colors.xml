@@ -46,7 +46,7 @@
     <color name="bg_et_color" tools:ignore="UnusedResources">#FFF6F6F6</color>
     <color name="bottom_sheet_bg_color" tools:ignore="UnusedResources">#FFFFFF</color>
 
-    <color name="bg_btn_blue">#00AEEF</color>
+    <color name="bg_btn_blue">#B0C9E8</color>
 
     <color name="btn_text_color">#FFFFFF</color>
     <color name="bg_signin_color" tools:ignore="UnusedResources">#FF2C323E</color>
