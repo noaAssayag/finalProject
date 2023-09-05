@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.example.solmatchfinalproject.LoginActivity;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.addDonationActivity;
+import com.example.solmatchfinalproject.personalQuestionsActivity;
 import com.example.solmatchfinalproject.profileActivity;
 import com.example.solmatchfinalproject.searchNavigationMenue;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -64,23 +66,25 @@ import Model.donations;
 
 public class ProfileActivity extends AppCompatActivity implements RecycleViewInterface {
     ImageView userImg;
+    TextView statusDon, statusHost;
     EditText userName, userEmail, birthDate;
     RecyclerView recDonations;
     BottomNavigationView menu;
+    Button addHost, AddDonation;
     RecyclerView recHosts;
     List<Host> hostList = new ArrayList<>();
     List<donations> donList = new ArrayList<>();
     String uid;
     FirebaseAuth auth;
+    FirebaseFirestore firestore;
     FirebaseDatabase db;
     DatabaseReference ref;
     DatabaseReference hostsRef;
-    Button addHost,AddDonation;
     List<Host> list = new ArrayList<>();
     List<donations> donationList = new ArrayList<>();
     String type = "solider";
-
     private DatabaseHelper sqlDatabase;
+    private UserStorageData user;
     int status = 0;
 
     @Override
@@ -91,68 +95,72 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         userImg = findViewById(R.id.iv_profile);
         userName = findViewById(R.id.et_name);
         userEmail = findViewById(R.id.et_email);
+        statusDon = findViewById(R.id.statusofDonation);
+        statusHost = findViewById(R.id.statusOfHost);
         birthDate = findViewById(R.id.birthDateEditTxt);
         recDonations = findViewById(R.id.donationsPromptRecycler);
         recHosts = findViewById(R.id.hostingPromptRecycler);
         addHost = findViewById(R.id.newHostingButt);
         AddDonation = findViewById(R.id.newDonationButt);
-       // menu = findViewById(R.id.menu);
+        // menu = findViewById(R.id.menu);
+
+        firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         sqlDatabase = new DatabaseHelper(this);
-       if(getIntent().getStringExtra("UID") == null)
-       {
-           uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-       }
-       else {
-           uid = getIntent().getStringExtra("UID");
-       }
-       UserStorageData user = sqlDatabase.getUserByUID(uid);
 
-        status = getIntent().getIntExtra("status",0);
-        ref = FirebaseDatabase.getInstance().getReference("Users").child(uid);
+        ref = FirebaseDatabase.getInstance().getReference("Users").child(auth.getUid());
         LinearLayoutManager llm = new LinearLayoutManager(this);
         LinearLayoutManager llm2 = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         llm2.setOrientation(LinearLayoutManager.HORIZONTAL);
         recDonations.setLayoutManager(llm);
         recHosts.setLayoutManager(llm2);
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        userName.setText(user.getUserName());
-        userEmail.setText(user.getEmail());
-        birthDate.setText(user.getBirthday());
-        if(status == 1)
-        {
-            addHost.setVisibility(View.GONE);
-            AddDonation.setVisibility(View.GONE);
-        }
-        if (user.getType().equals("Soldier")) {
-            type = "soldier";
-            hostsRef = db.getReference("Users").child(uid).child("Host");
-            addHost.setVisibility(View.GONE);
-            AddDonation.setVisibility(View.GONE);
-            presentHostSql(0,user.getUID());
+        firestore.collection("Users").document(auth.getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            user = documentSnapshot.toObject(UserStorageData.class);
+                            userName.setText(user.getUserName());
+                            userEmail.setText(user.getEmail());
+                            birthDate.setText(user.getBirthday());
+                            switch (user.getType().toString()) {
+                                case "Soldier": {
+                                    type = "soldier";
+                                    presentHostSql(0, user.getUID());
+                                    //todo add donation list
+                                    break;
+                                }
+                                case "Host": {
+                                    type = "Host";
+                                    presentHostSql(1, user.getEmail());
+                                    List<donations> allDonations = new ArrayList<>();
+                                    allDonations = sqlDatabase.getAllDonations();
+                                    for (donations donations : allDonations) {
+                                        if (donations.getEmail().equals(user.getEmail())) {
+                                            donationList.add(donations);
+                                        }
+                                    }
+                                    break;
+                                }
+                                default:
+                                    type = "professional";
+                                    break;
+                            }
+                            if (documentSnapshot.contains("info")) {
+                                //todo check the information about myself
+                            } else {
+                            }
+                        }
+                    }
+                });
 
-        } else if (user.getType().equals("Host")) {
-            type = "host";
-            hostsRef = db.getReference("Host");
-            presentHostSql(1,user.getEmail());
-            List<donations> allDonations = new ArrayList<>();
-            allDonations =  sqlDatabase.getAllDonations();
-            for(donations donations: allDonations)
-            {
-                if(donations.getEmail().equals(user.getEmail()))
-                {
-                    donationList.add(donations);
-                }
-            }
-            recDonations.setLayoutManager(llm);
-            donationAdapter adapter = new donationAdapter(donationList,ProfileActivity.this,ProfileActivity.this);
-            recDonations.setAdapter(adapter);
-        }
-        else {
-            type="professional";
-        }
+
+
+        recDonations.setLayoutManager(llm);
+        donationAdapter adapter = new donationAdapter(donationList, ProfileActivity.this, ProfileActivity.this);
+        recDonations.setAdapter(adapter);
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -255,8 +263,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
 
     }
 
-    public void presentHost(DatabaseReference hostsRef)
-    {
+    public void presentHost(DatabaseReference hostsRef) {
         hostsRef.addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -333,30 +340,20 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         });
     }
 
-    public void presentHostSql(int userType,String Email)
-    {
+    public void presentHostSql(int userType, String Email) {
         List<Host> hosts = sqlDatabase.getAllHosts();
         List<Host> releventHosts = new ArrayList<>();
-        if(userType==0)
-        {
-
-            for(Host host:hosts)
-            {
-                for(UserStorageData user: host.getListOfResidents())
-                {
-                    if(user.getUID().equals(Email))
-                    {
+        if (userType == 0) {
+            for (Host host : hosts) {
+                for (UserStorageData user : host.getListOfResidents()) {
+                    if (user.getUID().equals(Email)) {
                         releventHosts.add(host);
                     }
                 }
             }
-        }
-        else if(userType==1)
-        {
-            for(Host host:hosts)
-            {
-                if(host.getHostEmail().equals(Email))
-                {
+        } else if (userType == 1) {
+            for (Host host : hosts) {
+                if (host.getHostEmail().equals(Email)) {
                     releventHosts.add(host);
                 }
             }

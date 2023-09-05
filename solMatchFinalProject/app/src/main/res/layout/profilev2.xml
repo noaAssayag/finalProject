@@ -209,6 +209,20 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/gl_start"
         app:layout_constraintTop_toBottomOf="@+id/input_layout_email"/>
+        <TextView
+            android:id="@+id/statusofDonation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
+            android:textAppearance="@style/personal_de"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/donationPromptProfile"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/donationsPromptRecycler"
@@ -235,8 +249,23 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/gl_start"
         app:layout_constraintTop_toBottomOf="@+id/donationsPromptRecycler"/>
+        <TextView
+            android:id="@+id/statusOfHost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
+            android:textAppearance="@style/personal_de"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/hostingsPromptProfile"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+
+        <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/hostingPromptRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
