@@ -1,21 +1,24 @@
 package com.example.solmatchfinalproject.profile;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,35 +27,28 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
-import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
 import com.example.solmatchfinalproject.Hosts.UserHostAdapter;
-import com.example.solmatchfinalproject.Hosts.allHosts;
-import com.example.solmatchfinalproject.LoginActivity;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.addDonationActivity;
-import com.example.solmatchfinalproject.personalQuestionsActivity;
-import com.example.solmatchfinalproject.profileActivity;
-import com.example.solmatchfinalproject.searchNavigationMenue;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -62,16 +58,15 @@ import donations.donationAdapter;
 import Model.donations;
 import Model.Host;
 import Model.UserStorageData;
-import Model.donations;
 
 public class ProfileActivity extends AppCompatActivity implements RecycleViewInterface {
     ImageView userImg;
     TextView statusDon, statusHost;
     EditText userName, userEmail, birthDate;
-    RecyclerView recDonations;
-    BottomNavigationView menu;
     Button addHost, AddDonation;
     RecyclerView recHosts;
+    RecyclerView recDonations;
+    ImageView changeImage;
     List<Host> hostList = new ArrayList<>();
     List<donations> donList = new ArrayList<>();
     String uid;
@@ -79,13 +74,17 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
     FirebaseFirestore firestore;
     FirebaseDatabase db;
     DatabaseReference ref;
-    DatabaseReference hostsRef;
     List<Host> list = new ArrayList<>();
     List<donations> donationList = new ArrayList<>();
-    String type = "solider";
+    String type = "soldier";
     private DatabaseHelper sqlDatabase;
     private UserStorageData user;
     int status = 0;
+    private static final int PICK_IMAGE_REQUEST = 100;
+    private static final int REQUEST_IMAGE_CAPTURE=11;
+
+    Uri imageURIProf;
+    String URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +94,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         userImg = findViewById(R.id.iv_profile);
         userName = findViewById(R.id.et_name);
         userEmail = findViewById(R.id.et_email);
+        changeImage = findViewById(R.id.iv_update_pic);
         statusDon = findViewById(R.id.statusofDonation);
         statusHost = findViewById(R.id.statusOfHost);
         birthDate = findViewById(R.id.birthDateEditTxt);
@@ -102,7 +102,6 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         recHosts = findViewById(R.id.hostingPromptRecycler);
         addHost = findViewById(R.id.newHostingButt);
         AddDonation = findViewById(R.id.newDonationButt);
-        // menu = findViewById(R.id.menu);
 
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -125,11 +124,31 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                             userName.setText(user.getUserName());
                             userEmail.setText(user.getEmail());
                             birthDate.setText(user.getBirthday());
+                            if (documentSnapshot.contains("image")) {
+                                Glide.with(getApplicationContext())
+                                        .load(documentSnapshot.getString("image"))
+                                        .listener(new RequestListener<Drawable>() {
+                                            @Override
+                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target<Drawable> target, boolean isFirstResource) {
+                                                // Handle image loading failure
+                                                Log.e("Glide", "Image loading failed: " + e.getMessage());
+                                                return false; // Return false to allow Glide to handle the error and show any error placeholder you have set
+                                            }
+
+                                            @Override
+                                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                // Image successfully loaded
+                                                return false; // Return false to allow Glide to handle the resource and display it
+                                            }
+                                        })
+                                        .into(userImg);
+                            }
+
+
                             switch (user.getType().toString()) {
                                 case "Soldier": {
                                     type = "soldier";
                                     presentHostSql(0, user.getUID());
-                                    //todo add donation list
                                     break;
                                 }
                                 case "Host": {
@@ -137,9 +156,9 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                                     presentHostSql(1, user.getEmail());
                                     List<donations> allDonations = new ArrayList<>();
                                     allDonations = sqlDatabase.getAllDonations();
-                                    for (donations donations : allDonations) {
-                                        if (donations.getEmail().equals(user.getEmail())) {
-                                            donationList.add(donations);
+                                    for (donations donation : allDonations) {
+                                        if (donation.getEmail().equals(user.getEmail())) {
+                                            donationList.add(donation);
                                         }
                                     }
                                     break;
@@ -156,99 +175,50 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                     }
                 });
 
-
-
         recDonations.setLayoutManager(llm);
         donationAdapter adapter = new donationAdapter(donationList, ProfileActivity.this, ProfileActivity.this);
         recDonations.setAdapter(adapter);
 
-        ref.addValueEventListener(new ValueEventListener() {
+        changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                if (snapshot.hasChild("image")) {
-                    Glide.with(getApplicationContext())
-                            .load(snapshot.child("image").getValue().toString())
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target<Drawable> target, boolean isFirstResource) {
-                                    // Handle image loading failure
-                                    Log.e("Glide", "Image loading failed: " + e.getMessage());
-                                    return false; // Return false to allow Glide to handle the error and show any error placeholder you have set
+            public void onClick(View view) {
+                // Create a dialog to let the user choose between camera capture and image selection
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                builder.setTitle("Choose Image Source");
+                builder.setItems(new CharSequence[]{"Camera", "Gallery"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                // Launch camera capture
+                                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                                 }
-
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    // Image successfully loaded
-                                    return false; // Return false to allow Glide to handle the resource and display it
-                                }
-                            })
-                            .into(userImg);
-                }
-//                if(type.equals("soldier")) {
-//                    titleDonations.setText("Hobbies");
-//                    ArrayList<String> hobbies = new ArrayList<>();
-//                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("userInfo")
-//                            .child("hobbies");
-//                    reference.addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            for (DataSnapshot snap : snapshot.getChildren()) {
-//                                hobbies.add(snap.getValue().toString());
-//                            }
-//                            recDonations.setLayoutManager(llm);
-//                            hobbiesListAdapter adapter = new hobbiesListAdapter(hobbies);
-//                            recDonations.setAdapter(adapter);
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//
-//                        }
-//                    });
-//
-//                }
+                                break;
+                            case 1:
+                                // Launch image selection from gallery
+                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                                intent.setType("image/*");
+                                startActivityForResult(intent, PICK_IMAGE_REQUEST);
+                                break;
+                        }
+                    }
+                });
+                builder.show();
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-
-
         });
 
-//        menu.setOnItemReselectedListener(item -> {
-//            switch (item.getItemId()) {
-//                case R.id.myHome: {
-//                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-//                    overridePendingTransition(0, 0);
-//                    break;
-//                }
-//                case R.id.chatMenu: {
-//                    startActivity(new Intent(getApplicationContext(), chatMenuActivity.class));
-//                    overridePendingTransition(0, 0);
-//                    break;
-//                }
-//                case R.id.search: {
-//                    startActivity(new Intent(getApplicationContext(), searchNavigationMenue.class));
-//                    overridePendingTransition(0, 0);
-//                    break;
-//                }
-//                case R.id.logOut: {
-//                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//                    overridePendingTransition(0, 0);
-//                    break;
-//                }
-//            }
-//        });
 
         addHost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, AddHost.class);
+
                 startActivity(intent);
             }
         });
+
         AddDonation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,104 +233,34 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
 
     }
 
-    public void presentHost(DatabaseReference hostsRef) {
-        hostsRef.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snap : snapshot.getChildren()) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy, h:mm a", Locale.US);
-                    try {
-                        Date date = dateFormat.parse(snap.child("hostingDate").getValue(String.class));
-                        Calendar currentDate = Calendar.getInstance();
-                        Date today = currentDate.getTime();
-                        if (date.after(today)) {
-                            if (snap.getKey().equals(uid) || type.equals("soldier")) {
-                                Host newHost = new Host();
-                                newHost.setHostName(snap.child("hostName").getValue(String.class));
-                                newHost.setHostEmail(snap.child("hostEmail").getValue(String.class));
-                                newHost.setHostAddress(snap.child("hostAddress").getValue(String.class));
-                                newHost.setHostingDate(snap.child("hostingDate").getValue(String.class));
-                                String imageUrl = snap.child("hostImg").getValue(String.class);
-                                newHost.setHostImg(imageUrl);
-                                newHost.setAccommodation((boolean) snap.child("accommodation").getValue());
-                                newHost.setPets((boolean) snap.child("pets").getValue());
-                                newHost.setPrivateRoom((boolean) snap.child("privateRoom").getValue());
-                                newHost.setSecureEnv((boolean) snap.child("secureEnv").getValue());
-                                newHost.setDescription(snap.child("description").getValue().toString());
-
-
-                                list.add(newHost);
-                            }
-                        } else {
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference ref = database.getReference().child("Host");
-                            ref.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for (DataSnapshot dataSnap : snapshot.getChildren()) {
-                                        if (dataSnap.getKey().equals(snap.getKey())) {
-                                            hostsRef.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-
-                                                    } else {
-                                                        // Data removal failed
-                                                        // Handle the error
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-
-                            });
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                // Populate the RecyclerView with the retrieved list of hosts
-                UserHostAdapter userHostAdapter = new UserHostAdapter(list, ProfileActivity.this, ProfileActivity.this);
-                recHosts.setAdapter(userHostAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-        });
-    }
-
     public void presentHostSql(int userType, String Email) {
         List<Host> hosts = sqlDatabase.getAllHosts();
-        List<Host> releventHosts = new ArrayList<>();
+        List<Host> relevantHosts = new ArrayList<>();
         if (userType == 0) {
             for (Host host : hosts) {
                 for (UserStorageData user : host.getListOfResidents()) {
                     if (user.getUID().equals(Email)) {
-                        releventHosts.add(host);
+                        relevantHosts.add(host);
                     }
                 }
             }
         } else if (userType == 1) {
             for (Host host : hosts) {
                 if (host.getHostEmail().equals(Email)) {
-                    releventHosts.add(host);
+                    relevantHosts.add(host);
                 }
             }
         }
-        UserHostAdapter userHostAdapter = new UserHostAdapter(releventHosts, ProfileActivity.this, ProfileActivity.this);
+        UserHostAdapter userHostAdapter = new UserHostAdapter(relevantHosts, ProfileActivity.this, ProfileActivity.this);
         recHosts.setAdapter(userHostAdapter);
-
-
     }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageURIProf = data.getData();
+            userImg.setImageURI(imageURIProf);
+        }
+    }
+
 }

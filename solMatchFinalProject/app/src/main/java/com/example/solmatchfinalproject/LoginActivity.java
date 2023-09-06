@@ -42,6 +42,7 @@ import Model.Host;
 import Model.UserStorageData;
 import Model.donations;
 import dataBase.DatabaseHelper;
+import donations.donationActivity;
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore database = FirebaseFirestore.getInstance();

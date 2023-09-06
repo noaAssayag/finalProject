@@ -96,7 +96,7 @@
         android:id="@+id/iv_update_pic"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@drawable/outline_edit_24"
+        android:src="@drawable/ic_edit"
         android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
         app:layout_constraintEnd_toEndOf="@+id/iv_profile"

@@ -15,10 +15,10 @@ public class Host implements Serializable {
     private String hostingDate;
     private String hostingLocImg;
     private String description;
-    private boolean accommodation=false;
-    private boolean pets=false;
-    private boolean privateRoom=false;
-    private boolean secureEnv=false;
+    private String accommodation="false";
+    private String pets="false";
+    private String privateRoom="false";
+    private String secureEnv="false";
     private List<UserStorageData> listOfResidents;
 
     public Host(String hostImg, String hostName, String hostEmail, String hostAddress, String hostingDate, String hostingLocImg) {
@@ -45,20 +45,19 @@ public class Host implements Serializable {
 
     }
 
-    public Host(String hostImg, String hostName, String hostEmail, String hostAddress, String hostingDate, String hostingLocImg,String description, boolean accommodation, boolean pets, boolean privateRoom, boolean secureEnv) {
+    public Host(String hostImg, String hostName, String hostEmail, String hostAddress, String hostingDate, String hostingLocImg, String description, String accommodation, String pets, String privateRoom, String secureEnv) {
         this.hostImg = hostImg;
         this.hostName = hostName;
         this.hostEmail = hostEmail;
         this.hostAddress = hostAddress;
         this.hostingDate = hostingDate;
         this.hostingLocImg = hostingLocImg;
-        this.description=description;
+        this.description = description;
         this.accommodation = accommodation;
         this.pets = pets;
         this.privateRoom = privateRoom;
         this.secureEnv = secureEnv;
     }
-
 
 
     public String getHostImg() {
@@ -108,6 +107,7 @@ public class Host implements Serializable {
     public void setHostingLocImg(String hostingLocImg) {
         this.hostingLocImg = hostingLocImg;
     }
+
     public String getDescription() {
         return description;
     }
@@ -115,98 +115,36 @@ public class Host implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public String isAccommodation() {
-        if(accommodation)
-        {
-            return "yes";
-        }
-        return "no";
+
+    public String getAccommodation() {
+        return accommodation;
     }
 
-    public void setAccommodation(boolean accommodation)
-    {
+    public void setAccommodation(String accommodation) {
         this.accommodation = accommodation;
     }
-    public void setAccommodationString(String accommodation) {
-        if(accommodation.equals("yes"))
-        {
-            this.accommodation = true;
-        }
-        else{
-            this.accommodation = false;
-        }
 
+    public String getPets() {
+        return pets;
     }
 
-    public void isPets(boolean pets)
-    {
-        this.pets = pets;
-    }
-    public String isPetsString() {
-        if(pets==true)
-        {
-            return "yes";
-        }
-        return "no";
-
-    }
-    public void setPetsString(String pets) {
-
-        if(pets.equals("yes"))
-        {
-            setPets(true);
-        }
-        else {
-            setPets(false);
-        }
-    }
-
-
-    public void setPets(boolean pets) {
+    public void setPets(String pets) {
         this.pets = pets;
     }
 
-    public String isPrivateRoom() {
-        if(privateRoom)
-        {
-            return "yes";
-        }
-        return "no";
+    public String getPrivateRoom() {
+        return privateRoom;
     }
 
-    public void setPrivateRoomString(String privateRoom)
-    {
-        if(privateRoom.equals("yes"))
-        {
-            this.privateRoom = true;
-        }
-        else{
-            this.privateRoom = false;
-        }
-    }
-    public void setPrivateRoom(boolean privateRoom) {
+    public void setPrivateRoom(String privateRoom) {
         this.privateRoom = privateRoom;
     }
 
-    public String isSecureEnv() {
-        if(secureEnv)
-        {
-            return "yes";
-        }
-        return "no";
+    public String getSecureEnv() {
+        return secureEnv;
     }
 
-    public void setSecureEnvString(String env)
-    {
-        if(env.equals("yes"))
-        {
-            secureEnv = true;
-        }
-        else secureEnv = false;
-    }
-
-
-    public void setSecureEnv(boolean secureEnv) {
+    public void setSecureEnv(String secureEnv) {
         this.secureEnv = secureEnv;
     }
 

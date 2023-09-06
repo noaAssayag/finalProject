@@ -61,16 +61,15 @@ public class AddHost extends AppCompatActivity {
     Switch petsSwitch;
     Switch privateRoomSwitch;
     Switch secureEnvSwitch;
-
     Button sub;
     FirebaseAuth auth;
     FirebaseDatabase db;
     DatabaseReference ref;
     String uid, email, userName, hostDate, hostAddress, hostDescription;
-    boolean accommodation = false;
-    boolean pets = false;
-    boolean privateRoom = false;
-    boolean secureEnv = false;
+    String accommodation = "false";
+    String pets = "false";
+    String privateRoom = "false";
+    String secureEnv = "false";
     Uri imageURILoc;
     String URL;
     String imageURLHost;
@@ -196,7 +195,7 @@ public class AddHost extends AppCompatActivity {
     {
         if(accommodationSwitch.isChecked())
         {
-            accommodation=true;
+            accommodation="true";
         }
 
     }
@@ -204,7 +203,7 @@ public class AddHost extends AppCompatActivity {
     {
         if(petsSwitch.isChecked())
         {
-            pets=true;
+            pets="true";
         }
 
     }
@@ -212,7 +211,7 @@ public class AddHost extends AppCompatActivity {
     {
         if(privateRoomSwitch.isChecked())
         {
-            privateRoom=true;
+            privateRoom="true";
         }
 
     }
@@ -220,7 +219,7 @@ public class AddHost extends AppCompatActivity {
     {
         if(secureEnvSwitch.isChecked())
         {
-            secureEnv=true;
+            secureEnv="true";
         }
 
     }

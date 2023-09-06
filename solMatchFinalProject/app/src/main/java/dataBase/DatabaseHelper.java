@@ -179,10 +179,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(HOSTS_COLUMN_DATE, host.getHostingDate());
         contentValues.put(HOSTS_COLUMN_LOC_IMAGE, host.getHostingLocImg());
         contentValues.put(HOSTS_COLUMN_RESIDENTS, listOfResidentsJson); // Assuming this is a serialized list
-        contentValues.put(HOSTS_COLUMN_PETS, host.isPetsString());
-        contentValues.put(HOSTS_COLUMN_PRIVATE_ROOM, host.isPrivateRoom());
-        contentValues.put(HOSTS_COLUMN_SECURE_ENV, host.isSecureEnv());
-        contentValues.put(HOSTS_COLUMN_ACCOMMODATION, host.isAccommodation());
+        contentValues.put(HOSTS_COLUMN_PETS, host.getPets());
+        contentValues.put(HOSTS_COLUMN_PRIVATE_ROOM, host.getPrivateRoom());
+        contentValues.put(HOSTS_COLUMN_SECURE_ENV, host.getSecureEnv());
+        contentValues.put(HOSTS_COLUMN_ACCOMMODATION, host.getAccommodation());
         long result = db.insert(HOSTS_TABLE_NAME, null, contentValues);
         return result != -1;
     }
@@ -297,10 +297,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 host.setHostingDate(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_DATE)));
                 host.setHostingLocImg(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_LOC_IMAGE)));
                 host.setListOfResidents(listOfResidentsJson);
-                host.setPetsString(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_PETS)));
-                host.setPrivateRoomString(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_PRIVATE_ROOM)));
-                host.setSecureEnvString(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_SECURE_ENV)));
-                host.setAccommodationString(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_ACCOMMODATION)));
+                host.setPets(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_PETS)));
+                host.setPrivateRoom(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_PRIVATE_ROOM)));
+                host.setSecureEnv(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_SECURE_ENV)));
+                host.setAccommodation(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_ACCOMMODATION)));
                 hosts.add(host);
             } while (cursor.moveToNext());
         }
