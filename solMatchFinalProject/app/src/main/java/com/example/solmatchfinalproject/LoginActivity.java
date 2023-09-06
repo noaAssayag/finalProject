@@ -34,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
+import donations.donationActivity;
 
 import java.util.ArrayList;
 
@@ -100,19 +101,42 @@ public class LoginActivity extends AppCompatActivity {
                                                             // String userName = userData.getUserName();
 
                                                             sqlData.compareAndUpdateUsers(users);
+                                                            database.collection("Host").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                                @Override
+                                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                                    for(QueryDocumentSnapshot snapshot: queryDocumentSnapshots)
+                                                                    {
+                                                                        Host host = snapshot.toObject(Host.class);
+                                                                        hosts.add(host);
+                                                                    }
+                                                                    sqlData.compareAndUpdateHosts(hosts);
+                                                                    database.collection("Donations").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                                        @Override
+                                                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                                            for(QueryDocumentSnapshot snapshot:queryDocumentSnapshots)
+                                                                            {
+                                                                                donations donation = snapshot.toObject(donations.class);
+                                                                                donationsList.add(donation);
+                                                                            }
+                                                                            sqlData.compareAndUpdateDonations(donationsList);
+                                                                            if (documentSnapshot.contains("info")) {
+                                                                                Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_SHORT).show();
+                                                                                Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                                                                                intent.putExtra("UserEmail", inputUserEmail.getText().toString());
+                                                                                startActivity(intent);
+                                                                            } else {
+                                                                                // Redirect to personalQuestionsActivity
+                                                                                Intent intent = new Intent(LoginActivity.this, personalQuestionsActivity.class);
+                                                                                startActivity(intent);
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
                                                             // Fetch other data here (hosts, donations, etc.)
 
                                                             // Check if user has userInfo
-                                                            if (documentSnapshot.contains("info")) {
-                                                                Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_SHORT).show();
-                                                                Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                                                                intent.putExtra("UserEmail", inputUserEmail.getText().toString());
-                                                                startActivity(intent);
-                                                            } else {
-                                                                // Redirect to personalQuestionsActivity
-                                                                Intent intent = new Intent(LoginActivity.this, personalQuestionsActivity.class);
-                                                                startActivity(intent);
-                                                            }
+
                                                         } else {
                                                             // Handle the case where the document doesn't exist
                                                             Toast.makeText(getApplicationContext(), "User data not found", Toast.LENGTH_SHORT).show();
