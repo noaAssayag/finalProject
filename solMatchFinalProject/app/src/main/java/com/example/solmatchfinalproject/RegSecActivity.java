@@ -54,6 +54,8 @@ public class RegSecActivity extends Activity {
     TextView dateCal;
     Button finish;
     ImageButton btnUploadImg;
+
+    boolean isPhoto = false;
     ImageView userImg;
     Intent intent;
     private String userName;
@@ -126,12 +128,16 @@ public class RegSecActivity extends Activity {
                     if (sGender != null && sGender.getSelectedItem() != null&&!sGender.getSelectedItem().toString().equals("Filter By Gender")) {
                         if (sType != null && sType.getSelectedItem() != null&&!sType.getSelectedItem().toString().equals("Filter By Type")) {
                             if (checkDate()) {
-                                if (userImg.getDrawable() == null && sType.getSelectedItem().equals("Soldier")) {
+                                if (!isPhoto && sType.getSelectedItem().toString().equals("Soldier")) {
                                     Toast.makeText(getApplicationContext(), "Soldier must add a profile image!", Toast.LENGTH_SHORT).show();
                                 } else {
                                     setGen(sGender.getSelectedItem().toString());
                                     setType(sType.getSelectedItem().toString());
-                                    if (userImg.getDrawable() != null) {
+                                    if(!isPhoto)
+                                    {
+                                       Register(false);
+                                    }
+                                    if (isPhoto) {
                                         StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageURI.toString());
                                         storageRef.putFile(imageURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -141,32 +147,7 @@ public class RegSecActivity extends Activity {
                                                         @Override
                                                         public void onSuccess(Uri uri) {
                                                             URL = uri.toString();
-                                                            auth.createUserWithEmailAndPassword(getEmail(), getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                                                    if (task.isSuccessful()) {
-                                                                        String UID = auth.getUid();
-                                                                        user = new UserStorageData(getUserName(), getEmail(), getGen(), getDate(), getPassword(), URL, getType(),UID);
-                                                                        FirebaseFirestore database = FirebaseFirestore.getInstance();
-                                                                        sqlDatabase.insertUserData(user);
-                                                                        database.collection("Users").document(UID).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                Toast.makeText(getApplicationContext(),"User created with firestore",Toast.LENGTH_LONG).show();
-                                                                                Toast.makeText(getApplicationContext(), "User created successfully", Toast.LENGTH_SHORT).show();
-                                                                                Intent newIntent = new Intent(RegSecActivity.this, LoginActivity.class);
-                                                                                startActivity(newIntent);
-                                                                                setContentView(R.layout.activity_login);
-                                                                            }
-                                                                        });
-                                                                        valid = true;
-                                                                    } else {
-                                                                        Toast.makeText(getApplicationContext(), "A user already exists with that email", Toast.LENGTH_SHORT).show();
-                                                                        valid = false;
-                                                                        return;
-                                                                    }
-                                                                }
-                                                            });
+                                                            Register(true);
                                                         }
                                                     });
                                                 }
@@ -303,6 +284,7 @@ public class RegSecActivity extends Activity {
             imageURI = data.getData();
             // Set the image URI to the ImageView
             userImg.setImageURI(imageURI);
+            isPhoto = true;
 
             // Upload the image to Firebase Storage
             // Call your method here or assign the URI to a variable for later use
@@ -326,6 +308,40 @@ public class RegSecActivity extends Activity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Image", null);
         return Uri.parse(path);
+    }
+    private void Register(boolean img)
+    {
+        auth.createUserWithEmailAndPassword(getEmail(), getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    if(img) {
+                        user = new UserStorageData(auth.getUid(), getUserName(), getEmail(), getGen(), getDate(), getPassword(), URL, getType());
+                    }
+                    else{
+                        user = new UserStorageData(auth.getUid(), getUserName(), getEmail(), getGen(), getDate(), getPassword(), getType());
+
+                    }
+                    FirebaseFirestore database = FirebaseFirestore.getInstance();
+                    sqlDatabase.insertUserData(user);
+                    database.collection("Users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getApplicationContext(),"User created with firestore",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "User created successfully", Toast.LENGTH_SHORT).show();
+                            Intent newIntent = new Intent(RegSecActivity.this, LoginActivity.class);
+                            startActivity(newIntent);
+                            setContentView(R.layout.activity_login);
+                        }
+                    });
+                    valid = true;
+                } else {
+                    Toast.makeText(getApplicationContext(), "A user already exists with that email", Toast.LENGTH_SHORT).show();
+                    valid = false;
+                    return;
+                }
+            }
+        });
     }
 
 

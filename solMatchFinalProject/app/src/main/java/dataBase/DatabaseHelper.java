@@ -21,7 +21,7 @@ import Model.donations;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "YourDatabaseName";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
 
     // User table
     private static final String USER_TABLE_NAME = "user";

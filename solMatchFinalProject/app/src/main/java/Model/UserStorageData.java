@@ -24,6 +24,17 @@ public class UserStorageData {
         this.image=image;
         this.type = type;
     }
+    //No-image
+    public UserStorageData(String UID,String userName, String email, String gen, String birthday,String password, String type) {
+        this.UID=UID;
+        this.userName = userName;
+        this.email = email;
+        this.gen = gen;
+        this.birthday = birthday;
+        this.password=password;
+        this.type = type;
+    }
+
     public UserStorageData()
     {
 
@@ -39,15 +50,6 @@ public class UserStorageData {
         this.image = image;
         this.type = type;
         this.info = info;
-    }
-    public UserStorageData(String UID,String userName, String email, String gen, String birthday, String password, String type) {
-        this.UID = UID;
-        this.userName = userName;
-        this.email = email;
-        this.gen = gen;
-        this.birthday = birthday;
-        this.password = password;
-        this.type = type;
     }
 
 

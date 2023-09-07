@@ -40,6 +40,9 @@ public class personalQuestionsActivity extends Activity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     UserStorageData user;
 
+    String description = "No description";
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,18 +67,27 @@ public class personalQuestionsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // Retrieve selected items from the adapter
-                selectedItemsList = adapter.getSelectedItems();
-                String description = personalInfo.getText().toString();
-                for (String selectedItem : selectedItemsList) {
-                    Log.i("Selected Item", selectedItem);
-
+                if(adapter.getSelectedItems().size() == 0)
+                {
+                    selectedItemsList.add("no Hobbies");
                 }
+                else {
+                    selectedItemsList = adapter.getSelectedItems();
+                }
+                if(!personalInfo.getText().toString().isEmpty()) {
+                    description = personalInfo.getText().toString();
+                }
+                    for (String selectedItem : selectedItemsList) {
+                        Log.i("Selected Item", selectedItem);
+
+                    }
+
                 userPersonalInfo info = new userPersonalInfo((ArrayList<String>) selectedItemsList, description);
 
                 db.collection("Users").document(UID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                         user = documentSnapshot.toObject(UserStorageData.class);
+                        user = documentSnapshot.toObject(UserStorageData.class);
                         user.setInfo(info);
                         db.collection("Users").document(UID).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -91,8 +103,6 @@ public class personalQuestionsActivity extends Activity {
                         });
                     }
                 });
-
-
 
 
             }

@@ -60,6 +60,7 @@ public class Host implements Serializable {
     }
 
 
+
     public String getHostImg() {
         return hostImg;
     }

@@ -111,10 +111,10 @@ public class RegisterActivity extends Activity {
     }
 
     private boolean checkCredentials() {
-        if (userName.isEmpty() || userName.length() < 7 || userName.contains(" ")) {
+        if (userName.isEmpty() || userName.length() < 7) {
             showError(inputUserName, "Your username is not valid!");
             return false;
-        } else if (!userName.matches("[a-zA-Z]+")) {
+        } else if (!userName.matches("[a-zA-Z ]+")) {
             showError(inputUserName, "Username can only contain letters!");
             return false;
         } else if (email.isEmpty() || !email.contains("@") || (!(email.matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")))) {

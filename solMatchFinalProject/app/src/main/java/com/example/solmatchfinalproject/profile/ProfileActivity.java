@@ -61,7 +61,7 @@ import Model.UserStorageData;
 
 public class ProfileActivity extends AppCompatActivity implements RecycleViewInterface {
     ImageView userImg;
-    TextView statusDon, statusHost,attributes;
+    TextView statusDon, statusHost,attributes, donationTitle;
     EditText userName, userEmail, birthDate;
     Button addHost, AddDonation;
     RecyclerView recHosts;
@@ -96,6 +96,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         userName = findViewById(R.id.et_name);
         userEmail = findViewById(R.id.et_email);
         changeImage = findViewById(R.id.iv_update_pic);
+        donationTitle=findViewById(R.id.donationPromptProfile);
         statusDon = findViewById(R.id.statusofDonation);
         statusHost = findViewById(R.id.statusOfHost);
         birthDate = findViewById(R.id.birthDateEditTxt);
@@ -125,7 +126,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                             userName.setText(user.getUserName());
                             userEmail.setText(user.getEmail());
                             birthDate.setText(user.getBirthday());
-                            if (documentSnapshot.contains("image")) {
+                            if (documentSnapshot.contains("image")&&documentSnapshot.getString("image")!=null) {
                                 Glide.with(getApplicationContext())
                                         .load(documentSnapshot.getString("image"))
                                         .listener(new RequestListener<Drawable>() {
@@ -155,6 +156,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                                 case "Soldier": {
                                     type = "soldier";
                                     presentHostSql(0, user.getUID());
+                                    donationTitle.setVisibility(View.GONE);
                                     break;
                                 }
                                 case "Host": {
@@ -166,6 +168,11 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                                         if (donation.getEmail().equals(user.getEmail())) {
                                             donationList.add(donation);
                                         }
+                                    }
+                                    if(donationList.isEmpty())
+                                    {
+                                        statusDon.setVisibility(View.VISIBLE);
+                                        statusDon.setText("no Donations");
                                     }
                                     break;
                                 }
@@ -244,9 +251,11 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         List<Host> relevantHosts = new ArrayList<>();
         if (userType == 0) {
             for (Host host : hosts) {
-                for (UserStorageData user : host.getListOfResidents()) {
-                    if (user.getUID().equals(Email)) {
-                        relevantHosts.add(host);
+                if (host.getListOfResidents()!=null && !host.getListOfResidents().isEmpty()) {
+                    for (UserStorageData user : host.getListOfResidents()) {
+                        if (user.getUID().equals(Email)) {
+                            relevantHosts.add(host);
+                        }
                     }
                 }
             }
@@ -256,6 +265,11 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                     relevantHosts.add(host);
                 }
             }
+        }
+        if(relevantHosts.isEmpty())
+        {
+            statusHost.setVisibility(View.VISIBLE);
+            statusHost.setText("No Hostings");
         }
         UserHostAdapter userHostAdapter = new UserHostAdapter(relevantHosts, ProfileActivity.this, ProfileActivity.this);
         recHosts.setAdapter(userHostAdapter);
