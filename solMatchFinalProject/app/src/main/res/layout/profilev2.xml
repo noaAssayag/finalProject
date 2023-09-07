@@ -52,6 +52,18 @@
         app:layout_constraintEnd_toStartOf="@+id/gl_end"
         app:layout_constraintStart_toStartOf="@+id/gl_start"
         app:layout_constraintTop_toBottomOf="@+id/app_bar_layout" />
+        <TextView
+            android:id="@+id/attributes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:gravity="center"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/iv_profile"/>
+
         <LinearLayout
             android:id="@+id/buttonContainer"
             android:layout_width="0dp"
@@ -59,7 +71,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_profile">
+            app:layout_constraintTop_toBottomOf="@+id/attributes">
 
             <!-- First Button -->
             <Button

@@ -61,7 +61,7 @@ import Model.UserStorageData;
 
 public class ProfileActivity extends AppCompatActivity implements RecycleViewInterface {
     ImageView userImg;
-    TextView statusDon, statusHost;
+    TextView statusDon, statusHost,attributes;
     EditText userName, userEmail, birthDate;
     Button addHost, AddDonation;
     RecyclerView recHosts;
@@ -91,6 +91,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         super.onCreate(savedInstanceState);
         db = FirebaseDatabase.getInstance();
         setContentView(R.layout.profilev2);
+        attributes=findViewById(R.id.attributes);
         userImg = findViewById(R.id.iv_profile);
         userName = findViewById(R.id.et_name);
         userEmail = findViewById(R.id.et_email);
@@ -143,8 +144,13 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                                         })
                                         .into(userImg);
                             }
-
-
+                            if(user.getInfo()!=null)
+                            {
+                                attributes.setText("Description: " + user.getInfo().getDescription() + "\nHobbies: " + user.getInfo().getHobbiesString());
+                            }
+                            else{
+                                attributes.setVisibility(View.GONE);
+                            }
                             switch (user.getType().toString()) {
                                 case "Soldier": {
                                     type = "soldier";
