@@ -19,6 +19,19 @@ public class userPersonalInfo {
     public ArrayList<String> getHobbies() {
         return hobbies;
     }
+    public String getHobbiesString() {
+        String hobbies="";
+        int count=0;
+        for(String str:getHobbies())
+        {
+            count++;
+            hobbies+=str;
+            if(count<getHobbies().size()) {
+                hobbies += " ,";
+            }
+        }
+        return  hobbies;
+    }
 
     public void setHobbies(ArrayList<String> hobbies) {
         this.hobbies = hobbies;
