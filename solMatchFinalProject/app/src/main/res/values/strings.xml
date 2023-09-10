@@ -182,10 +182,10 @@
     <string name="category">Category</string>
     <string name="avability">Avability</string>
 
-    <string name="AddHostPage">Add Host Page</string>
+    <string name="AddHostPage">Add Host</string>
     <string name="AddProfessPage">Add Professional Page</string>
 
-    <string name="ui_button_date_title">Set Date</string>
+    <string name="ui_button_date_title"> click here for Set Date</string>
     <string name="ui_button_time_title">Set Time</string>
     <string name="Addaddress">Add Address</string>
     <string name="AddCategory">Add Category</string>
@@ -267,5 +267,6 @@
     <string name="message_already_have_account">Already have an account? SIGN IN</string>
     <string name="text">personalInfo</string>
     <string name="chooseToUploadPhotoFrom">Choose option to opload from</string>
+    <string name="day">Hosting Date</string>
 
 </resources>

@@ -201,7 +201,6 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, AddHost.class);
-
                 startActivity(intent);
             }
         });
@@ -233,6 +232,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                     if (checkCredentials()) {
                         user.setEmail(userEmail.getText().toString());
                         user.setUserName(userName.getText().toString());
+                        // todo update auth email
                         firestore.collection("Users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -293,7 +293,6 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageUri.toString());
         storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                boolean check = task.isSuccessful();
                 if (task.isSuccessful()) {
                     storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
