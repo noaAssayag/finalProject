@@ -266,5 +266,6 @@
     <string name="confirmPassword">confirm password\n</string>
     <string name="message_already_have_account">Already have an account? SIGN IN</string>
     <string name="text">personalInfo</string>
+    <string name="chooseToUploadPhotoFrom">Choose option to opload from</string>
 
 </resources>

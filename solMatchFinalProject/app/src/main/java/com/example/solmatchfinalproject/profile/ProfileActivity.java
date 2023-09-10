@@ -30,8 +30,10 @@ import com.bumptech.glide.request.target.Target;
 import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
 import com.example.solmatchfinalproject.Hosts.UserHostAdapter;
+import com.example.solmatchfinalproject.OnImageSelectedListener;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.addDonationActivity;
+import com.example.solmatchfinalproject.cameraFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -59,9 +61,9 @@ import Model.donations;
 import Model.Host;
 import Model.UserStorageData;
 
-public class ProfileActivity extends AppCompatActivity implements RecycleViewInterface {
+public class ProfileActivity extends AppCompatActivity implements RecycleViewInterface, OnImageSelectedListener {
     ImageView userImg;
-    TextView statusDon, statusHost,attributes, donationTitle;
+    TextView statusDon, statusHost, attributes, donationTitle;
     EditText userName, userEmail, birthDate;
     Button addHost, AddDonation;
     RecyclerView recHosts;
@@ -81,7 +83,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
     private UserStorageData user;
     int status = 0;
     private static final int PICK_IMAGE_REQUEST = 100;
-    private static final int REQUEST_IMAGE_CAPTURE=11;
+    private static final int REQUEST_IMAGE_CAPTURE = 11;
 
     Uri imageURIProf;
     String URL;
@@ -91,12 +93,12 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         super.onCreate(savedInstanceState);
         db = FirebaseDatabase.getInstance();
         setContentView(R.layout.profilev2);
-        attributes=findViewById(R.id.attributes);
+        attributes = findViewById(R.id.attributes);
         userImg = findViewById(R.id.iv_profile);
         userName = findViewById(R.id.et_name);
         userEmail = findViewById(R.id.et_email);
         changeImage = findViewById(R.id.iv_update_pic);
-        donationTitle=findViewById(R.id.donationPromptProfile);
+        donationTitle = findViewById(R.id.donationPromptProfile);
         statusDon = findViewById(R.id.statusofDonation);
         statusHost = findViewById(R.id.statusOfHost);
         birthDate = findViewById(R.id.birthDateEditTxt);
@@ -117,6 +119,15 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         recDonations.setLayoutManager(llm);
         recHosts.setLayoutManager(llm2);
 
+        changeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cameraFragment frag = new cameraFragment();
+                frag.show(getFragmentManager(), "dialog");
+            }
+        });
+
+
         firestore.collection("Users").document(auth.getUid()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -126,7 +137,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                             userName.setText(user.getUserName());
                             userEmail.setText(user.getEmail());
                             birthDate.setText(user.getBirthday());
-                            if (documentSnapshot.contains("image")&&documentSnapshot.getString("image")!=null) {
+                            if (documentSnapshot.contains("image") && documentSnapshot.getString("image") != null) {
                                 Glide.with(getApplicationContext())
                                         .load(documentSnapshot.getString("image"))
                                         .listener(new RequestListener<Drawable>() {
@@ -145,11 +156,9 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                                         })
                                         .into(userImg);
                             }
-                            if(user.getInfo()!=null)
-                            {
+                            if (user.getInfo() != null) {
                                 attributes.setText("Description: " + user.getInfo().getDescription() + "\nHobbies: " + user.getInfo().getHobbiesString());
-                            }
-                            else{
+                            } else {
                                 attributes.setVisibility(View.GONE);
                             }
                             switch (user.getType().toString()) {
@@ -169,8 +178,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                                             donationList.add(donation);
                                         }
                                     }
-                                    if(donationList.isEmpty())
-                                    {
+                                    if (donationList.isEmpty()) {
                                         statusDon.setVisibility(View.VISIBLE);
                                         statusDon.setText("no Donations");
                                     }
@@ -192,35 +200,34 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         donationAdapter adapter = new donationAdapter(donationList, ProfileActivity.this, ProfileActivity.this);
         recDonations.setAdapter(adapter);
 
-        changeImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Create a dialog to let the user choose between camera capture and image selection
-                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
-                builder.setTitle("Choose Image Source");
-                builder.setItems(new CharSequence[]{"Camera", "Gallery"}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                // Launch camera capture
-                                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                                }
-                                break;
-                            case 1:
-                                // Launch image selection from gallery
-                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                intent.setType("image/*");
-                                startActivityForResult(intent, PICK_IMAGE_REQUEST);
-                                break;
-                        }
-                    }
-                });
-                builder.show();
-            }
+        /** changeImage.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View view) {
+        // Create a dialog to let the user choose between camera capture and image selection
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+        builder.setTitle("Choose Image Source");
+        builder.setItems(new CharSequence[]{"Camera", "Gallery"}, new DialogInterface.OnClickListener() {
+        @Override public void onClick(DialogInterface dialog, int which) {
+        switch (which) {
+        case 0:
+        // Launch camera capture
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+        break;
+        case 1:
+        // Launch image selection from gallery
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        break;
+        }
+        }
         });
+        builder.show();
+        }
+        });
+         **/
 
 
         addHost.setOnClickListener(new View.OnClickListener() {
@@ -251,7 +258,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         List<Host> relevantHosts = new ArrayList<>();
         if (userType == 0) {
             for (Host host : hosts) {
-                if (host.getListOfResidents()!=null && !host.getListOfResidents().isEmpty()) {
+                if (host.getListOfResidents() != null && !host.getListOfResidents().isEmpty()) {
                     for (UserStorageData user : host.getListOfResidents()) {
                         if (user.getUID().equals(Email)) {
                             relevantHosts.add(host);
@@ -266,21 +273,52 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                 }
             }
         }
-        if(relevantHosts.isEmpty())
-        {
+        if (relevantHosts.isEmpty()) {
             statusHost.setVisibility(View.VISIBLE);
             statusHost.setText("No Hostings");
         }
         UserHostAdapter userHostAdapter = new UserHostAdapter(relevantHosts, ProfileActivity.this, ProfileActivity.this);
         recHosts.setAdapter(userHostAdapter);
     }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageURIProf = data.getData();
-            userImg.setImageURI(imageURIProf);
-        }
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+//            imageURIProf = data.getData();
+//            userImg.setImageURI(imageURIProf);
+//        }
+//    }
+
+    @Override
+    public void onImageSelected(Uri imageUri) {
+
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageUri.toString());
+            storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    boolean check = task.isSuccessful();
+                    if (task.isSuccessful()) {
+                        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                URL = uri.toString();
+                                userImg.setImageURI(imageUri);
+                                user.setImage(URL);
+                                firestore.collection("Users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(getApplicationContext(), "image has changed", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            });
+
+
+
+
     }
-
 }
