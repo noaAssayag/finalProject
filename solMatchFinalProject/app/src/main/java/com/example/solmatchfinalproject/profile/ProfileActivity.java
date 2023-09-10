@@ -1,5 +1,6 @@
 package com.example.solmatchfinalproject.profile;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,6 +33,7 @@ import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
 import com.example.solmatchfinalproject.Hosts.UserHostAdapter;
 import com.example.solmatchfinalproject.OnImageSelectedListener;
 import com.example.solmatchfinalproject.R;
+import com.example.solmatchfinalproject.RegisterActivity;
 import com.example.solmatchfinalproject.addDonationActivity;
 import com.example.solmatchfinalproject.cameraFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -62,30 +64,25 @@ import Model.Host;
 import Model.UserStorageData;
 
 public class ProfileActivity extends AppCompatActivity implements RecycleViewInterface, OnImageSelectedListener {
+    private static final int PICK_IMAGE_REQUEST = 100;
+    private static final int REQUEST_IMAGE_CAPTURE = 11;
     ImageView userImg;
     TextView statusDon, statusHost, attributes, donationTitle;
     EditText userName, userEmail, birthDate;
-    Button addHost, AddDonation;
+    Button addHost, addDonation, btEdit;
     RecyclerView recHosts;
     RecyclerView recDonations;
     ImageView changeImage;
-    List<Host> hostList = new ArrayList<>();
-    List<donations> donList = new ArrayList<>();
-    String uid;
     FirebaseAuth auth;
     FirebaseFirestore firestore;
     FirebaseDatabase db;
     DatabaseReference ref;
-    List<Host> list = new ArrayList<>();
     List<donations> donationList = new ArrayList<>();
     String type = "soldier";
+    boolean isEdit = false;
     private DatabaseHelper sqlDatabase;
     private UserStorageData user;
-    int status = 0;
-    private static final int PICK_IMAGE_REQUEST = 100;
-    private static final int REQUEST_IMAGE_CAPTURE = 11;
-
-    Uri imageURIProf;
+    List<Host> list = new ArrayList<>();
     String URL;
 
     @Override
@@ -105,8 +102,8 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         recDonations = findViewById(R.id.donationsPromptRecycler);
         recHosts = findViewById(R.id.hostingPromptRecycler);
         addHost = findViewById(R.id.newHostingButt);
-        AddDonation = findViewById(R.id.newDonationButt);
-
+        addDonation = findViewById(R.id.newDonationButt);
+        btEdit = findViewById(R.id.bt_Edit);
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         sqlDatabase = new DatabaseHelper(this);
@@ -200,36 +197,6 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         donationAdapter adapter = new donationAdapter(donationList, ProfileActivity.this, ProfileActivity.this);
         recDonations.setAdapter(adapter);
 
-        /** changeImage.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
-        // Create a dialog to let the user choose between camera capture and image selection
-        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
-        builder.setTitle("Choose Image Source");
-        builder.setItems(new CharSequence[]{"Camera", "Gallery"}, new DialogInterface.OnClickListener() {
-        @Override public void onClick(DialogInterface dialog, int which) {
-        switch (which) {
-        case 0:
-        // Launch camera capture
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-        break;
-        case 1:
-        // Launch image selection from gallery
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-        break;
-        }
-        }
-        });
-        builder.show();
-        }
-        });
-         **/
-
-
         addHost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -239,11 +206,50 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
             }
         });
 
-        AddDonation.setOnClickListener(new View.OnClickListener() {
+        addDonation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this, addDonationActivity.class);
                 startActivity(intent);
+            }
+        });
+        btEdit.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onClick(View view) {
+                if (!isEdit) {
+                    userName.setEnabled(true);
+                    userEmail.setEnabled(true);
+                    btEdit.setText("Save");
+                    userName.setTextColor(R.color.default_text_color_hint);
+                    userEmail.setTextColor(R.color.default_text_color_hint);
+                    isEdit = true;
+                } else {
+                    userName.setEnabled(false);
+                    userEmail.setEnabled(false);
+                    btEdit.setText("Edit");
+                    userName.setTextColor(R.color.white);
+                    userEmail.setTextColor(R.color.white);
+                    if (checkCredentials()) {
+                        user.setEmail(userEmail.getText().toString());
+                        user.setUserName(userName.getText().toString());
+                        firestore.collection("Users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(getApplicationContext(), "The user's values were saved successfully", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+                    }
+                    isEdit = false;
+                }
+                if (!checkCredentials()) {
+                    isEdit = true;
+                    userName.setEnabled(true);
+                    userEmail.setEnabled(true);
+                    btEdit.setText("Save");
+                    Toast.makeText(getApplicationContext(), "The value is invalid", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -281,44 +287,44 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
         recHosts.setAdapter(userHostAdapter);
     }
 
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-//            imageURIProf = data.getData();
-//            userImg.setImageURI(imageURIProf);
-//        }
-//    }
-
     @Override
     public void onImageSelected(Uri imageUri) {
 
-            StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageUri.toString());
-            storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    boolean check = task.isSuccessful();
-                    if (task.isSuccessful()) {
-                        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                URL = uri.toString();
-                                userImg.setImageURI(imageUri);
-                                user.setImage(URL);
-                                firestore.collection("Users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        Toast.makeText(getApplicationContext(), "image has changed", Toast.LENGTH_SHORT).show();
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageUri.toString());
+        storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                boolean check = task.isSuccessful();
+                if (task.isSuccessful()) {
+                    storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            URL = uri.toString();
+                            userImg.setImageURI(imageUri);
+                            user.setImage(URL);
+                            firestore.collection("Users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(getApplicationContext(), "image has changed", Toast.LENGTH_SHORT).show();
 
-                                    }
-                                });
-                            }
-                        });
-                    }
+                                }
+                            });
+                        }
+                    });
                 }
-            });
+            }
+        });
 
+    }
 
-
-
+    private boolean checkCredentials() {
+        if (userName.getText().toString().isEmpty() || userName.getText().toString().length() < 7 || !userName.getText().toString().matches("[a-zA-Z ]+")) {
+            RegisterActivity.showError(userName, "Your username is not valid!");
+            return false;
+        }
+        if (!RegisterActivity.isValidEmail(userEmail.getText().toString())) {
+            RegisterActivity.showError(userEmail, "Your username is not valid!");
+            return false;
+        }
+        return true;
     }
 }

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Default text color -->
+    <color name="default_text_color">#000000</color>
+
+    <!-- Default hint text color -->
+    <color name="default_text_color_hint">#8A8A8A</color>
+
+    <!-- Text color for edit mode -->
+    <color name="edit_text_color">#0078D4</color>
+
+    <!-- Hint text color for edit mode -->
+    <color name="edit_text_color_hint">#63B2FF</color>
     <color name="colorPrimary">#235172</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
