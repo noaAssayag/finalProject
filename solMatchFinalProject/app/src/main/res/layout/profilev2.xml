@@ -111,6 +111,7 @@
             android:id="@+id/iv_update_pic"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            android:layout_marginLeft="20dp"
             android:background="#0B0707"
             android:backgroundTint="#170E0E"
             android:padding="4dp"

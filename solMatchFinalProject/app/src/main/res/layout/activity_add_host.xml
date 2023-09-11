@@ -4,13 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient"
     android:scrollbars="none">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_gradient">
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@drawable/bg_gradient"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/backArrow"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:src="@drawable/view_back_rtl"
+                app:tint="@color/white" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/txtTitle"
@@ -18,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="68dp"
             android:text="@string/AddHostPage"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintDimensionRatio="1:1"
@@ -29,38 +46,40 @@
 
         <TextView
             android:id="@+id/welcome_back__sign_in_using_your_social_account_or_email_to_continue_us2"
-            android:layout_width="wrap_content"
+            android:text="Hello! Please fill the following fields to add a new host"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center"
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:text="Hello! Please fill the following fields to add a new host"
-            android:textColor="@color/white"
-            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/gl_end"
             app:layout_constraintStart_toStartOf="@+id/gl_start"
             app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
 
-        <androidx.cardview.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/hostDay"
-            android:layout_width="fill_parent"
+            android:onClick="onDateClicked"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            card_view:cardUseCompatPadding="true"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginTop="8dp"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/gl_end"
             app:layout_constraintStart_toStartOf="@+id/gl_start"
-            app:layout_constraintTop_toBottomOf="@+id/welcome_back__sign_in_using_your_social_account_or_email_to_continue_us2">
+            app:layout_constraintTop_toBottomOf="@+id/welcome_back__sign_in_using_your_social_account_or_email_to_continue_us2"
+            card_view:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:gravity="center">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -72,10 +91,9 @@
                         android:id="@+id/imgDay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:onClick="onDateClicked"
                         android:src="@drawable/schedule_icon" />
 
                 </LinearLayout>
@@ -89,25 +107,22 @@
                         android:id="@+id/titleDay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingMultiplier="3"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
+                        android:lineSpacingMultiplier="3"
                         android:text="@string/day"
                         android:textAlignment="viewStart"
-                        android:textColor="@color/user_name"
-                        />
+                        android:textColor="@color/user_name" />
+
                     <TextView
                         android:id="@+id/valueDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingMultiplier="3"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
+                        android:lineSpacingMultiplier="3"
                         android:textAlignment="viewStart"
-                        android:textColor="@color/user_name"
-                        />
-
-
+                        android:textColor="@color/user_name" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -115,14 +130,20 @@
         <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="fill_parent"
+            android:id="@+id/hostTime"
+            android:onClick="onTimeClicked"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            card_view:cardUseCompatPadding="true"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginTop="8dp"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/gl_end"
             app:layout_constraintStart_toStartOf="@+id/gl_start"
-            app:layout_constraintTop_toBottomOf="@+id/hostDay">
+            card_view:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@+id/hostDay"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,10 +162,9 @@
                         android:id="@+id/imgTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        android:onClick="onDateClicked"
                         android:src="@drawable/hourly_rate" />
 
                 </LinearLayout>
@@ -158,206 +178,284 @@
                         android:id="@+id/titleTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingMultiplier="3"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="@string/day"
+                        android:lineSpacingMultiplier="3"
+                        android:text="@string/hostTime"
                         android:textAlignment="viewStart"
-                        android:textColor="@color/user_name"
-                        />
+                        android:textColor="@color/user_name" />
+
                     <TextView
-                        android:id="@+id/valueDate"
+                        android:id="@+id/valueTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:lineSpacingMultiplier="3"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
+                        android:lineSpacingMultiplier="3"
                         android:textAlignment="viewStart"
-                        android:textColor="@color/user_name"
-                        />
+                        android:textColor="@color/user_name" />
 
 
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-
-
-
-
-        <TextView
-            android:id="@+id/txtsetTime"
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/locCard"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/setTime"
-            android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
-
-        <Button
-            android:id="@+id/timeBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_gravity="center_horizontal|center"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:onClick="onTimeClicked"
-            android:text="@string/ui_button_time_title" />
-
-        <TextView
-            android:id="@+id/txtPresDateAndTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="16dp"
+            android:gravity="left"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            card_view:cardUseCompatPadding="true"
+            app:layout_constraintTop_toBottomOf="@+id/hostTime"
+           >
 
-        <TextView
-            android:id="@+id/txtAddAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/Addaddress"
-            android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/hostAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_gravity="left"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:entries="@array/israeliCities" />
-
-            <EditText
-                android:id="@+id/hostStreet"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="16dp"
-                android:hint="@string/street" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/hostApartmentNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:hint="@string/Apartment" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top">
 
 
-        <TextView
-            android:id="@+id/txtDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
-            android:text="@string/descriptionOfHost"
-            android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
+                    <ImageView
+                        android:id="@+id/imgLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:src="@drawable/location_icon" />
 
-        <EditText
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/titleLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:lineSpacingMultiplier="3"
+                        android:text="@string/location"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/user_name" />
+
+                    <Spinner
+                        android:id="@+id/hostAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="10dp"
+                        android:entries="@array/israeliCities" />
+
+                    <EditText
+                        android:id="@+id/hostStreet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="10dp"
+                        android:hint="@string/street"
+                        android:textColorHint="@color/user_name" />
+
+                    <EditText
+                        android:id="@+id/hostApartmentNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="10dp"
+                        android:hint="@string/Apartment"
+                        android:textColorHint="@color/user_name" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/hostDescription"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_gravity="center_horizontal|center"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:hint="Enter description of the host" />
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/locCard"
+            card_view:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top">
+
+
+                    <ImageView
+                        android:id="@+id/imgDes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:src="@drawable/comment" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/titleComments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:lineSpacingMultiplier="3"
+                        android:text="@string/hostTime"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/user_name" />
+
+                    <EditText
+                        android:id="@+id/valueComments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:lineSpacingMultiplier="3"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/user_name" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/txtImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
             android:text="@string/imgOfLocation"
-            android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginTop="8dp"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/hostDescription"
+
+            />
 
         <ImageButton
             android:id="@+id/uploadImage"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:layout_marginRight="16dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/be_gradient"
             android:src="@drawable/baseline_file_upload_24"
-            android:tooltipText="@string/AddItem" />
+            android:tooltipText="@string/AddItem"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/txtImage" />
 
         <ImageView
             android:id="@+id/imageOfLocation"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp" />
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/uploadImage" />
 
         <TextView
             android:id="@+id/txtAccommodation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="16dp"
             android:text="@string/titleSwitches"
-            android:textColor="@color/forgot_password__color"
-            android:textSize="14sp" />
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/imageOfLocation" />
 
         <Switch
             android:id="@+id/accommodationSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
+            android:gravity="left"
             android:onClick="onAccommodationSwitch"
-            android:text="@string/accommodationOption"></Switch>
+            android:text="@string/accommodationOption"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/txtAccommodation"></Switch>
 
         <Switch
             android:id="@+id/petsSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
             android:onClick="onPetsSwitch"
-            android:text="@string/petsOption"></Switch>
+            android:text="@string/petsOption"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/accommodationSwitch"></Switch>
 
         <Switch
             android:id="@+id/privateRoomSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
             android:onClick="onPrivateRoomSwitch"
-            android:text="@string/privateRoomOption"></Switch>
+            android:text="@string/privateRoomOption"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/petsSwitch"></Switch>
 
         <Switch
             android:id="@+id/secureEnvSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginLeft="16dp"
             android:onClick="onSecureEnvSwitch"
-            android:text="@string/secureOption"></Switch>
+            android:text="@string/secureOption"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/privateRoomSwitch"></Switch>
 
         <Button
             android:id="@+id/btnSubmit"
@@ -367,9 +465,12 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="40dp"
-            android:backgroundTint="#404040"
+            android:backgroundTint="@color/colorBtSignIn"
             android:text="@string/submit"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/gl_end"
+            app:layout_constraintStart_toStartOf="@+id/gl_start"
+            app:layout_constraintTop_toBottomOf="@+id/secureEnvSwitch" />
 
 
         <androidx.constraintlayout.widget.Guideline

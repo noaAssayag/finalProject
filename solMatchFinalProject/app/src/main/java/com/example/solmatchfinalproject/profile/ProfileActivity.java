@@ -220,15 +220,15 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                     userName.setEnabled(true);
                     userEmail.setEnabled(true);
                     btEdit.setText("Save");
-                    userName.setTextColor(R.color.default_text_color_hint);
-                    userEmail.setTextColor(R.color.default_text_color_hint);
+//                    userName.setTextColor(R.color.default_text_color_hint);
+//                    userEmail.setTextColor(R.color.default_text_color_hint);
                     isEdit = true;
                 } else {
                     userName.setEnabled(false);
                     userEmail.setEnabled(false);
                     btEdit.setText("Edit");
-                    userName.setTextColor(R.color.white);
-                    userEmail.setTextColor(R.color.white);
+//                    userName.setTextColor(R.color.white);
+//                    userEmail.setTextColor(R.color.white);
                     if (checkCredentials()) {
                         user.setEmail(userEmail.getText().toString());
                         user.setUserName(userName.getText().toString());

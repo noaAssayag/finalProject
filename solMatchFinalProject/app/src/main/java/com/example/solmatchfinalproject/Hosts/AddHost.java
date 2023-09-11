@@ -53,7 +53,6 @@ public class AddHost extends AppCompatActivity {
     int PICK_IMAGE_REQUEST = 100;
     TextView mDisplayDateTime;
     Calendar mDateAndTime = Calendar.getInstance();
-    GridView grid;
     Spinner cities;
     EditText streets;
     EditText apartNum;
@@ -86,28 +85,20 @@ public class AddHost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_host);
-        // grid=findViewById(R.id.gridView);
+        sub = (Button) findViewById(R.id.btnSubmit);
+        cities =(Spinner) findViewById(R.id.hostAddress);
+        streets=(EditText)findViewById(R.id.hostStreet);
+        apartNum=(EditText)findViewById(R.id.hostApartmentNum);
+        description=(EditText)findViewById(R.id.hostDescription);
+        locationImg = (ImageView) findViewById(R.id.imageOfLocation);
+        btnAddImg = (ImageButton) findViewById(R.id.uploadImage);
+        accommodationSwitch=(Switch)findViewById(R.id.accommodationSwitch);
+        petsSwitch=(Switch)findViewById(R.id.petsSwitch);
+        privateRoomSwitch=(Switch)findViewById(R.id.privateRoomSwitch);
+        secureEnvSwitch=(Switch)findViewById(R.id.secureEnvSwitch);
+        updateDateAndTimeDisplay();
+        sqlDataBase = new DatabaseHelper(this);
 
-
-//        sub = (Button) findViewById(R.id.btnSubmit);
-//        mDisplayDateTime = (TextView) findViewById(R.id.txtPresDateAndTime);
-//        cities =(Spinner) findViewById(R.id.hostAddress);
-//        streets=(EditText)findViewById(R.id.hostStreet);
-//        apartNum=(EditText)findViewById(R.id.hostApartmentNum);
-//        description=(EditText)findViewById(R.id.hostDescription);
-//        locationImg = (ImageView) findViewById(R.id.imageOfLocation);
-//        btnAddImg = (ImageButton) findViewById(R.id.uploadImage);
-//        accommodationSwitch=(Switch)findViewById(R.id.accommodationSwitch);
-//        petsSwitch=(Switch)findViewById(R.id.petsSwitch);
-//        privateRoomSwitch=(Switch)findViewById(R.id.privateRoomSwitch);
-//        secureEnvSwitch=(Switch)findViewById(R.id.secureEnvSwitch);
-//        updateDateAndTimeDisplay();
-//        sqlDataBase = new DatabaseHelper(this);
-
-        String [] titles= {"Hosting Date", "Hosting Time","Location","Description"};
-        int [] images={R.drawable.schedule_icon,R.drawable.hourly_rate,R.drawable.location_icon,R.drawable.comment};
-        GridAdapter gridAdapter=new GridAdapter(AddHost.this, titles,images);
-      //  grid.setAdapter(gridAdapter);
         btnAddImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

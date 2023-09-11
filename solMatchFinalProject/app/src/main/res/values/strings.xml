@@ -200,7 +200,7 @@
 
     <string name="imgOfLocation">Please add an image of the accommodation location to be displayed to the user. </string>
 
-    <string name="titleSwitches">Please fill in the following details about the accommodation you are offering</string>
+    <string name="titleSwitches">Please fill in the following details:</string>
     <string name="accommodationOption">Allow accommodation?</string>
     <string name="petsOption">Do you have pets?</string>
     <string name="privateRoomOption">Is the accommodation in a private room?</string>
@@ -268,5 +268,6 @@
     <string name="text">personalInfo</string>
     <string name="chooseToUploadPhotoFrom">Choose option to opload from</string>
     <string name="day">Hosting Date</string>
+    <string name="hostTime">Hosting Time</string>
 
 </resources>
