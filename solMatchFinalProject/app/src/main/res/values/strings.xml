@@ -244,7 +244,7 @@
     <string name="personal_de">Personal Details</string>
     <string name="userName">name</string>
     <string name="phone">Phone</string>
-    <string name="hosts">hostings</string>
+    <string name="hosts">All Host</string>
     <string name="aboutMe">About me</string>
     <string name="addhosting">Add hosting option</string>
     <string name="addhostoption">Add new hosting proposel</string>

@@ -3,9 +3,11 @@ package com.example.solmatchfinalproject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -47,13 +49,14 @@ import Model.UserStorageData;
 import Model.donations;
 import dataBase.DatabaseHelper;
 
-public class EditPersonalDetails extends AppCompatActivity implements OnImageSelectedListener  {
+public class EditPersonalDetails extends AppCompatActivity implements RecycleViewInterface,OnImageSelectedListener  {
     private static final int PICK_IMAGE_REQUEST = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 11;
     ImageView userImg;
     EditText userName, userEmail, birthDate,attributes;
     Button btEdit;
     ImageView changeImage;
+    RecyclerView recHosts;
     FirebaseAuth auth;
     FirebaseFirestore firestore;
     String URL;
@@ -71,9 +74,24 @@ public class EditPersonalDetails extends AppCompatActivity implements OnImageSel
         userEmail = findViewById(R.id.et_email);
         changeImage = findViewById(R.id.iv_update_pic);
         firestore = FirebaseFirestore.getInstance();
+        recHosts = findViewById(R.id.hostingPromptRecycler);
         auth = FirebaseAuth.getInstance();
         sqlDatabase = new DatabaseHelper(this);
 
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recHosts.setLayoutManager(llm);
+
+        switch (user.getType().toString()) {
+            case "Soldier": {
+                presentHostSql(0, user.getUID());
+                break;
+            }
+            case "Host": {
+                presentHostSql(1, user.getEmail());
+                break;
+            }
+        }
         changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,7 +212,29 @@ public class EditPersonalDetails extends AppCompatActivity implements OnImageSel
         });
 
     }
-
+    public void presentHostSql(int userType, String Email) {
+        List<Host> hosts = sqlDatabase.getAllHosts();
+        List<Host> relevantHosts = new ArrayList<>();
+        if (userType == 0) {
+            for (Host host : hosts) {
+                if (host.getListOfResidents() != null && !host.getListOfResidents().isEmpty()) {
+                    for (UserStorageData user : host.getListOfResidents()) {
+                        if (user.getUID().equals(Email)) {
+                            relevantHosts.add(host);
+                        }
+                    }
+                }
+            }
+        } else if (userType == 1) {
+            for (Host host : hosts) {
+                if (host.getHostEmail().equals(Email)) {
+                    relevantHosts.add(host);
+                }
+            }
+        }
+        UserHostAdapter userHostAdapter = new UserHostAdapter(relevantHosts, (Context) EditPersonalDetails.this, (RecycleViewInterface) EditPersonalDetails.this);
+        recHosts.setAdapter(userHostAdapter);
+    }
     private boolean checkCredentials() {
         if (userName.getText().toString().isEmpty() || userName.getText().toString().length() < 7 || !userName.getText().toString().matches("[a-zA-Z ]+")) {
             RegisterActivity.showError(userName, "Your username is not valid!");
@@ -205,5 +245,10 @@ public class EditPersonalDetails extends AppCompatActivity implements OnImageSel
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }
