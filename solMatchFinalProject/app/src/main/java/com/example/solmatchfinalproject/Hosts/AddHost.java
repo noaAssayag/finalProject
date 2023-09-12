@@ -3,6 +3,7 @@ package com.example.solmatchfinalproject.Hosts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -51,7 +52,7 @@ import dataBase.DatabaseHelper;
 
 public class AddHost extends AppCompatActivity {
     int PICK_IMAGE_REQUEST = 100;
-    TextView mDisplayDateTime;
+    TextView mDisplayDateTime, preTime;
     Calendar mDateAndTime = Calendar.getInstance();
     Spinner cities;
     EditText streets;
@@ -63,10 +64,9 @@ public class AddHost extends AppCompatActivity {
     Switch petsSwitch;
     Switch privateRoomSwitch;
     Switch secureEnvSwitch;
-    Button sub;
+    Button sub ;
+    ImageView back;
     FirebaseAuth auth;
-    FirebaseDatabase db;
-    DatabaseReference ref;
     String uid, email, userName, hostDate, hostAddress, hostDescription;
     String accommodation = "false";
     String pets = "false";
@@ -75,12 +75,12 @@ public class AddHost extends AppCompatActivity {
     Uri imageURILoc;
     String URL;
     String imageURLHost;
-    private Host newHost;
     private boolean validDate = true;
     private BottomNavigationHandler navigationHandler;
 
     private DatabaseHelper sqlDataBase;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +96,19 @@ public class AddHost extends AppCompatActivity {
         petsSwitch=(Switch)findViewById(R.id.petsSwitch);
         privateRoomSwitch=(Switch)findViewById(R.id.privateRoomSwitch);
         secureEnvSwitch=(Switch)findViewById(R.id.secureEnvSwitch);
+        mDisplayDateTime=findViewById(R.id.valueDate);
+        preTime=findViewById(R.id.valueTime);
         updateDateAndTimeDisplay();
         sqlDataBase = new DatabaseHelper(this);
+        back=(ImageView) findViewById(R.id.backArrow);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddHost.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
         btnAddImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +128,7 @@ public class AddHost extends AppCompatActivity {
                 }
                 if(streets==null||streets.getText().toString().isEmpty()||apartNum==null||apartNum.getText().toString().isEmpty()|| hostDate.isEmpty() || validDate == false)
                 {
-                    Toast.makeText(AddHost.this, "Please fill all the fileds", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddHost.this, "Please fill all the fileds and check they are valid", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (locationImg.getDrawable() == null) {
@@ -264,9 +275,17 @@ public class AddHost extends AppCompatActivity {
     }
 
     private void updateDateAndTimeDisplay() {
-        mDisplayDateTime.setText(DateUtils.formatDateTime(this,
-                mDateAndTime.getTimeInMillis(), DateUtils.FORMAT_SHOW_YEAR
-                        | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
+        // Format and display date
+        String date = DateUtils.formatDateTime(this,
+                mDateAndTime.getTimeInMillis(),
+                DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_DATE);
+        mDisplayDateTime.setText(date);
+
+        // Format and display time
+        String time = DateUtils.formatDateTime(this,
+                mDateAndTime.getTimeInMillis(),
+                DateUtils.FORMAT_SHOW_TIME);
+        preTime.setText(time);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

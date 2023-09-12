@@ -269,5 +269,6 @@
     <string name="chooseToUploadPhotoFrom">Choose option to opload from</string>
     <string name="day">Hosting Date</string>
     <string name="hostTime">Hosting Time</string>
+    <string name="comments">comments</string>
 
 </resources>

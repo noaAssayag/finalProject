@@ -1,173 +1,166 @@
 package com.example.solmatchfinalproject;
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.solmatchfinalproject.Hosts.AddHost;
+import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
+import com.example.solmatchfinalproject.Hosts.UserHostAdapter;
+import com.example.solmatchfinalproject.profile.ProfileActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import Model.UserInfo;
+import java.util.ArrayList;
+import java.util.List;
+
+import Model.Host;
 import Model.UserStorageData;
-//import notification.notificationService;
+import Model.donations;
+import dataBase.DatabaseHelper;
 
-public class EditPersonalDetails extends Activity {
+public class EditPersonalDetails extends AppCompatActivity implements OnImageSelectedListener  {
+    private static final int PICK_IMAGE_REQUEST = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 11;
-    private ImageView image;
-    private BottomNavigationView bottomNavigationView;
-    private TextView textTitleViewName;
+    ImageView userImg;
+    EditText userName, userEmail, birthDate,attributes;
+    Button btEdit;
+    ImageView changeImage;
+    FirebaseAuth auth;
+    FirebaseFirestore firestore;
+    String URL;
+    private DatabaseHelper sqlDatabase;
+    private UserStorageData user;
+    boolean isEdit = false;
 
-    private ListView listView;
-    private UserInfoListAdapter adapter;
-    FirebaseAuth firebaseAuth;
-    FirebaseDatabase db;
-    DatabaseReference ref;
-
-    private UserStorageData currentUser;
-
-    /**
-     * OnCreate function initiates the app with all variables
-     * after initialization, we load the toolbar menu
-     *
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editdetails);
+        setContentView(R.layout.activity_edit_personal_details);
+        attributes = findViewById(R.id.attributes);
+        userImg = findViewById(R.id.iv_profile);
+        userName = findViewById(R.id.et_name);
+        userEmail = findViewById(R.id.et_email);
+        changeImage = findViewById(R.id.iv_update_pic);
+        firestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        sqlDatabase = new DatabaseHelper(this);
 
-        bottomNavigationView = findViewById(R.id.menu);
-        image = findViewById(R.id.profImg);
-        textTitleViewName = findViewById(R.id.textViewTitleName);
-        bottomNavigationView.setOnItemReselectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.myHome: {
-                    startActivity(new Intent(getApplicationContext(), EditPersonalDetails.class));
-                    overridePendingTransition(0, 0);
-                    break;
-                }
-                case R.id.chatMenu: {
-                    startActivity(new Intent(getApplicationContext(), profileActivity.class));
-                    overridePendingTransition(0, 0);
-                    break;
-                }
-                /*
-                case R.id.search: {
-                    startActivity(new Intent(getApplicationContext(), profileActivity.class));
-                    overridePendingTransition(0, 0);
-                    break;
-                }
-                */
-
-                case R.id.logOut: {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    overridePendingTransition(0, 0);
-                    break;
-                }
+        changeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cameraFragment frag = new cameraFragment();
+                frag.show(getFragmentManager(), "dialog");
             }
         });
-        firebaseAuth = FirebaseAuth.getInstance();
-        currentUser = new UserStorageData();
-        String uid = firebaseAuth.getCurrentUser().getUid();
-        //update the listview
-        List<UserInfo> userInfos = new ArrayList<>();
-        db = FirebaseDatabase.getInstance();
-        ref = db.getReference().child("Users").child(uid);
-        ref.addValueEventListener(new ValueEventListener() {
+
+
+        firestore.collection("Users").document(auth.getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            user = documentSnapshot.toObject(UserStorageData.class);
+                            userName.setText(user.getUserName());
+                            userEmail.setText(user.getEmail());
+                            birthDate.setText(user.getBirthday());
+                            if (documentSnapshot.contains("image") && documentSnapshot.getString("image") != null) {
+                                Glide.with(getApplicationContext())
+                                        .load(documentSnapshot.getString("image"))
+                                        .listener(new RequestListener<Drawable>() {
+                                            @Override
+                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target<Drawable> target, boolean isFirstResource) {
+                                                // Handle image loading failure
+                                                Log.e("Glide", "Image loading failed: " + e.getMessage());
+                                                return false; // Return false to allow Glide to handle the error and show any error placeholder you have set
+                                            }
+
+                                            @Override
+                                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                // Image successfully loaded
+                                                return false; // Return false to allow Glide to handle the resource and display it
+                                            }
+                                        })
+                                        .into(userImg);
+                            }
+                            if (user.getInfo() != null) {
+                                attributes.setText("Description: " + user.getInfo().getDescription() + "\nHobbies: " + user.getInfo().getHobbiesString());
+                            } else {
+                                attributes.setVisibility(View.GONE);
+                            }
+                            if (documentSnapshot.contains("info")) {
+                                //todo check the information about myself
+                            } else {
+                            }
+                        }
+                    }
+                });
+
+        btEdit.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                currentUser.setUserName(snapshot.child("userName").getValue().toString());
-                currentUser.setEmail(snapshot.child("email").getValue().toString());
-                currentUser.setPassword(snapshot.child("password").getValue().toString());
-                currentUser.setGen(snapshot.child("gen").getValue().toString());
-                currentUser.setType(snapshot.child("type").getValue().toString());
-                currentUser.setBirthday(snapshot.child("birthday").getValue().toString());
-                if(snapshot.hasChild("image")) {
-                    currentUser.setImage(snapshot.child("image").getValue().toString());
+            public void onClick(View view) {
+                if (!isEdit) {
+                    userName.setEnabled(true);
+                    userEmail.setEnabled(true);
+                    btEdit.setText("Save");
+                    userName.setTextColor(R.color.mild_black);
+                    userEmail.setTextColor(R.color.mild_black);
+                    isEdit = true;
+                } else {
+                    userName.setEnabled(false);
+                    userEmail.setEnabled(false);
+                    btEdit.setText("Edit");
+                    userName.setTextColor(R.color.black);
+                    userEmail.setTextColor(R.color.black);
+                    if (checkCredentials()) {
+                        user.setEmail(userEmail.getText().toString());
+                        user.setUserName(userName.getText().toString());
+                        // todo update auth email
+                        firestore.collection("Users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(getApplicationContext(), "The user's values were saved successfully", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+                    }
+                    isEdit = false;
                 }
-                if (currentUser != null) {
-                    if (currentUser.getUserName() == null) {
-                        userInfos.add(new UserInfo(R.string.name, "" + R.string.namePro));
-                    } else {
-                        userInfos.add(new UserInfo(R.string.name, currentUser.getUserName()));
-                    }
-                    if (currentUser.getEmail() == null) {
-                        userInfos.add(new UserInfo(R.string.email, "" + R.string.emailPro));
-                    } else {
-                        userInfos.add(new UserInfo(R.string.email, currentUser.getEmail()));
-                    }
-                    if (currentUser.getPassword() == null) {
-                        userInfos.add(new UserInfo(R.string.password, "" + R.string.passwordPro));
-                    } else {
-                        userInfos.add(new UserInfo(R.string.password, currentUser.getPassword()));
-                    }
-                    if (currentUser.getGen() == null) {
-                        userInfos.add(new UserInfo(R.string.gender, "" + R.string.genderPro));
-                    } else {
-                        userInfos.add(new UserInfo(R.string.gender, currentUser.getGen()));
-                    }
-                    if (currentUser.getBirthday() == null) {
-                        userInfos.add(new UserInfo(R.string.birthdate, "" + R.string.birthdayPro));
-                    } else {
-                        userInfos.add(new UserInfo(R.string.birthdate, currentUser.getBirthday()));
-                    }
-                    if (currentUser.getType() == null) {
-                        userInfos.add(new UserInfo(R.string.type, "" + R.string.typePro));
-                    } else {
-                        userInfos.add(new UserInfo(R.string.type, currentUser.getType()));
-                    }
-                    listView = (ListView) findViewById(R.id.listOfDetailsToEdit);
-                    adapter = new UserInfoListAdapter(EditPersonalDetails.this, userInfos);
-                    listView.setAdapter(adapter);
-
-                    try {
-                        setData(currentUser);
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    } catch (InstantiationException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        textTitleViewName.setText(currentUser.getUserName());
-
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                if (!checkCredentials()) {
+                    isEdit = true;
+                    userName.setEnabled(true);
+                    userEmail.setEnabled(true);
+                    btEdit.setText("Save");
+                    Toast.makeText(getApplicationContext(), "The value is invalid", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -175,44 +168,42 @@ public class EditPersonalDetails extends Activity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            if (extras != null) {
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                if (imageBitmap != null) {
-                    image.setImageBitmap(imageBitmap);
+    public void onImageSelected(Uri imageUri) {
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageUri.toString());
+        storageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                if (task.isSuccessful()) {
+                    storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            URL = uri.toString();
+                            userImg.setImageURI(imageUri);
+                            user.setImage(URL);
+                            firestore.collection("Users").document(auth.getUid()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(getApplicationContext(), "image has changed", Toast.LENGTH_SHORT).show();
+
+                                }
+                            });
+                        }
+                    });
                 }
             }
+        });
+
+    }
+
+    private boolean checkCredentials() {
+        if (userName.getText().toString().isEmpty() || userName.getText().toString().length() < 7 || !userName.getText().toString().matches("[a-zA-Z ]+")) {
+            RegisterActivity.showError(userName, "Your username is not valid!");
+            return false;
         }
+        if (!RegisterActivity.isValidEmail(userEmail.getText().toString())) {
+            RegisterActivity.showError(userEmail, "Your username is not valid!");
+            return false;
+        }
+        return true;
     }
-
-    public void setData(UserStorageData user) throws IllegalAccessException, InstantiationException {
-        this.currentUser=user;
-        Glide.with(getApplicationContext())
-                .load(currentUser.getImage())
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target<Drawable> target, boolean isFirstResource) {
-                        // Handle image loading failure
-                        Log.e("Glide", "Image loading failed: " + e.getMessage());
-                        return false; // Return false to allow Glide to handle the error and show any error placeholder you have set
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        // Image successfully loaded
-                        return false; // Return false to allow Glide to handle the resource and display it
-                    }
-                })
-                .into(image);
-    }
-
-
-
 }
-
-
-
-

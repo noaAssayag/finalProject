@@ -119,10 +119,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
                         android:lineSpacingMultiplier="3"
                         android:textAlignment="viewStart"
-                        android:textColor="@color/user_name" />
+                        android:textColor="@color/black" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -190,10 +189,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
                         android:lineSpacingMultiplier="3"
                         android:textAlignment="viewStart"
-                        android:textColor="@color/user_name" />
+                        android:textColor="@color/black" />
 
 
                 </LinearLayout>
@@ -291,7 +289,7 @@
         <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/hostDescription"
+            android:id="@+id/cardComments"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center"
@@ -340,12 +338,12 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:lineSpacingMultiplier="3"
-                        android:text="@string/hostTime"
+                        android:text="@string/comments"
                         android:textAlignment="viewStart"
-                        android:textColor="@color/user_name" />
+                        android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/valueComments"
+                        android:id="@+id/hostDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -369,7 +367,7 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/gl_end"
             app:layout_constraintStart_toStartOf="@+id/gl_start"
-            app:layout_constraintTop_toBottomOf="@+id/hostDescription"
+            app:layout_constraintTop_toBottomOf="@+id/cardComments"
 
             />
 
@@ -425,7 +423,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginTop="4dp"
             android:onClick="onPetsSwitch"
             android:text="@string/petsOption"
             app:layout_constraintEnd_toStartOf="@+id/gl_end"
