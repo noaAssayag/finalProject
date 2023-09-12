@@ -270,5 +270,6 @@
     <string name="day">Hosting Date</string>
     <string name="hostTime">Hosting Time</string>
     <string name="comments">comments</string>
+    <string name="skip">Skip</string>
 
 </resources>

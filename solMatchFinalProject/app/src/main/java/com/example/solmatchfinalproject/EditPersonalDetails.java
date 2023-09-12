@@ -72,6 +72,8 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         userImg = findViewById(R.id.iv_profile);
         userName = findViewById(R.id.et_name);
         userEmail = findViewById(R.id.et_email);
+        btEdit = findViewById(R.id.bt_Edit);
+        birthDate = findViewById(R.id.birthDateEditTxt);
         changeImage = findViewById(R.id.iv_update_pic);
         firestore = FirebaseFirestore.getInstance();
         recHosts = findViewById(R.id.hostingPromptRecycler);
@@ -82,16 +84,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recHosts.setLayoutManager(llm);
 
-        switch (user.getType().toString()) {
-            case "Soldier": {
-                presentHostSql(0, user.getUID());
-                break;
-            }
-            case "Host": {
-                presentHostSql(1, user.getEmail());
-                break;
-            }
-        }
+
         changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,6 +130,16 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                             if (documentSnapshot.contains("info")) {
                                 //todo check the information about myself
                             } else {
+                            }
+                        }
+                        switch (user.getType().toString()) {
+                            case "Soldier": {
+                                presentHostSql(0, user.getUID());
+                                break;
+                            }
+                            case "Host": {
+                                presentHostSql(1, user.getEmail());
+                                break;
                             }
                         }
                     }

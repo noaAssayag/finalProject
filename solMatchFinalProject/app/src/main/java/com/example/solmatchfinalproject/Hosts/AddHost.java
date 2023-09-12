@@ -1,7 +1,11 @@
 package com.example.solmatchfinalproject.Hosts;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import android.location.Address;
+import android.location.Geocoder;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -10,6 +14,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -22,17 +27,33 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
 import com.example.solmatchfinalproject.GridAdapter;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.example.solmatchfinalproject.profileActivity;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,7 +66,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 import Model.Host;
 import dataBase.DatabaseHelper;
@@ -53,6 +81,10 @@ import dataBase.DatabaseHelper;
 public class AddHost extends AppCompatActivity {
     int PICK_IMAGE_REQUEST = 100;
     TextView mDisplayDateTime, preTime;
+    private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
+
+    private FusedLocationProviderClient fusedLocationClient;
+
     Calendar mDateAndTime = Calendar.getInstance();
     Spinner cities;
     EditText streets;
@@ -73,6 +105,7 @@ public class AddHost extends AppCompatActivity {
     String privateRoom = "false";
     String secureEnv = "false";
     Uri imageURILoc;
+    ImageView imgLocation;
     String URL;
     String imageURLHost;
     private boolean validDate = true;
@@ -84,6 +117,7 @@ public class AddHost extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Places.initialize(getApplicationContext(), "AIzaSyCS00xXyYjpPy7c51Yo9CFgr6Xia1ZMRF8");
         setContentView(R.layout.activity_add_host);
         sub = (Button) findViewById(R.id.btnSubmit);
         cities =(Spinner) findViewById(R.id.hostAddress);
@@ -99,8 +133,11 @@ public class AddHost extends AppCompatActivity {
         mDisplayDateTime=findViewById(R.id.valueDate);
         preTime=findViewById(R.id.valueTime);
         updateDateAndTimeDisplay();
+        imgLocation = findViewById(R.id.imgLocation);
         sqlDataBase = new DatabaseHelper(this);
         back=(ImageView) findViewById(R.id.backArrow);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        getLastLocation();
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +153,13 @@ public class AddHost extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
+            }
+        });
+
+        imgLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPlacePicker();
             }
         });
         sub.setOnClickListener(new View.OnClickListener() {
@@ -295,7 +339,85 @@ public class AddHost extends AppCompatActivity {
             imageURILoc = data.getData();
             locationImg.setImageURI(imageURILoc);
         }
+
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
     }
 
+    public void openPlacePicker() {
+        // Set the fields to specify which types of place data to return.
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
+
+        // Start the autocomplete intent.
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                .build(this);
+        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+    }
+    private void getLastLocation(){
+        // Check permissions
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Request permissions if needed
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
+
+        // Get last known location
+        fusedLocationClient.getLastLocation()
+                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            Location lastKnownLocation = task.getResult();
+
+                            // Use the location object to get latitude and longitude
+                            double latitude = lastKnownLocation.getLatitude();
+                            double longitude = lastKnownLocation.getLongitude();
+                            Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                            List<Address> addresses = null;
+
+                            try {
+                                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            if (addresses != null && !addresses.isEmpty()) {
+                                Address address = addresses.get(0);
+                                // Here are some examples of what you can get from the Address object:
+                                String addressLine = address.getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                                String city = address.getLocality();
+                                String state = address.getAdminArea();
+                                String country = address.getCountryName();
+                                String postalCode = address.getPostalCode();
+                                String knownName = address.getFeatureName(); // Only if available else return NULL
+
+                                String fullAddress = addressLine + ", " + city + ", " + state + ", " + country + ", " + postalCode;
+                                streets.setText(fullAddress);
+                            }
+                        }
+                    }
+                });
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            } else {
+                // Permission denied
+            }
+        }
+    }
 
 }

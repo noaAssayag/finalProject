@@ -315,6 +315,7 @@
 
 
 
+
                             <androidx.core.widget.NestedScrollView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -328,6 +329,20 @@
                                     android:padding="5dp" />
 
                             </androidx.core.widget.NestedScrollView>
+                            <Button
+                                android:id="@+id/bt_Edit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="60dp"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:paddingBottom="10dp"
+                                android:text="Edit"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                                android:textColor="@android:color/white"
+                                app:backgroundTint="@color/colorBtSignIn"
+                                />
                         </LinearLayout>
 
 

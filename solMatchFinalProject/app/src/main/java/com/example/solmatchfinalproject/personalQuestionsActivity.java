@@ -34,7 +34,7 @@ public class personalQuestionsActivity extends Activity {
     RecyclerView hobbitsItems;
     List<String> hobbiesList;
     List<String> selectedItemsList;
-    Button next;
+    Button next,skip;
     EditText personalInfo;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -53,6 +53,7 @@ public class personalQuestionsActivity extends Activity {
         hobbitsItems = findViewById(R.id.hobbiesList);
         hobbiesList = new ArrayList<String>();
         selectedItemsList = new ArrayList<String>();
+        skip = findViewById(R.id.skipButt);
         Collections.addAll(hobbiesList, "soccer", "football", "reading", "hiking", "video games", "writing", "music", "resterants");
         int itemsPerRow = 3; // Number of items per row
 
@@ -62,6 +63,8 @@ public class personalQuestionsActivity extends Activity {
 
         personalQuestionsAdapter adapter = new personalQuestionsAdapter(hobbiesList, getApplicationContext());
         hobbitsItems.setAdapter(adapter);
+
+
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +79,9 @@ public class personalQuestionsActivity extends Activity {
                 }
                 if(!personalInfo.getText().toString().isEmpty()) {
                     description = personalInfo.getText().toString();
+                }
+                else{
+                    description = "No description";
                 }
                     for (String selectedItem : selectedItemsList) {
                         Log.i("Selected Item", selectedItem);
@@ -109,3 +115,4 @@ public class personalQuestionsActivity extends Activity {
         });
     }
 }
+
