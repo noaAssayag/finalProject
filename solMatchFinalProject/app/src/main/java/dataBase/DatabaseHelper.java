@@ -422,7 +422,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for (donations firebaseDonation : firebaseDonations) {
             boolean donationExists = false;
             for (donations sqliteDonation : sqliteDonations) {
-                if (firebaseDonation.getEmail() == sqliteDonation.getEmail()) {
+                if (firebaseDonation.getEmail().equals(sqliteDonation.getEmail())) {
                     donationExists = true;
                     // Compare other fields here
                     if (!firebaseDonation.getName().equals(sqliteDonation.getName()) /* other conditions */) {
