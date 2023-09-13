@@ -271,5 +271,10 @@
     <string name="hostTime">Hosting Time</string>
     <string name="comments">comments</string>
     <string name="skip">Skip</string>
+    <string name="addNewDonation">Add Donation</string>
+    <string name="addDescription">add description:</string>
+    <string name="donationName">donation Info</string>
+    <string name="addImg">Please add an image</string>
+    <string name="donationCategory">donation category</string>
 
 </resources>

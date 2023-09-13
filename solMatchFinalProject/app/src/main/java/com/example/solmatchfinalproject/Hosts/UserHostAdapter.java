@@ -142,7 +142,7 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
         private TextView vEmail;
         private TextView vAddress;
         private TextView vDate;
-        private ImageButton vBtn;
+        private ImageButton vBtn,vRemove;
         private Host userHosting = null;
         String userHosted;
 
@@ -154,9 +154,26 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
             vDate = v.findViewById(R.id.txtHostDate);
             vImg = v.findViewById(R.id.hostImg);
             vBtn = v.findViewById(R.id.hostBtn);
+            vRemove=v.findViewById(R.id.removeHost);
+
+            vRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(recycleViewInterface!=null)
+                    {
+                        int position=getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION)
+                        {
+                            recycleViewInterface.deleteItem(position);
+                        }
+                    }
+                }
+            });
+
             vBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    //todo open chat here
 
                 }
             });

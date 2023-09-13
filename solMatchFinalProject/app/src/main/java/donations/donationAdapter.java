@@ -173,7 +173,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
         private TextView catagory;
         private TextView desc;
         private donations di = null;
-        private ImageButton startchat;
+        private ImageButton startchat,removeDon;
 
         String userDonated;
 
@@ -185,7 +185,28 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
             catagory = rowView.findViewById(R.id.donationCatagory);
             desc = rowView.findViewById(R.id.donationDescription);
             startchat = rowView.findViewById(R.id.btnStartChat);
+            removeDon=rowView.findViewById(R.id.removeDon);
+            removeDon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(recycleViewInterface!=null)
+                    {
+                        int position=getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION)
+                        {
+                            recycleViewInterface.deleteDonation(position);
+                        }
+                    }
+                }
+            });
 
+            startchat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //todo open chat here
+
+                }
+            });
             rowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

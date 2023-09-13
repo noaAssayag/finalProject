@@ -273,6 +273,16 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
     }
 
     @Override
+    public void deleteItem(int position) {
+
+    }
+
+    @Override
+    public void deleteDonation(int position) {
+
+    }
+
+    @Override
     public void onDialogPositiveClick(AlertDialogFragmentViewHost dialog) {
         Toast.makeText(this, "This host addedd to wishList", Toast.LENGTH_SHORT).show();
     }

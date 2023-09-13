@@ -1,5 +1,7 @@
 package com.example.solmatchfinalproject;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,7 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -30,6 +34,7 @@ import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
 import com.example.solmatchfinalproject.Hosts.UserHostAdapter;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,11 +43,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import Model.Host;
@@ -50,20 +58,24 @@ import Model.UserStorageData;
 import Model.donations;
 import dataBase.DatabaseHelper;
 
-public class EditPersonalDetails extends AppCompatActivity implements RecycleViewInterface,OnImageSelectedListener  {
+public class EditPersonalDetails extends AppCompatActivity implements RecycleViewInterface, OnImageSelectedListener {
     private static final int PICK_IMAGE_REQUEST = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 11;
     ImageView userImg;
-    EditText userName, userEmail, birthDate,attributes;
+    EditText userName, userEmail, birthDate, attributes;
+    TextView donationTitle, hostTitle;
     Button btEdit;
     ImageView changeImage;
-    RecyclerView recHosts;
+    RecyclerView recHosts, recDonations;
     FirebaseAuth auth;
     FirebaseFirestore firestore;
     String URL;
     private DatabaseHelper sqlDatabase;
     private UserStorageData user;
     boolean isEdit = false;
+    List<donations> donationList = new ArrayList<>();
+    UserHostAdapter userHostAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +88,17 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         btEdit = findViewById(R.id.bt_Edit);
         birthDate = findViewById(R.id.birthDateEditTxt);
         changeImage = findViewById(R.id.iv_update_pic);
-        firestore = FirebaseFirestore.getInstance();
+        donationTitle = findViewById(R.id.donationtitle);
+        hostTitle = findViewById(R.id.hostTitle);
         recHosts = findViewById(R.id.hostingPromptRecycler);
+        recDonations = findViewById(R.id.donationsPromptRecycler);
+        firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         sqlDatabase = new DatabaseHelper(this);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recHosts.setLayoutManager(llm);
         recHosts.setLayoutManager(llm);
 
 
@@ -136,11 +152,24 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                         switch (user.getType().toString()) {
                             case "Soldier": {
                                 presentHostSql(0, user.getUID());
+                                donationTitle.setVisibility(View.GONE);
                                 break;
                             }
                             case "Host": {
+                                donationTitle.setVisibility(View.VISIBLE);
                                 presentHostSql(1, user.getEmail());
+                                List<donations> allDonations = new ArrayList<>();
+                                allDonations = sqlDatabase.getAllDonations();
+                                for (donations donation : allDonations) {
+                                    if (donation.getEmail().equals(user.getEmail())) {
+                                        donationList.add(donation);
+                                    }
+                                }
                                 break;
+                            }
+                            case "Professional": {
+                                donationTitle.setVisibility(View.GONE);
+                                hostTitle.setVisibility(View.GONE);
                             }
                         }
                     }
@@ -154,15 +183,16 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                     userName.setEnabled(true);
                     userEmail.setEnabled(true);
                     btEdit.setText("Save");
-                    userName.setTextColor(R.color.mild_black);
-                    userEmail.setTextColor(R.color.mild_black);
+                    userName.setTextColor(R.color.black);
+                    userEmail.setTextColor(R.color.black);
                     isEdit = true;
                 } else {
                     userName.setEnabled(false);
                     userEmail.setEnabled(false);
                     btEdit.setText("Edit");
-                    userName.setTextColor(R.color.black);
-                    userEmail.setTextColor(R.color.black);
+                    userName.setTextColor(getResources().getColor(R.color.black));
+                    userEmail.setTextColor(getResources().getColor(R.color.black));
+
                     if (checkCredentials()) {
                         user.setEmail(userEmail.getText().toString());
                         user.setUserName(userName.getText().toString());
@@ -229,6 +259,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         });
 
     }
+
     public void presentHostSql(int userType, String Email) {
         List<Host> hosts = sqlDatabase.getAllHosts();
         List<Host> relevantHosts = new ArrayList<>();
@@ -249,9 +280,10 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                 }
             }
         }
-        UserHostAdapter userHostAdapter = new UserHostAdapter(relevantHosts, (Context) EditPersonalDetails.this, (RecycleViewInterface) EditPersonalDetails.this);
+        userHostAdapter = new UserHostAdapter(relevantHosts, (Context) EditPersonalDetails.this, (RecycleViewInterface) EditPersonalDetails.this);
         recHosts.setAdapter(userHostAdapter);
     }
+
     private boolean checkCredentials() {
         if (userName.getText().toString().isEmpty() || userName.getText().toString().length() < 7 || !userName.getText().toString().matches("[a-zA-Z ]+")) {
             RegisterActivity.showError(userName, "Your username is not valid!");
@@ -266,6 +298,122 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
 
     @Override
     public void onItemClick(int position) {
+
+
+    }
+
+    @Override
+    public void deleteItem(int position) {
+        List<Host> hosts = sqlDatabase.getAllHosts();
+        Host hostToDelete = hosts.get(position);
+
+        // 1. Instantiate an AlertDialog.Builder with its constructor
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+
+        // 2. Chain together various setter methods to set the dialog characteristics
+        builder.setMessage(R.string.dialog_message);
+        builder.setTitle(R.string.dialog_title);
+        // Add the buttons
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                Toast.makeText(getApplicationContext(), "User clicked OK button", Toast.LENGTH_SHORT).show();
+                switch (user.getType().toString()) {
+                    case "Soldier": {
+                        for (Host host : hosts) {
+                            // Check if the host has residents and the current user is one of them
+                            if (host.getListOfResidents() != null && !host.getListOfResidents().isEmpty()) {
+                                Iterator<UserStorageData> iterator = host.getListOfResidents().iterator();
+                                while (iterator.hasNext()) {
+                                    UserStorageData userlist = iterator.next();
+                                    if (userlist.getUID().equals(auth.getUid())) {
+                                        iterator.remove(); // Remove the user from the list
+                                    }
+                                }
+                                firestore.collection("Users")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        UserStorageData currentUser = document.toObject(UserStorageData.class);
+                                                        if (currentUser.getEmail().equals(host.getHostAddress())) {
+                                                            String uid = document.getId();
+                                                            firestore.collection("Host").document(uid).set(host).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    userHostAdapter.notifyDataSetChanged();
+                                                                    Toast.makeText(getApplicationContext(), "The hosting has been successfully deleted, a message will be sent to the host", Toast.LENGTH_SHORT).show();
+                                                                    //todo send message to host about cancel
+                                                                }
+                                                            });
+                                                        }
+
+                                                    }
+                                                } else {
+                                                    Log.w(TAG, "Error getting documents.", task.getException());
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                        break;
+                    }
+                    case "Host": {
+                        for (Host host : hosts) {
+                            List<UserStorageData> soliders = new ArrayList<>();
+                            if (host.getHostEmail().equals(auth.getCurrentUser().getEmail())) {
+                                if (host.getListOfResidents() != null && !host.getListOfResidents().isEmpty()) {
+                                    soliders = host.getListOfResidents();
+                                }
+                                if (!soliders.isEmpty()) {
+                                    //todo send each user message in chat that the host cancel the order
+                                }
+                            }
+                            hosts.remove(position);
+
+                            // Notify the RecyclerView adapter of the data change
+                            userHostAdapter.notifyDataSetChanged();
+                            firestore.collection("Host").document(auth.getUid()).delete()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                // Notify the RecyclerView adapter of the data change
+                                                Toast.makeText(getApplicationContext(), "The hosting was successfully deleted", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error deleting document", e);
+                                            }
+                                        });
+
+
+                            }
+
+
+                    }
+
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                Toast.makeText(getApplicationContext(), "User cancelled the dialog", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        // 3. Get the AlertDialog from create()
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void deleteDonation(int position) {
 
     }
 }

@@ -41,7 +41,7 @@
             android:layout_toRightOf="@+id/imgdonation"
             android:gravity="center_vertical"
             android:textColor="@color/black"
-            android:text="@string/name"
+            android:text="@string/donationName"
             android:textSize="10sp" />
 
         <TextView
@@ -54,7 +54,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:textColor="@color/black"
-            android:text="@string/email"
+            android:text="@string/donationCategory"
             android:textSize="10sp" />
 
         <TextView
@@ -63,9 +63,10 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/Donatorname"
             android:layout_alignParentRight="true"
+            android:layout_alignRight="@+id/Donatorname"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="150dp"
-            android:text="@string/hostAddress"
+            android:layout_marginRight="100dp"
+            android:text="@string/location"
             android:textColor="@color/black"
             android:textSize="10sp" />
 
@@ -75,8 +76,9 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/donationCatagory"
             android:layout_alignStart="@id/donationLocation"
+            android:layout_alignRight="@+id/donationCatagory"
+            android:text="@string/description"
             android:textColor="@color/black"
-            android:text="@string/hostingDate"
             android:textSize="10sp" />
 
         <ImageButton
@@ -87,6 +89,15 @@
             android:layout_alignParentEnd="true"
             android:src="@drawable/baseline_chat_bubble_24"
             android:text="chat"
+            android:textSize="10sp" />
+        <ImageButton
+            android:id="@+id/removeDon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donationDescription"
+            android:layout_toLeftOf="@+id/btnStartChat"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/baseline_cancel_24"
             android:textSize="10sp" />
 
     </RelativeLayout>

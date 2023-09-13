@@ -129,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="10dp"
+                    android:layout_margin="15dp"
                     android:elevation="15dp"
                     card_view:cardCornerRadius="4dp">
 
@@ -295,15 +295,12 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/hostTitle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/hosts"
                                 android:textColor="@color/user_name"
                                 android:textSize="12sp" />
-
-
-
-
 
                             <androidx.core.widget.NestedScrollView
                                 android:layout_width="match_parent"
@@ -313,6 +310,37 @@
 
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/hostingPromptRecycler"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp" />
+
+                            </androidx.core.widget.NestedScrollView>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/donationtitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/AllDonations"
+                                android:textColor="@color/user_name"
+                                android:textSize="12sp" />
+
+                            <androidx.core.widget.NestedScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:fillViewport="true"
+                                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/donationsPromptRecycler"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:padding="5dp" />

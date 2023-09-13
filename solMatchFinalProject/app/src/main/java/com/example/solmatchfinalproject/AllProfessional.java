@@ -222,5 +222,15 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
         frag.show(getFragmentManager(), "dialog");
     }
 
+    @Override
+    public void deleteItem(int position) {
+
+    }
+
+    @Override
+    public void deleteDonation(int position) {
+
+    }
+
 
 }

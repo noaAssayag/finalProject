@@ -21,11 +21,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -51,7 +54,9 @@ import dataBase.DatabaseHelper;
 
 public class addDonationActivity extends Activity {
     int PICK_IMAGE_REQUEST = 100;
-    EditText itemName,ItemDescription,adress;
+    EditText itemName,ItemDescription,streets,apartNum;
+    Spinner cities;
+    private FusedLocationProviderClient fusedLocationClient;
     ImageView itemImage;
     ImageButton uploadImage;
     Button addItem;
@@ -65,17 +70,17 @@ public class addDonationActivity extends Activity {
     DatabaseHelper sqlDatabase;
     int i = 0;
 
-    private BottomNavigationHandler navigationHandler;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         long count = 0;
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.add_donation_page);
+        Places.initialize(getApplicationContext(), "AIzaSyCS00xXyYjpPy7c51Yo9CFgr6Xia1ZMRF8");
         itemName = findViewById(R.id.inputItemName);
         ItemDescription = findViewById(R.id.inputItemDescription);
-        adress = findViewById(R.id.inputLocation);
+        cities =(Spinner) findViewById(R.id.hostAddress);
+        streets=(EditText)findViewById(R.id.hostStreet);
+        apartNum=(EditText)findViewById(R.id.hostApartmentNum);
         itemImage = findViewById(R.id.imageViewer);
         uploadImage = findViewById(R.id.uploadImageButt);
         addItem = findViewById(R.id.btnAddDonation);
@@ -83,9 +88,8 @@ public class addDonationActivity extends Activity {
         sqlDatabase = new DatabaseHelper(this);
 
         String[] options = {"home cooking", "furniture", "food supplies","other"};
-        BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
-        navigationHandler = new BottomNavigationHandler(this,getApplicationContext());
-        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
+//        navigationHandler = new BottomNavigationHandler(this,getApplicationContext());
+//        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
 // Create an ArrayAdapter to populate the Spinner with the options
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -119,7 +123,15 @@ public class addDonationActivity extends Activity {
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = R.drawable.anonymousman;
+                if (cities == null && cities.getSelectedItem() == null)  {
+                    Toast.makeText(addDonationActivity.this, "Please choose a city", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(streets==null||streets.getText().toString().isEmpty()||apartNum==null||apartNum.getText().toString().isEmpty())
+                {
+                    Toast.makeText(addDonationActivity.this, "Please fill all the fileds and check they are valid", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 // Upload the image to Firebase Storage
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageURI.toString());
                 storageRef.putFile(imageURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -136,7 +148,9 @@ public class addDonationActivity extends Activity {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                                             email = documentSnapshot.getString("email");
-                                            donations formData = new donations(itemName.getText().toString(), adress.getText().toString(), selectedItem, ItemDescription.getText().toString(), URL, email);
+                                            String address=cities.getSelectedItem().toString()+", "+streets.getText().toString()+", "+apartNum.getText().toString();
+
+                                            donations formData = new donations(itemName.getText().toString(), address, selectedItem, ItemDescription.getText().toString(), URL, email);
 
                                             db.collection("donations").add(formData)
                                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -169,7 +183,6 @@ public class addDonationActivity extends Activity {
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = R.drawable.anonymousman;
                 // Upload the image to Firebase Storage
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageURI.toString());
                 storageRef.putFile(imageURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -183,7 +196,8 @@ public class addDonationActivity extends Activity {
                                     URL = uri.toString();
                                     FirebaseFirestore addDonationToFireStore = FirebaseFirestore.getInstance();
                                     email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                                    donations formData = new donations(itemName.getText().toString(), adress.getText().toString(), selectedItem, ItemDescription.getText().toString(), URL, email);
+                                    String address=cities.getSelectedItem().toString()+", "+streets.getText().toString()+", "+apartNum.getText().toString();
+                                    donations formData = new donations(itemName.getText().toString(), address, selectedItem, ItemDescription.getText().toString(), URL, email);
                                     addDonationToFireStore.collection("Donations").add(formData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                         @Override
                                         public void onSuccess(DocumentReference documentReference) {

@@ -118,6 +118,16 @@ public class donationActivity extends Activity  implements RecycleViewInterface,
     }
 
     @Override
+    public void deleteItem(int position) {
+
+    }
+
+    @Override
+    public void deleteDonation(int position) {
+
+    }
+
+    @Override
     public void onDialogPositiveClick(AlertDialogFragmentViewDonations dialog) {
         Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
 
