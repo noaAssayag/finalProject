@@ -21,5 +21,7 @@ public class All_donation_activity extends AppCompatActivity {
         nameDon=findViewById(R.id.name_donation);
         searchBtn=findViewById(R.id.searchbtn);
         recyclerViewDon=findViewById(R.id.recyclerViewDon);
+
+
     }
 }
