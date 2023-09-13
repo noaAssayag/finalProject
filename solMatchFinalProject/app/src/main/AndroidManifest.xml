@@ -5,14 +5,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyCS00xXyYjpPy7c51Yo9CFgr6Xia1ZMRF8"/>
-
+        android:value="AIzaSyCS00xXyYjpPy7c51Yo9CFgr6Xia1ZMRF8" />
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
         android:value="@string/facebook_app_id" />
@@ -25,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SolMatchFinalProject"
         tools:targetApi="31">
+        <activity
+            android:name=".All_donation_activity"
+            android:exported="false" />
         <activity
             android:name=".EditPersonalDetails"
             android:exported="false" />
