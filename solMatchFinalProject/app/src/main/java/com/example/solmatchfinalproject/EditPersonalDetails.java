@@ -53,10 +53,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import Fragment.AlertDialogFragmentViewHost;
 import Model.Host;
 import Model.UserStorageData;
 import Model.donations;
 import dataBase.DatabaseHelper;
+import donations.donationAdapter;
+
 
 public class EditPersonalDetails extends AppCompatActivity implements RecycleViewInterface, OnImageSelectedListener {
     private static final int PICK_IMAGE_REQUEST = 100;
@@ -165,6 +168,8 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                                         donationList.add(donation);
                                     }
                                 }
+                                donationAdapter adapter = new donationAdapter(donationList, EditPersonalDetails.this, EditPersonalDetails.this,false);
+                                recDonations.setAdapter(adapter);
                                 break;
                             }
                             case "Professional": {
@@ -280,7 +285,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                 }
             }
         }
-        userHostAdapter = new UserHostAdapter(relevantHosts, (Context) EditPersonalDetails.this, (RecycleViewInterface) EditPersonalDetails.this);
+        userHostAdapter = new UserHostAdapter(relevantHosts, (Context) EditPersonalDetails.this, (RecycleViewInterface) EditPersonalDetails.this, false);
         recHosts.setAdapter(userHostAdapter);
     }
 
@@ -298,8 +303,14 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
 
     @Override
     public void onItemClick(int position) {
-
-
+        sqlDatabase = new DatabaseHelper(this);
+        List<Host> allHostsList = sqlDatabase.getAllHosts();
+        Host newHost = allHostsList.get(position);
+        AlertDialogFragmentViewHost frag = new AlertDialogFragmentViewHost();
+        Bundle b = new Bundle();
+        b.putSerializable("Host", newHost);
+        frag.setArguments(b);
+        frag.show(getFragmentManager(), "dialog");
     }
 
     @Override
@@ -320,15 +331,13 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                 Toast.makeText(getApplicationContext(), "User clicked OK button", Toast.LENGTH_SHORT).show();
                 switch (user.getType().toString()) {
                     case "Soldier": {
-                        for (Host host : hosts) {
-                            // Check if the host has residents and the current user is one of them
-                            if (host.getListOfResidents() != null && !host.getListOfResidents().isEmpty()) {
-                                Iterator<UserStorageData> iterator = host.getListOfResidents().iterator();
-                                while (iterator.hasNext()) {
-                                    UserStorageData userlist = iterator.next();
-                                    if (userlist.getUID().equals(auth.getUid())) {
-                                        iterator.remove(); // Remove the user from the list
-                                    }
+                        // Check if the host has residents and the current user is one of them
+                        if (hostToDelete.getListOfResidents() != null && !hostToDelete.getListOfResidents().isEmpty()) {
+                            Iterator<UserStorageData> iterator = hostToDelete.getListOfResidents().iterator();
+                            while (iterator.hasNext()) {
+                                UserStorageData userlist = iterator.next();
+                                if (userlist.getUID().equals(auth.getUid())) {
+                                    iterator.remove(); // Remove the user from the list
                                 }
                                 firestore.collection("Users")
                                         .get()
@@ -338,9 +347,9 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                                                 if (task.isSuccessful()) {
                                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                                         UserStorageData currentUser = document.toObject(UserStorageData.class);
-                                                        if (currentUser.getEmail().equals(host.getHostAddress())) {
+                                                        if (currentUser.getEmail().equals(hostToDelete.getHostEmail())) {
                                                             String uid = document.getId();
-                                                            firestore.collection("Host").document(uid).set(host).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            firestore.collection("Host").document(uid).set(hostToDelete).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                 @Override
                                                                 public void onSuccess(Void unused) {
                                                                     userHostAdapter.notifyDataSetChanged();
@@ -361,37 +370,34 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                         break;
                     }
                     case "Host": {
-                        for (Host host : hosts) {
                             List<UserStorageData> soliders = new ArrayList<>();
-                            if (host.getHostEmail().equals(auth.getCurrentUser().getEmail())) {
-                                if (host.getListOfResidents() != null && !host.getListOfResidents().isEmpty()) {
-                                    soliders = host.getListOfResidents();
+                            if (hostToDelete.getHostEmail().equals(auth.getCurrentUser().getEmail())) {
+                                if (hostToDelete.getListOfResidents() != null && !hostToDelete.getListOfResidents().isEmpty()) {
+                                    soliders = hostToDelete.getListOfResidents();
                                 }
                                 if (!soliders.isEmpty()) {
                                     //todo send each user message in chat that the host cancel the order
                                 }
-                            }
+
                             hosts.remove(position);
 
                             // Notify the RecyclerView adapter of the data change
                             userHostAdapter.notifyDataSetChanged();
                             firestore.collection("Host").document(auth.getUid()).delete()
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                // Notify the RecyclerView adapter of the data change
-                                                Toast.makeText(getApplicationContext(), "The hosting was successfully deleted", Toast.LENGTH_SHORT).show();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.w(TAG, "Error deleting document", e);
-                                            }
-                                        });
-
-
-                            }
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            // Notify the RecyclerView adapter of the data change
+                                            Toast.makeText(getApplicationContext(), "The hosting was successfully deleted", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error deleting document", e);
+                                        }
+                                    });
+                        }
 
 
                     }
@@ -410,6 +416,11 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         // 3. Get the AlertDialog from create()
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onDonationClick(int position) {
+
     }
 
     @Override

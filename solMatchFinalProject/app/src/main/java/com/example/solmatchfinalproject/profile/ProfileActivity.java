@@ -195,7 +195,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
                 });
 
         recDonations.setLayoutManager(llm);
-        donationAdapter adapter = new donationAdapter(donationList, ProfileActivity.this, ProfileActivity.this);
+        donationAdapter adapter = new donationAdapter(donationList, ProfileActivity.this, ProfileActivity.this,false);
         recDonations.setAdapter(adapter);
 
         addHost.setOnClickListener(new View.OnClickListener() {
@@ -271,6 +271,11 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
     }
 
     @Override
+    public void onDonationClick(int position) {
+
+    }
+
+    @Override
     public void deleteDonation(int position) {
 
     }
@@ -299,7 +304,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
             statusHost.setVisibility(View.VISIBLE);
             statusHost.setText("No Hostings");
         }
-        UserHostAdapter userHostAdapter = new UserHostAdapter(relevantHosts, ProfileActivity.this, ProfileActivity.this);
+        UserHostAdapter userHostAdapter = new UserHostAdapter(relevantHosts, ProfileActivity.this, ProfileActivity.this,false);
         recHosts.setAdapter(userHostAdapter);
     }
 

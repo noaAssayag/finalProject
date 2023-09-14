@@ -60,7 +60,7 @@ public class donationActivity extends Activity  implements RecycleViewInterface,
         GridLayoutManager llm = new GridLayoutManager(donationActivity.this, 1);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         donationsView.setLayoutManager(llm);
-        donationAdapter adapter = new donationAdapter(donationList,getApplicationContext(),donationActivity.this);
+        donationAdapter adapter = new donationAdapter(donationList,getApplicationContext(),donationActivity.this,true);
         donationsView.setAdapter(adapter);
      //   donations donation = new donations("test","kkal 16", "home cooking","test object", R.drawable.anonymousman);
     //    donations donation2 = new donations("test","kkal 16", "home cooking","test object", drawable.);
@@ -76,7 +76,7 @@ public class donationActivity extends Activity  implements RecycleViewInterface,
                 List<donations> FiltereddonationList = new ArrayList<>();
                 if(filterSelected == null || filterSelected.equals("Filter by category"))
                 {
-                    donationAdapter adapter = new donationAdapter(donationList,getApplicationContext(),donationActivity.this);
+                    donationAdapter adapter = new donationAdapter(donationList,getApplicationContext(),donationActivity.this,true);
                     donationsView.setAdapter(adapter);
                     return;
                 }
@@ -87,7 +87,7 @@ public class donationActivity extends Activity  implements RecycleViewInterface,
                         FiltereddonationList.add(donation);
                     }
                 }
-                donationAdapter adapter = new donationAdapter(FiltereddonationList,getApplicationContext(),donationActivity.this);
+                donationAdapter adapter = new donationAdapter(FiltereddonationList,getApplicationContext(),donationActivity.this,true);
                 donationsView.setAdapter(adapter);
             }
         });
@@ -119,6 +119,11 @@ public class donationActivity extends Activity  implements RecycleViewInterface,
 
     @Override
     public void deleteItem(int position) {
+
+    }
+
+    @Override
+    public void onDonationClick(int position) {
 
     }
 

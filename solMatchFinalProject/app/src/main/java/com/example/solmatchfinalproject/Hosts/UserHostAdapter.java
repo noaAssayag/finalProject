@@ -41,6 +41,7 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
     private static List<Host> hostList;
     private final RecycleViewInterface recycleViewInterface;
     static Context context;
+    private boolean view=false;
     String username;
     String userPresented;
     String userToSendMessage;
@@ -48,10 +49,11 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
 
     FirebaseAuth auth;
     DatabaseHelper sqlDataBase;
-    public UserHostAdapter(List<Host> userHostingsList, Context context, RecycleViewInterface recycleViewInterface) {
+    public UserHostAdapter(List<Host> userHostingsList, Context context, RecycleViewInterface recycleViewInterface,boolean view) {
         this.hostList = userHostingsList;
         this.context=context;
         this.recycleViewInterface = recycleViewInterface;
+        this.view=view;
         sqlDataBase = new DatabaseHelper(context);
         auth = FirebaseAuth.getInstance();
     }
@@ -133,7 +135,15 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
                 .inflate(R.layout.user_host_view, viewGroup, false);
         Log.i("adapter", "ContactViewHolder done!");
 
-        return new UserHostViewHolder(itemView, recycleViewInterface);
+        return new UserHostViewHolder(itemView, recycleViewInterface,isView());
+    }
+
+    public boolean isView() {
+        return view;
+    }
+
+    public void setView(boolean view) {
+        this.view = view;
     }
 
     public static class UserHostViewHolder extends RecyclerView.ViewHolder {
@@ -146,7 +156,7 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
         private Host userHosting = null;
         String userHosted;
 
-        public UserHostViewHolder(View v,RecycleViewInterface recycleViewInterface) {
+        public UserHostViewHolder(View v,RecycleViewInterface recycleViewInterface,boolean view) {
             super(v);
             vName = v.findViewById(R.id.txtHostName);
             vEmail = v.findViewById(R.id.txtHostEmail);
@@ -155,21 +165,26 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
             vImg = v.findViewById(R.id.hostImg);
             vBtn = v.findViewById(R.id.hostBtn);
             vRemove=v.findViewById(R.id.removeHost);
-
-            vRemove.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(recycleViewInterface!=null)
-                    {
-                        int position=getAdapterPosition();
-                        if(position!=RecyclerView.NO_POSITION)
+            if(view)
+            {
+                vRemove.setVisibility(View.VISIBLE);
+                vRemove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(recycleViewInterface!=null)
                         {
-                            recycleViewInterface.deleteItem(position);
+                            int position=getAdapterPosition();
+                            if(position!=RecyclerView.NO_POSITION)
+                            {
+                                recycleViewInterface.deleteItem(position);
+                            }
                         }
                     }
-                }
-            });
-
+                });
+            }
+            else{
+                vRemove.setVisibility(View.GONE);
+            }
             vBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

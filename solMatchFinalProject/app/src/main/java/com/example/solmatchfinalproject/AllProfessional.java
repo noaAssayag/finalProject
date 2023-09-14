@@ -228,6 +228,11 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
     }
 
     @Override
+    public void onDonationClick(int position) {
+
+    }
+
+    @Override
     public void deleteDonation(int position) {
 
     }

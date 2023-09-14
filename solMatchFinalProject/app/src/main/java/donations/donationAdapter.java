@@ -53,13 +53,15 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
 
     String fullName;
     private final RecycleViewInterface recycleViewInterface;
+    private boolean view=false;
 
     // Return the size of your dataset (invoked by the layout manager)
-    public donationAdapter(List<donations> donationsList,Context context,RecycleViewInterface recycleViewInterface)
+    public donationAdapter(List<donations> donationsList,Context context,RecycleViewInterface recycleViewInterface,boolean view)
     {
         this.donationsList = donationsList;
         this.context = context;
         this.recycleViewInterface=recycleViewInterface;
+        this.view=view;
 
     }
 
@@ -159,10 +161,16 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                 from(viewGroup.getContext()).
                 inflate(R.layout.donation_item, viewGroup, false);
         Log.i("adapter", "ContactViewHolder done!");
-        return new donationViewHolder(itemView,recycleViewInterface);
+        return new donationViewHolder(itemView,recycleViewInterface,isView());
     }
 
+    public boolean isView() {
+        return view;
+    }
 
+    public void setView(boolean view) {
+        this.view = view;
+    }
 
 
     public class donationViewHolder extends RecyclerView.ViewHolder {
@@ -177,7 +185,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
 
         String userDonated;
 
-        public donationViewHolder(@NonNull View rowView, RecycleViewInterface recycleViewInterface) {
+        public donationViewHolder(@NonNull View rowView, RecycleViewInterface recycleViewInterface,boolean view) {
             super(rowView);
             donationImage = rowView.findViewById(R.id.imgdonation);
             donator = rowView.findViewById(R.id.Donatorname);
@@ -186,19 +194,24 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
             desc = rowView.findViewById(R.id.donationDescription);
             startchat = rowView.findViewById(R.id.btnStartChat);
             removeDon=rowView.findViewById(R.id.removeDon);
-            removeDon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(recycleViewInterface!=null)
-                    {
-                        int position=getAdapterPosition();
-                        if(position!=RecyclerView.NO_POSITION)
-                        {
-                            recycleViewInterface.deleteDonation(position);
+
+            if(view) {
+                removeDon.setVisibility(View.VISIBLE);
+                removeDon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (recycleViewInterface != null) {
+                            int position = getAdapterPosition();
+                            if (position != RecyclerView.NO_POSITION) {
+                                recycleViewInterface.deleteDonation(position);
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
+            else{
+                removeDon.setVisibility(View.GONE);
+            }
 
             startchat.setOnClickListener(new View.OnClickListener() {
                 @Override
