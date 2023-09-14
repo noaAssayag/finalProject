@@ -29,7 +29,7 @@
             android:layout_height="60dp"
             android:layout_below="@+id/title"
             android:textColor="@color/black"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="13dp"/>
 
         <TextView
             android:id="@+id/txtHostName"
@@ -42,7 +42,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/black"
             android:text="@string/name"
-            android:textSize="10sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/txtHostEmail"
@@ -55,7 +55,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/black"
             android:text="@string/email"
-            android:textSize="10sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/txtHostAddress"
@@ -68,7 +68,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/hostAddress"
             android:textColor="@color/black"
-            android:textSize="10sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/txtHostDate"
@@ -79,7 +79,7 @@
             android:layout_alignRight="@id/txtHostEmail"
             android:textColor="@color/black"
             android:text="@string/hostingDate"
-            android:textSize="10sp" />
+            android:textSize="13sp" />
 
         <ImageButton
             android:id="@+id/hostBtn"

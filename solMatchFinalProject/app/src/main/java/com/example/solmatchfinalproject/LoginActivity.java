@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                             sqlData.compareAndUpdateDonations(donationsList);
                                                                             if (documentSnapshot.contains("info") && documentSnapshot.get("info")!=null) {
                                                                                 Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_SHORT).show();
-                                                                                Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
+                                                                                Intent intent = new Intent(LoginActivity.this, allHosts.class);
                                                                                 intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                                                                 startActivity(intent);
                                                                             } else {

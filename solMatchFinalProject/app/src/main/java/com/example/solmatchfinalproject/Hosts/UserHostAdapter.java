@@ -165,7 +165,7 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
             vImg = v.findViewById(R.id.hostImg);
             vBtn = v.findViewById(R.id.hostBtn);
             vRemove=v.findViewById(R.id.removeHost);
-            if(view)
+            if(!view)
             {
                 vRemove.setVisibility(View.VISIBLE);
                 vRemove.setOnClickListener(new View.OnClickListener() {

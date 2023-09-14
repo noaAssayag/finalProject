@@ -64,15 +64,11 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         recList = findViewById(R.id.cardList);
         filterByGen = (Spinner) findViewById(R.id.spinnerFilterByGender);
         filterByLoc = (Spinner) findViewById(R.id.spinnerFilterByLocation);
-        //btnFilter = (Button) findViewById(R.id.btnFilter);
+        btnFilter=findViewById(R.id.searchbtn);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
         db = FirebaseDatabase.getInstance();
-//        BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
-//        navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
-//        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
-        ref = db.getReference("Host");
         sqlDatabase = new DatabaseHelper(this);
         allHostsList = sqlDatabase.getAllHosts();
         UserHostAdapter userHostAdapter = new UserHostAdapter(allHostsList, allHosts.this, allHosts.this,true);

@@ -79,10 +79,10 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
                 } else {
                     useCategory = true;
                 }
-                if (nameDon.getText().toString().isEmpty() || nameDon.getText().toString() != null) {
-                    useName = true;
-                } else {
+                if (nameDon.getText().toString().isEmpty() || nameDon.getText().toString() == null||nameDon.getText().toString().equals("")) {
                     useName = false;
+                } else {
+                    useName = true;
                 }
                 if (!useName && !useCategory) {
                     filterDonationList.addAll(donationList);
@@ -96,7 +96,7 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
                     }
                     if (useName) {
                         for (donations donation : donationList) {
-                            if (donation.getName().equals(nameDon.getText().toString())) {
+                            if (donation.getName().equals(nameDon.getText().toString().toLowerCase())) {
                                 filterDonationList.add(donation);
                             }
                         }

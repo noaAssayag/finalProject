@@ -195,7 +195,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
             startchat = rowView.findViewById(R.id.btnStartChat);
             removeDon=rowView.findViewById(R.id.removeDon);
 
-            if(view) {
+            if(!view) {
                 removeDon.setVisibility(View.VISIBLE);
                 removeDon.setOnClickListener(new View.OnClickListener() {
                     @Override
