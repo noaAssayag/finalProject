@@ -25,7 +25,7 @@
             android:layout_margin="10dp"
             android:padding="5dp"
             android:src="@drawable/view_back_rtl"
-            android:tint="@color/white" />
+            card_view:tint="@color/white" />
 
         <TextView
             android:layout_width="match_parent"

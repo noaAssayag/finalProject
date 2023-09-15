@@ -12,7 +12,7 @@
 
     <string name="app_name">solMatchFinalProject</string>
     <string-array name="genderReg">
-        <item>Filter By Gender</item>
+        <item>Gender</item>
         <item>Male</item>
         <item>Female</item>
         <item>Other</item>
@@ -25,7 +25,7 @@
         <item>other</item>
     </string-array>
     <string-array name="israeliCities">
-        <item>Filter By city</item>
+        <item>city</item>
         <item>Jerusalem</item>
         <item>Tel Aviv</item>
         <item>Haifa</item>
@@ -277,5 +277,6 @@
     <string name="donationName">donation Info</string>
     <string name="addImg">Please add an image</string>
     <string name="donationCategory">donation category</string>
+    <string name="autoDetected">auto detacted location</string>
 
 </resources>

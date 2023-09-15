@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
 import com.example.solmatchfinalproject.R;
+import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -47,8 +49,13 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
     Spinner filterByLoc;
     Button btnFilter;
     RecyclerView recList;
+
+    ImageView backArrow;
     List<Host> list = new ArrayList<>();
     private BottomNavigationHandler navigationHandler;
+
+    private List<Host> originalHostsList;
+
     private String filterGen;
     private String filterLoc;
 
@@ -64,14 +71,16 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         recList = findViewById(R.id.cardList);
         filterByGen = (Spinner) findViewById(R.id.spinnerFilterByGender);
         filterByLoc = (Spinner) findViewById(R.id.spinnerFilterByLocation);
-        btnFilter=findViewById(R.id.searchbtn);
+        btnFilter = findViewById(R.id.searchbtn);
+        backArrow = findViewById(R.id.backArrow);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
         db = FirebaseDatabase.getInstance();
         sqlDatabase = new DatabaseHelper(this);
         allHostsList = sqlDatabase.getAllHosts();
-        UserHostAdapter userHostAdapter = new UserHostAdapter(allHostsList, allHosts.this, allHosts.this,true);
+        originalHostsList = new ArrayList<>(allHostsList);
+        UserHostAdapter userHostAdapter = new UserHostAdapter(allHostsList, allHosts.this, allHosts.this, true);
         recList.setAdapter(userHostAdapter);
 
         filterByLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -83,7 +92,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                filterLoc = "noFilter";
+                filterLoc = "city";
             }
         });
         filterByGen.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -95,48 +104,51 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                filterGen = "noFilter";
+                filterGen = "Gender";
+            }
+        });
+
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(i);
             }
         });
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                list = new ArrayList<>();
-                if (!filterLoc.equals("noFilter") || !filterGen.equals("noFilter")) {
-                    for (Host host : allHostsList) {
-                        if (!filterLoc.equals("noFilter")) {
-                            if (filterByLoc.getSelectedItem().toString().equals(host.getHostAddress().split(",")[0])) {
-                                list.add(host);
-                            }
+                List<Host> filteredList = new ArrayList<>();
 
-                        }
-                        if (!filterGen.equals("noFilter")) {
-                            if (!list.isEmpty()) {
-                                for (Host host1 : allHostsList) {
-                                    if (!sqlDatabase.getUserByEmail(host1.getHostEmail()).getGen().equals(filterGen)) {
-                                        list.remove(host1);
-                                    }
-                                }
-                            } else {
-                                for (Host host2 : allHostsList) {
-                                    if (!sqlDatabase.getUserByEmail(host2.getHostEmail()).getGen().equals(filterGen)) {
-                                        list.add(host2);
-                                    }
-                                }
+                if (!filterLoc.equals("city") || !filterGen.equals("Gender")) {
+                    for (Host host : originalHostsList) {
+                        boolean shouldAdd = true;
+
+                        if (!filterLoc.equals("city")) {
+                            if (!filterByLoc.getSelectedItem().toString().equals(host.getHostAddress().split(",")[0])) {
+                                shouldAdd = false;
                             }
+                        }
+
+                        if (!filterGen.equals("Gender")) {
+                            if (!sqlDatabase.getUserByEmail(host.getHostEmail()).getGen().equals(filterGen)) {
+                                shouldAdd = false;
+                            }
+                        }
+
+                        if (shouldAdd) {
+                            filteredList.add(host);
                         }
                     }
+
                     allHostsList.clear();
-                    allHostsList = list;
+                    allHostsList.addAll(filteredList);
                     userHostAdapter.notifyDataSetChanged();
-
-
                 }
-
             }
         });
     }
-    @Override
+        @Override
     public void onItemClick(int position) {
         Host newHost = allHostsList.get(position);
         AlertDialogFragmentViewHost frag = new AlertDialogFragmentViewHost();

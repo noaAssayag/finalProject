@@ -1,10 +1,15 @@
 package com.example.solmatchfinalproject;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,10 +25,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,13 +55,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import Model.donations;
 import dataBase.DatabaseHelper;
 
 public class addDonationActivity extends Activity {
     int PICK_IMAGE_REQUEST = 100;
-    EditText itemName,ItemDescription,streets,apartNum;
+    EditText itemName,ItemDescription,streets,apartNum,autoCompleteLocation;
     Spinner cities;
     private FusedLocationProviderClient fusedLocationClient;
     ImageView itemImage;
@@ -85,7 +94,10 @@ public class addDonationActivity extends Activity {
         uploadImage = findViewById(R.id.uploadImageButt);
         addItem = findViewById(R.id.btnAddDonation);
         spinner = findViewById(R.id.catagorySpinner);
+        autoCompleteLocation = findViewById(R.id.autoCompleteLocation);
         sqlDatabase = new DatabaseHelper(this);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        getLastLocation();
 
         String[] options = {"home cooking", "furniture", "food supplies","other"};
 //        navigationHandler = new BottomNavigationHandler(this,getApplicationContext());
@@ -123,14 +135,15 @@ public class addDonationActivity extends Activity {
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cities == null && cities.getSelectedItem() == null)  {
-                    Toast.makeText(addDonationActivity.this, "Please choose a city", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(streets==null||streets.getText().toString().isEmpty()||apartNum==null||apartNum.getText().toString().isEmpty())
-                {
-                    Toast.makeText(addDonationActivity.this, "Please fill all the fileds and check they are valid", Toast.LENGTH_SHORT).show();
-                    return;
+                if(autoCompleteLocation.getText().toString().isEmpty()) {
+                    if (cities == null && cities.getSelectedItem() == null) {
+                        Toast.makeText(addDonationActivity.this, "Please choose a city", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (streets == null || streets.getText().toString().isEmpty() || apartNum == null || apartNum.getText().toString().isEmpty()) {
+                        Toast.makeText(addDonationActivity.this, "Please fill all the fileds and check they are valid", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
                 // Upload the image to Firebase Storage
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageURI.toString());
@@ -147,9 +160,14 @@ public class addDonationActivity extends Activity {
                                     db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            String address = "";
                                             email = documentSnapshot.getString("email");
-                                            String address=cities.getSelectedItem().toString()+", "+streets.getText().toString()+", "+apartNum.getText().toString();
-
+                                            if(autoCompleteLocation.getText().toString().isEmpty()) {
+                                                address = cities.getSelectedItem().toString() + ", " + streets.getText().toString() + ", " + apartNum.getText().toString();
+                                            }
+                                            else{
+                                                address = autoCompleteLocation.getText().toString();
+                                            }
                                             donations formData = new donations(itemName.getText().toString(), address, selectedItem, ItemDescription.getText().toString(), URL, email);
 
                                             db.collection("donations").add(formData)
@@ -226,6 +244,63 @@ public class addDonationActivity extends Activity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageURI = data.getData();
             itemImage.setImageURI(imageURI);
+        }
+    }
+
+    private void getLastLocation(){
+        // Check permissions
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Request permissions if needed
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        }
+
+        // Get last known location
+        fusedLocationClient.getLastLocation()
+                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            Location lastKnownLocation = task.getResult();
+
+                            // Use the location object to get latitude and longitude
+                            double latitude = lastKnownLocation.getLatitude();
+                            double longitude = lastKnownLocation.getLongitude();
+                            Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                            List<Address> addresses = null;
+
+                            try {
+                                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            if (addresses != null && !addresses.isEmpty()) {
+                                Address address = addresses.get(0);
+                                // Here are some examples of what you can get from the Address object:
+                                String addressLine = address.getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                                String city = address.getLocality();
+                                String state = address.getAdminArea();
+                                String country = address.getCountryName();
+                                String postalCode = address.getPostalCode();
+                                String knownName = address.getFeatureName(); // Only if available else return NULL
+
+                                String fullAddress = addressLine + ", " + city + ", " + state + ", " + country + ", " + postalCode;
+                                autoCompleteLocation.setText(fullAddress);
+                            }
+                        }
+                    }
+                });
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            } else {
+                // Permission denied
+            }
         }
     }
 

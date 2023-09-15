@@ -65,7 +65,15 @@ public class personalQuestionsActivity extends Activity {
         hobbitsItems.setAdapter(adapter);
 
 
-
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedItemsList.add("no Hobbies");
+                description = "No description";
+                userPersonalInfo info = new userPersonalInfo((ArrayList<String>) selectedItemsList,description);
+                addDetails(info,UID);
+            }
+        });
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +88,8 @@ public class personalQuestionsActivity extends Activity {
                 if(!personalInfo.getText().toString().isEmpty()) {
                     description = personalInfo.getText().toString();
                 }
-                else{
+                else
+                {
                     description = "No description";
                 }
                     for (String selectedItem : selectedItemsList) {
@@ -89,28 +98,33 @@ public class personalQuestionsActivity extends Activity {
                     }
 
                 userPersonalInfo info = new userPersonalInfo((ArrayList<String>) selectedItemsList, description);
+                    addDetails(info,UID);
 
-                db.collection("Users").document(UID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+
+
+            }
+        });
+    }
+
+    public void addDetails(userPersonalInfo info, String UID)
+    {
+        db.collection("Users").document(UID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                user = documentSnapshot.toObject(UserStorageData.class);
+                user.setInfo(info);
+                db.collection("Users").document(UID).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        user = documentSnapshot.toObject(UserStorageData.class);
-                        user.setInfo(info);
-                        db.collection("Users").document(UID).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Intent intent = new Intent(personalQuestionsActivity.this, ProfileActivity.class);
-                                startActivity(intent);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getApplicationContext(), "Error writing document" + e, Toast.LENGTH_LONG).show();
-                            }
-                        });
+                    public void onSuccess(Void aVoid) {
+                        Intent intent = new Intent(personalQuestionsActivity.this, ProfileActivity.class);
+                        startActivity(intent);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Error writing document" + e, Toast.LENGTH_LONG).show();
                     }
                 });
-
-
             }
         });
     }
