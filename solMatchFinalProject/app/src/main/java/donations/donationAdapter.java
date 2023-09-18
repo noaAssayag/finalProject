@@ -226,7 +226,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                     if (recycleViewInterface != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            recycleViewInterface.onItemClick(position);
+                            recycleViewInterface.onDonationClick(position);
                         }
 
 

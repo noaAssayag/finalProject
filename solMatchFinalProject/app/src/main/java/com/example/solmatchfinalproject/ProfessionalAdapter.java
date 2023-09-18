@@ -20,11 +20,14 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
 import Model.Host;
 import Model.Professional;
+import Model.UserStorageData;
+import dataBase.DatabaseHelper;
 
 public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapter.profViewHolder>{
     private final RecycleViewInterface recycleViewInterface;
@@ -101,14 +104,16 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
         }
         public void setData(Professional professional) {
             this.professional = professional;
-            txtProfNameTextView.setText(professional.getUserName());
-            txtProfEmailTextView.setText(professional.getEmail());
+            DatabaseHelper helper = new DatabaseHelper(context);
+            UserStorageData user = helper.getUserByUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            txtProfNameTextView.setText(user.getUserName());
+            txtProfEmailTextView.setText(user.getEmail());
             txtPhoneNumTextView.setText(professional.getPhoneNum());
             txtCategoryTextView.setText(professional.getCategory());
             txtHostAddressTextView.setText(professional.getAddress());
-            txtAvaTextView.setText(professional.getPrecAvailability());
+            txtAvaTextView.setText(professional.getPrecAvailability()+"% Availability");
             Glide.with(context)
-                    .load(professional.getImageUrl())
+                    .load(user.getImage())
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

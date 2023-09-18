@@ -76,7 +76,7 @@
             android:layout_alignBaseline="@id/txtProfName"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="150dp"
+            android:layout_marginRight="70dp"
             android:text="@string/category"
             android:textColor="@color/black"
             android:textSize="12sp" />
@@ -89,7 +89,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/txtCategory"
-            android:layout_marginRight="150dp"
+            android:layout_marginRight="70dp"
             android:text="@string/hostAddress"
             android:textColor="@color/black"
             android:textSize="12sp" />

@@ -18,7 +18,7 @@
         <item>Other</item>
     </string-array>
     <string-array name="categories">
-        <item>Filter by category</item>
+        <item>Category</item>
         <item>home cooking</item>
         <item>furniture</item>
         <item>food supplies</item>
@@ -80,7 +80,7 @@
     </string-array>
 
     <string-array name="typeReg">
-        <item>Filter By Type</item>
+        <item>Type</item>
         <item>Host</item>
         <item>Soldier</item>
         <item>Professional</item>
