@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import donations.donationActivity;
 
 public class searchNavigationMenue extends Activity {
 
@@ -43,8 +40,8 @@ public class searchNavigationMenue extends Activity {
         donations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(searchNavigationMenue.this, donationActivity.class);
-                setContentView(R.layout.donations_layout);
+                Intent intent = new Intent(searchNavigationMenue.this, All_donation_activity.class);
+                setContentView(R.layout.add_donation_page);
                 startActivity(intent);
             }
         });

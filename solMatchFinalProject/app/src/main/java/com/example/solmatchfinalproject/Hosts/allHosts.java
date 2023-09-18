@@ -120,11 +120,11 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
             public void onClick(View v) {
                 List<Host> filteredList = new ArrayList<>();
 
-                if (!filterLoc.equals("city") || !filterGen.equals("Gender")) {
+                if (!filterLoc.equals("City") || !filterGen.equals("Gender")) {
                     for (Host host : originalHostsList) {
                         boolean shouldAdd = true;
 
-                        if (!filterLoc.equals("city")) {
+                        if (!filterLoc.equals("City")) {
                             if (!filterByLoc.getSelectedItem().toString().equals(host.getHostAddress().split(",")[0])) {
                                 shouldAdd = false;
                             }

@@ -74,9 +74,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity
-            android:name="donations.donationActivity"
-            android:exported="false" />
         <activity android:name=".searchNavigationMenue" />
         <activity
             android:name=".addDonationActivity"

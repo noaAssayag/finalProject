@@ -1,6 +1,6 @@
 <resources>
     <string-array name="professional_categories">
-        <item>Filter by category</item>
+        <item>Category</item>
         <item>Electrician</item>
         <item>Plumber</item>
         <item>Carpenter</item>
@@ -25,7 +25,7 @@
         <item>other</item>
     </string-array>
     <string-array name="israeliCities">
-        <item>city</item>
+        <item>City</item>
         <item>Jerusalem</item>
         <item>Tel Aviv</item>
         <item>Haifa</item>
@@ -148,7 +148,7 @@
     <string name="regWithGoogle">register with your Google account</string>
 
     <string name="allHost">All Host</string>
-    <string name="allProf">Here you can watch all the Professional</string>
+    <string name="allProf">all Professionals</string>
 
     <!-- String for profile Page-->
     <string name="name">Full Name</string>

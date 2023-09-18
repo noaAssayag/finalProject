@@ -9,32 +9,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.solmatchfinalproject.ChatClasses.chatActivity;
-import com.example.solmatchfinalproject.Hosts.AddHost;
-import com.example.solmatchfinalproject.Hosts.allHosts;
-import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
-import donations.donationActivity;
 
 import java.util.ArrayList;
 
@@ -42,7 +29,7 @@ import Model.Host;
 import Model.UserStorageData;
 import Model.donations;
 import dataBase.DatabaseHelper;
-import donations.donationActivity;
+
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -122,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                             sqlData.compareAndUpdateDonations(donationsList);
                                                                             if (documentSnapshot.contains("info") && documentSnapshot.get("info")!=null) {
                                                                                 Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_SHORT).show();
-                                                                                Intent intent = new Intent(LoginActivity.this, allHosts.class);
+                                                                                Intent intent = new Intent(LoginActivity.this, AddDocprofessional.class);
                                                                                 intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                                                                 startActivity(intent);
                                                                             } else {

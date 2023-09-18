@@ -49,7 +49,6 @@ public class AddDocprofessional extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     FirebaseAuth auth;
     FirebaseFirestore db;
-    DatabaseReference refUser, refProfess;
     String uid,email,userName,imageUser;
     DatabaseHelper sqlDataBase;
     String precentageAva="0";
@@ -65,7 +64,6 @@ public class AddDocprofessional extends AppCompatActivity {
         progressBar=findViewById(R.id.prograssBar);
         seekBar = findViewById(R.id.seek_bar);
         btnSubmit=findViewById(R.id.btnSubmit);
-        bottomNavigationView = findViewById(R.id.menu);
         sqlDataBase = new DatabaseHelper(this);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
