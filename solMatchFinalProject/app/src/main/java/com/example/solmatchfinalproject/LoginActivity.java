@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.example.solmatchfinalproject.Hosts.allHosts;
+import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -96,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                     for(QueryDocumentSnapshot snapshot: queryDocumentSnapshots)
                                                                     {
                                                                         Host host = snapshot.toObject(Host.class);
+                                                                        host.setUid(snapshot.getId());
                                                                         hosts.add(host);
                                                                     }
                                                                     sqlData.compareAndUpdateHosts(hosts);
@@ -105,12 +108,13 @@ public class LoginActivity extends AppCompatActivity {
                                                                             for(QueryDocumentSnapshot snapshot:queryDocumentSnapshots)
                                                                             {
                                                                                 donations donation = snapshot.toObject(donations.class);
+                                                                                donation.setUid(snapshot.getId());
                                                                                 donationsList.add(donation);
                                                                             }
                                                                             sqlData.compareAndUpdateDonations(donationsList);
                                                                             if (documentSnapshot.contains("info") && documentSnapshot.get("info")!=null) {
                                                                                 Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_SHORT).show();
-                                                                                Intent intent = new Intent(LoginActivity.this, All_donation_activity.class);
+                                                                                Intent intent = new Intent(LoginActivity.this, chatMenuActivity.class);
                                                                                 intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                                                                 startActivity(intent);
                                                                             } else {

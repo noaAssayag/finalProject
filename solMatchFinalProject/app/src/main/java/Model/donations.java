@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.Serializable;
 
 public class donations implements Serializable {
+    private String uid;
     private String name;
     private String adress;
     private String catagory;
@@ -23,6 +24,14 @@ public class donations implements Serializable {
         this.description = description;
         this.img = img;
         this.email = email;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public donations() {

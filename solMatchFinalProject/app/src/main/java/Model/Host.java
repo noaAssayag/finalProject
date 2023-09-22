@@ -8,6 +8,7 @@ import java.util.List;
 import Model.UserStorageData;
 
 public class Host implements Serializable {
+    private String uid;
     private String hostImg;
     private String hostName;
     private String hostEmail;
@@ -41,6 +42,7 @@ public class Host implements Serializable {
     }
 
 
+
     public Host() {
 
     }
@@ -60,6 +62,13 @@ public class Host implements Serializable {
     }
 
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getHostImg() {
         return hostImg;

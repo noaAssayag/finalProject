@@ -31,16 +31,21 @@ import com.example.solmatchfinalproject.ChatClasses.chatActivity;
 import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
 import com.example.solmatchfinalproject.Hosts.UserHostAdapter;
 import com.example.solmatchfinalproject.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
+import Model.UserStorageData;
 import Model.donations;
+import dataBase.DatabaseHelper;
 
 public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donationViewHolder> {
     private List<donations> donationsList;
@@ -81,76 +86,6 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
         contactViewHolder.setData(ci);
 
         Log.i("adapter", "onBindViewHolder done!" + "position="+position);
-        contactViewHolder.startchat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int atIndex = contactViewHolder.userDonated.indexOf("@");
-
-// Extract the substring before the "@" symbol
-                userPresented  = contactViewHolder.userDonated.substring(0, atIndex);
-                username = contactViewHolder.userDonated.replace("@", "").replace(".", "");
-
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
-                reference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                      if(snapshot.child("email").getValue().toString().replace("@", "").replace(".", "").equals(username))
-                      {
-                          Toast.makeText(context,"you cant start chatting with yourself", Toast.LENGTH_SHORT);
-
-                      }
-                      else{
-                         userToSendMessage = snapshot.child("email").getValue().toString().replace("@", "").replace(".", "");
-                          DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference().child("chats");
-                          chatReference.addValueEventListener(new ValueEventListener() {
-                              @Override
-                              public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                  for(DataSnapshot child: snapshot.getChildren())
-                                  {
-                                      fullName = child.getKey();
-                                      String[] parts = fullName.split("-");
-                                      String user1 = parts[0].trim().replace("@", "").replace(".", "");
-                                      String user2 = parts[1].trim().replace("@", "").replace(".", "");
-                                      if(user1.equals(userToSendMessage) && user2.equals(username) || user1.equals(username) && user2.equals(userToSendMessage))
-                                      {
-                                          Intent intent = new Intent(context, chatActivity.class);
-                                          intent.putExtra("chatID", fullName);
-                                          intent.putExtra("from", userToSendMessage);
-                                          intent.putExtra("to",username);
-                                          intent.putExtra("userToPresent",username);
-                                          intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                                          context.startActivity(intent);
-                                          return;
-                                      }
-                                  }
-                                  chatReference.child(username.replace("@", "").replace(".", "")+"-"+userToSendMessage.replace("@", "").replace(".", "")).setValue(null);
-                                  Intent intent = new Intent(context, chatActivity.class);
-                                  intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                                  intent.putExtra("chatID", username+"-"+userToSendMessage);
-                                  intent.putExtra("from", userToSendMessage);
-                                  intent.putExtra("to",username);
-                                  intent.putExtra("userToPresent",username);
-                                  context.startActivity(intent);
-                              }
-
-                              @Override
-                              public void onCancelled(@NonNull DatabaseError error) {
-
-                              }
-                          });
-                      }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-        });
     }
 
     // Create new views (invoked by the layout manager)
@@ -200,12 +135,21 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                 removeDon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (recycleViewInterface != null) {
-                            int position = getAdapterPosition();
-                            if (position != RecyclerView.NO_POSITION) {
-                                recycleViewInterface.deleteDonation(position);
+                            int position=getAdapterPosition();
+                            if(position!=RecyclerView.NO_POSITION)
+                            {
+                                recycleViewInterface.deleteItem(position);
+                                DatabaseHelper databaseHelper = new DatabaseHelper(context);
+                                if(databaseHelper.removeDonationById(FirebaseAuth.getInstance().getUid()))
+                                {
+                                    Toast.makeText(context,"host deleted succesfully", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Toast.makeText(context,"Error deleting host", Toast.LENGTH_LONG).show();
+                                }
+
                             }
-                        }
+
                     }
                 });
             }
@@ -216,7 +160,63 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
             startchat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //todo open chat here
+                    int atIndex = userDonated.indexOf("@");
+
+// Extract the substring before the "@" symbol
+                    userPresented  = userDonated.substring(0, atIndex);
+                    username = userDonated.replace("@", "").replace(".", "");
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+
+                    DatabaseHelper helper = new DatabaseHelper(context);
+                    UserStorageData user = helper.getUserByUID(FirebaseAuth.getInstance().getUid());
+                    if(user.getEmail().replace("@", "").replace(".", "").equals(username))
+                    {
+                        Toast.makeText(context,"you cant start chatting with yourself", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else{
+                        userToSendMessage = user.getEmail().replace("@", "").replace(".", "");
+                        DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference().child("chats");
+                        chatReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                for(DataSnapshot child: snapshot.getChildren())
+                                {
+                                    fullName = child.getKey();
+                                    String[] parts = fullName.split("-");
+                                    String user1 = parts[0].trim().replace("@", "").replace(".", "");
+                                    String user2 = parts[1].trim().replace("@", "").replace(".", "");
+                                    if(user1.equals(userToSendMessage) && user2.equals(username) || user1.equals(username) && user2.equals(userToSendMessage))
+                                    {
+                                        Intent intent = new Intent(context, chatActivity.class);
+                                        intent.putExtra("chatID", fullName);
+                                        intent.putExtra("from", userToSendMessage);
+                                        intent.putExtra("to",username);
+                                        intent.putExtra("userToPresent",username);
+                                        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                        context.startActivity(intent);
+                                        return;
+                                    }
+                                }
+                                chatReference.child(username.replace("@", "").replace(".", "")+"-"+userToSendMessage.replace("@", "").replace(".", "")).setValue(null);
+                                Intent intent = new Intent(context, chatActivity.class);
+                                intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("chatID", username+"-"+userToSendMessage);
+                                intent.putExtra("from", userToSendMessage);
+                                intent.putExtra("to",username);
+                                intent.putExtra("userToPresent",username);
+                                context.startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
 
                 }
             });
@@ -231,6 +231,19 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
 
 
                     }
+                }
+            });
+            removeDon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                    firestore.collection("Donations").document(FirebaseAuth.getInstance().getUid()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            DatabaseHelper databaseHelper = new DatabaseHelper(context);
+                            databaseHelper.removeDonationById(FirebaseAuth.getInstance().getUid());
+                        }
+                    });
                 }
             });
         }

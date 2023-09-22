@@ -6,7 +6,13 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -20,8 +26,8 @@ import Model.UserStorageData;
 import Model.donations;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "YourDatabaseName";
-    private static final int DATABASE_VERSION = 10;
+    private static final String DATABASE_NAME = "YourDatabaseNamev3";
+    private static final int DATABASE_VERSION = 13;
 
     // User table
     private static final String USER_TABLE_NAME = "user";
@@ -35,6 +41,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Donations table
     private static final String DONATIONS_TABLE_NAME = "donations";
+
+    private static final String DONATIONS_COLUMN_ID = "id";
     private static final String DONATIONS_COLUMN_ADDRESS = "adress";
     private static final String DONATIONS_COLUMN_CATEGORY = "catagory";
     private static final String DONATIONS_COLUMN_DESCRIPTION = "description";
@@ -44,6 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Hosts table
     private static final String HOSTS_TABLE_NAME = "hosts";
+    private static final String HOSTS_COLUMN_ID = "id";
     private static final String HOSTS_COLUMN_EMAIL = "hostEmail";
     private static final String HOSTS_COLUMN_DESCRIPTION = "description";
     private static final String HOSTS_COLUMN_ADDRESS = "hostAdress";
@@ -88,17 +97,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Create donations table
         db.execSQL("CREATE TABLE " + DONATIONS_TABLE_NAME + "(" +
+                DONATIONS_COLUMN_ID + " TEXT PRIMARY KEY," +
                 DONATIONS_COLUMN_ADDRESS + " TEXT," +
                 DONATIONS_COLUMN_CATEGORY + " TEXT," +
                 DONATIONS_COLUMN_DESCRIPTION + " TEXT," +
-                DONATIONS_COLUMN_EMAIL + " TEXT PRIMARY KEY," +
+                DONATIONS_COLUMN_EMAIL + " TEXT," +
                 DONATIONS_COLUMN_IMAGE + " TEXT," +
                 DONATIONS_COLUMN_NAME + " TEXT" +
                 ");");
 
         // Create hosts table
         db.execSQL("CREATE TABLE " + HOSTS_TABLE_NAME + "(" +
-                HOSTS_COLUMN_EMAIL + " TEXT PRIMARY KEY," +
+                HOSTS_COLUMN_ID + " TEXT PRIMARY KEY," +
+                HOSTS_COLUMN_EMAIL + " TEXT," +
                 HOSTS_COLUMN_DESCRIPTION + " TEXT," +
                 HOSTS_COLUMN_ADDRESS + " TEXT," +
                 HOSTS_COLUMN_IMAGE + " TEXT," +
@@ -154,6 +165,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean insertDonationData(donations donation) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(DONATIONS_COLUMN_ID, donation.getUid());
         contentValues.put(DONATIONS_COLUMN_ADDRESS, donation.getAdress());
         contentValues.put(DONATIONS_COLUMN_CATEGORY, donation.getCatagory());
         contentValues.put(DONATIONS_COLUMN_DESCRIPTION, donation.getDescription());
@@ -171,6 +183,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String listOfResidentsJson = gson.toJson(host.getListOfResidents());
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(HOSTS_COLUMN_ID, host.getUid());
         contentValues.put(HOSTS_COLUMN_EMAIL, host.getHostEmail());
         contentValues.put(HOSTS_COLUMN_DESCRIPTION, host.getDescription());
         contentValues.put(HOSTS_COLUMN_ADDRESS, host.getHostAddress());
@@ -247,6 +260,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 donation.setEmail(cursor.getString(cursor.getColumnIndexOrThrow(DONATIONS_COLUMN_EMAIL)));
                 donation.setImg(cursor.getString(cursor.getColumnIndexOrThrow(DONATIONS_COLUMN_IMAGE)));
                 donation.setName(cursor.getString(cursor.getColumnIndexOrThrow(DONATIONS_COLUMN_NAME)));
+                donation.setUid(cursor.getString(cursor.getColumnIndexOrThrow(DONATIONS_COLUMN_ID)));
                 donationsList.add(donation);
             } while (cursor.moveToNext());
         }
@@ -289,6 +303,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Type listType = new TypeToken<List<UserStorageData>>() {}.getType();
                 List<UserStorageData> listOfResidentsJson = gson.fromJson(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_RESIDENTS)), listType);
                 Host host = new Host();
+                host.setUid(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_ID)));
                 host.setHostEmail(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_EMAIL)));
                 host.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_DESCRIPTION)));
                 host.setHostAddress(cursor.getString(cursor.getColumnIndexOrThrow(HOSTS_COLUMN_ADDRESS)));
@@ -351,7 +366,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for (Host firebaseHost : firebaseHosts) {
             boolean hostExists = false;
             for (Host sqliteHost : sqliteHosts) {
-                if (firebaseHost.getHostEmail().equals(sqliteHost.getHostEmail())) {
+                if (firebaseHost.getUid().equals(sqliteHost.getUid())) {
                     hostExists = true;
                     // Compare other fields here
                     if (!firebaseHost.getDescription().equals(sqliteHost.getDescription()) || !firebaseHost.getHostName().equals(sqliteHost.getHostName()) /* other conditions */) {
@@ -422,7 +437,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for (donations firebaseDonation : firebaseDonations) {
             boolean donationExists = false;
             for (donations sqliteDonation : sqliteDonations) {
-                if (firebaseDonation.getEmail().equals(sqliteDonation.getEmail())) {
+                if (firebaseDonation.getUid().equals(sqliteDonation.getUid())) {
                     donationExists = true;
                     // Compare other fields here
                     if (!firebaseDonation.getName().equals(sqliteDonation.getName()) /* other conditions */) {
@@ -493,6 +508,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
+    // Method to remove a host by its ID
+    public boolean removeHostById(String hostId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int deletedRows = db.delete(HOSTS_TABLE_NAME, HOSTS_COLUMN_ID + " = ?", new String[]{hostId});
+        if (deletedRows > 0)
+        {
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            firestore.collection("Host").document(hostId).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                }
+
+            });
+            return true;
+        }
+        return false;
+    }
+
+    // Method to remove a donation by its ID
+    public boolean removeDonationById(String donationId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int deletedRows = db.delete(DONATIONS_TABLE_NAME, DONATIONS_COLUMN_ID + " = ?", new String[]{donationId});
+        if (deletedRows > 0)
+        {
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            firestore.collection("Donations").document(donationId).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+
+                }
+
+            });
+            return true;
+        }
+        return false;
+    }
 
 
 

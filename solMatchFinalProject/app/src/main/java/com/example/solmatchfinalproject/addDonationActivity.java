@@ -168,30 +168,24 @@ public class addDonationActivity extends Activity {
                                             else{
                                                 address = autoCompleteLocation.getText().toString();
                                             }
+                                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                            userId = user.getUid();
                                             donations formData = new donations(itemName.getText().toString(), address, selectedItem, ItemDescription.getText().toString(), URL, email);
-
-                                            db.collection("donations").add(formData)
-                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                        @Override
-                                                        public void onSuccess(DocumentReference documentReference) {
-                                                            sqlDatabase.insertDonationData(formData);
-                                                            Intent intent = new Intent(addDonationActivity.this, ProfileActivity.class);
-                                                            startActivity(intent);
-                                                        }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Toast.makeText(addDonationActivity.this, "Failed to add donation data", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
+                                            formData.setUid(userId);
+                                            db.collection("Donations").document(userId).set(formData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    sqlDatabase.insertDonationData(formData);
+                                                    Intent intent = new Intent(addDonationActivity.this, ProfileActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            });
                                         }
                                     });
 
                                 }
                             });
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            userId = user.getUid();
+
                         }
                     }
                 });
@@ -216,12 +210,15 @@ public class addDonationActivity extends Activity {
                                     email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
                                     String address=cities.getSelectedItem().toString()+", "+streets.getText().toString()+", "+apartNum.getText().toString();
                                     donations formData = new donations(itemName.getText().toString(), address, selectedItem, ItemDescription.getText().toString(), URL, email);
-                                    addDonationToFireStore.collection("Donations").add(formData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                    formData.setUid(userId);
+                                    addDonationToFireStore.collection("Donations").document(userId).set(formData).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
-                                        public void onSuccess(DocumentReference documentReference) {
-
+                                        public void onSuccess(Void unused) {
+                                            DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+                                            databaseHelper.insertDonationData(formData);
                                             Toast.makeText(getApplicationContext(),"added donation succefully",Toast.LENGTH_LONG).show();
-                                            Intent intent = new Intent(getApplicationContext(),profileActivity.class);
+                                            Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
                                             startActivity(intent);
                                         }
                                     });
