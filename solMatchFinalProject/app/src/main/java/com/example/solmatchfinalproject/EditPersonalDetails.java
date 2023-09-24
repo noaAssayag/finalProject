@@ -64,6 +64,7 @@ import donations.donationAdapter;
 public class EditPersonalDetails extends AppCompatActivity implements RecycleViewInterface, OnImageSelectedListener {
     private static final int PICK_IMAGE_REQUEST = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 11;
+    // todo add bell icon with notifications
     ImageView userImg;
     EditText userName, userEmail, birthDate, attributes;
     TextView donationTitle, hostTitle;

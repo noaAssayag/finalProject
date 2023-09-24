@@ -130,6 +130,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                 removeDon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                             int position=getAdapterPosition();
                             if(position!=RecyclerView.NO_POSITION)
                             {
