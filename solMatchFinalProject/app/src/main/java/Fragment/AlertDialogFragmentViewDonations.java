@@ -54,19 +54,15 @@ public class AlertDialogFragmentViewDonations extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle b = getArguments();
         View v = inflater.inflate(R.layout.activity_alert_dialog_fragment_viewdonations, null);
-        donationUserEmail=v.findViewById(R.id.donationUserEmail);
         donationDescription=v.findViewById(R.id.donationDescription);
-        donationName=v.findViewById(R.id.donationName);
         category=v.findViewById(R.id.editTextCategory);
         donationLocation=v.findViewById(R.id.donationLocation);
         donationImg=v.findViewById(R.id.imageOfDonation);
         saveBtn=(Button) v.findViewById(R.id.saveBtn);
         if (b != null) {
             donations newdonation= (donations) b.getSerializable("Donation");
-            donationUserEmail.setText(newdonation.getEmail());
             donationDescription.setText(newdonation.getDescription());
             donationLocation.setText(newdonation.getAdress());
-            donationName.setText(newdonation.getName());
             category.setText(newdonation.getCatagory());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 Glide.with(getContext())

@@ -100,9 +100,12 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         sqlDatabase = new DatabaseHelper(this);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
         recHosts.setLayoutManager(llm);
-        recHosts.setLayoutManager(llm);
+
+        LinearLayoutManager llm2 = new LinearLayoutManager(this);
+        llm2.setOrientation(LinearLayoutManager.VERTICAL);
+        recDonations.setLayoutManager(llm2);
 
 
         changeImage.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +162,6 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                                 break;
                             }
                             case "Host": {
-                                donationTitle.setVisibility(View.VISIBLE);
                                 presentHostSql(1, user.getEmail());
                                 List<donations> allDonations = new ArrayList<>();
                                 allDonations = sqlDatabase.getAllDonations();
@@ -171,6 +173,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                                 donationAdapter adapter = new donationAdapter(donationList, EditPersonalDetails.this, EditPersonalDetails.this,false);
                                 recDonations.setAdapter(adapter);
                                 break;
+
                             }
                             case "Professional": {
                                 donationTitle.setVisibility(View.GONE);

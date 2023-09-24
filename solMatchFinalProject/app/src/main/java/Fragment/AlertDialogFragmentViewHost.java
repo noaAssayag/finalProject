@@ -56,7 +56,6 @@ public class AlertDialogFragmentViewHost extends DialogFragment {
         Bundle b = getArguments();
         View v = inflater.inflate(R.layout.activity_alert_dialog_fragment_viewhost, null);
         hostingDescription=(TextView)v.findViewById(R.id.hostingDescription);
-        hostDetails=(TextView)v.findViewById(R.id.hostDetails);
         hostingAddress=(EditText)v.findViewById(R.id.editTexthostingAddress);
         hostingDate=(EditText)v.findViewById(R.id.editTexthostingDate);
         imageOfLocation=(ImageView) v.findViewById(R.id.imageOfLocation);
