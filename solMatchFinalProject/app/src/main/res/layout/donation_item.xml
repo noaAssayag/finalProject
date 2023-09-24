@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         >
-
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
@@ -27,6 +26,7 @@
             android:id="@+id/imgdonation"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
             android:layout_below="@+id/title"
             android:textColor="@color/black"
             android:layout_marginTop="10dp"/>
@@ -35,14 +35,14 @@
             android:id="@+id/Donatorname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/imgdonation"
             android:gravity="center_vertical"
+            android:layout_below="@id/title"
+            android:layout_toRightOf="@+id/imgdonation"
             android:textColor="@color/black"
             android:text="@string/donationName"
-            android:textSize="13sp" />
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/donationCatagory"
@@ -50,12 +50,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/Donatorname"
             android:layout_toRightOf="@+id/imgdonation"
+            android:textColor="@color/black"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
-            android:textColor="@color/black"
             android:text="@string/donationCategory"
-            android:textSize="13sp" />
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/donationLocation"
@@ -65,10 +65,10 @@
             android:layout_alignParentRight="true"
             android:layout_alignRight="@+id/Donatorname"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="100dp"
+            android:layout_marginRight="150dp"
             android:text="@string/location"
             android:textColor="@color/black"
-            android:textSize="13sp" />
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/donationDescription"
@@ -76,10 +76,9 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/donationCatagory"
             android:layout_alignStart="@id/donationLocation"
-            android:layout_alignRight="@+id/donationCatagory"
             android:text="@string/description"
             android:textColor="@color/black"
-            android:textSize="13sp" />
+            android:textSize="10dp" />
 
         <ImageButton
             android:id="@+id/btnStartChat"
