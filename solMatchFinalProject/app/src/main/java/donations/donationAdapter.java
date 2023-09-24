@@ -1,9 +1,5 @@
 package donations;
-
-
-
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -67,7 +63,6 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
         this.context = context;
         this.recycleViewInterface=recycleViewInterface;
         this.view=view;
-
     }
 
     @Override
@@ -161,8 +156,6 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                 @Override
                 public void onClick(View view) {
                     int atIndex = userDonated.indexOf("@");
-
-// Extract the substring before the "@" symbol
                     userPresented  = userDonated.substring(0, atIndex);
                     username = userDonated.replace("@", "").replace(".", "");
 
@@ -272,7 +265,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                     .into(donationImage);
 
             donator.setText(di.getName());
-            location.setText(di.getAdress());
+            location.setText(di.getAdress().split(",")[0]);
             catagory.setText(di.getCatagory());
             desc.setText(di.getDescription());
         }
