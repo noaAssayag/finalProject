@@ -65,7 +65,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignRight="@+id/Donatorname"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="150dp"
+            android:layout_marginRight="170dp"
             android:text="@string/location"
             android:textColor="@color/black"
             android:textSize="10dp" />
@@ -76,7 +76,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/donationCatagory"
             android:layout_alignStart="@id/donationLocation"
-            android:layout_marginRight="150dp"
             android:text="@string/description"
             android:textColor="@color/black"
             android:textSize="10dp" />

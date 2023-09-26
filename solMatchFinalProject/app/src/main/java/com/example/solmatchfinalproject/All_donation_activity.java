@@ -73,15 +73,15 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
             @Override
             public void onClick(View view) {
                 List<donations> filterDonationList = new ArrayList<>();
-
-                if (filterSelected == null || filterSelected.equals("Filter by category")) {
+                if (filterSelected == null || filterSelected.equals("Category")) {
                     useCategory = false;
                 } else {
                     useCategory = true;
                 }
                 if (nameDon.getText().toString().isEmpty() || nameDon.getText().toString() == null||nameDon.getText().toString().equals("")) {
                     useName = false;
-                } else {
+                }
+                else {
                     useName = true;
                 }
                 if (!useName && !useCategory) {
@@ -96,7 +96,7 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
                     }
                     if (useName) {
                         for (donations donation : donationList) {
-                            if (donation.getName().equals(nameDon.getText().toString().toLowerCase())) {
+                            if (donation.getName().toLowerCase().startsWith(nameDon.getText().toString().toLowerCase())) {
                                 filterDonationList.add(donation);
                             }
                         }
@@ -125,7 +125,7 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
     }
 
     @Override
-    public void onDonationClick(int position) {
+    public void onDonationClick(int position,View v) {
         donations newDonations = donationList.get(position);
         AlertDialogFragmentViewDonations frag = new AlertDialogFragmentViewDonations();
         Bundle b = new Bundle();

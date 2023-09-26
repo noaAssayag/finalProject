@@ -89,15 +89,9 @@ public class AlertDialogFragmentViewDonations extends DialogFragment {
             @Override
             public void onClick(View view) {
                 mListener.onDialogPositiveClick(AlertDialogFragmentViewDonations.this);
-                getFragmentManager().beginTransaction().remove(AlertDialogFragmentViewDonations.this).commit();
-
+                dismiss();
             }
         });
-
-
-
-
-
 
         return v;
 

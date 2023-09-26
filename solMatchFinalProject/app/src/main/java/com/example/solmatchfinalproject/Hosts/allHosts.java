@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
+import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -56,8 +57,8 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
 
     private List<Host> originalHostsList;
 
-    private String filterGen;
-    private String filterLoc;
+    private String filterGen="";
+    private String filterLoc="";
 
     private DatabaseHelper sqlDatabase;
 
@@ -111,7 +112,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                Intent i = new Intent(getApplicationContext(), EditPersonalDetails.class);
                 startActivity(i);
             }
         });
@@ -119,20 +120,20 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
             @Override
             public void onClick(View v) {
                 List<Host> filteredList = new ArrayList<>();
-
+                boolean shouldAdd = false;
                 if (!filterLoc.equals("City") || !filterGen.equals("Gender")) {
                     for (Host host : originalHostsList) {
-                        boolean shouldAdd = true;
+                         shouldAdd = false;
 
                         if (!filterLoc.equals("City")) {
-                            if (!filterByLoc.getSelectedItem().toString().equals(host.getHostAddress().split(",")[0])) {
-                                shouldAdd = false;
+                            if (filterByLoc.getSelectedItem().toString().equals(host.getHostAddress().split(",")[0])) {
+                                shouldAdd = true;
                             }
                         }
 
                         if (!filterGen.equals("Gender")) {
-                            if (!sqlDatabase.getUserByEmail(host.getHostEmail()).getGen().equals(filterGen)) {
-                                shouldAdd = false;
+                            if (sqlDatabase.getUserByEmail(host.getHostEmail()).getGen().equals(filterGen)) {
+                                shouldAdd = true;
                             }
                         }
 
@@ -164,7 +165,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
     }
 
     @Override
-    public void onDonationClick(int position) {
+    public void onDonationClick(int position,View v) {
 
     }
 
@@ -175,7 +176,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
 
     @Override
     public void onDialogPositiveClick(AlertDialogFragmentViewHost dialog) {
-        Toast.makeText(this, "This host addedd to wishList", Toast.LENGTH_SHORT).show();
+
     }
 
 

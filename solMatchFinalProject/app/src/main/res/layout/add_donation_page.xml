@@ -346,7 +346,7 @@
                         android:layout_marginTop="10dp"
                         android:lineSpacingMultiplier="3"
                         android:textAlignment="viewStart"
-                        android:textColor="@color/user_name" />
+                        android:textColor="@color/black" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

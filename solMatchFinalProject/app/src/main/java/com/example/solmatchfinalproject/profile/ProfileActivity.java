@@ -271,7 +271,7 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
     }
 
     @Override
-    public void onDonationClick(int position) {
+    public void onDonationClick(int position,View v) {
 
     }
 

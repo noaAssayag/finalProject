@@ -140,7 +140,7 @@ public void deleteItem(int position){
         }
 
 @Override
-public void onDonationClick(int position){
+public void onDonationClick(int position,View v){
 
         }
 

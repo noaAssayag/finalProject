@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
+import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -114,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                             sqlData.compareAndUpdateDonations(donationsList);
                                                                             if (documentSnapshot.contains("info") && documentSnapshot.get("info")!=null) {
                                                                                 Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_SHORT).show();
-                                                                                Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
+                                                                                Intent intent = new Intent(LoginActivity.this, All_donation_activity.class);
                                                                                 intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                                                                 startActivity(intent);
                                                                             } else {

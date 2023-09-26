@@ -423,7 +423,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
     }
 
     @Override
-    public void onDonationClick(int position) {
+    public void onDonationClick(int position,View v) {
 
     }
 

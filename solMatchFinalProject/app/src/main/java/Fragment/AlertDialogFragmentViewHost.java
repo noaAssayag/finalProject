@@ -122,6 +122,7 @@ public class AlertDialogFragmentViewHost extends DialogFragment {
             @Override
             public void onClick(View view) {
                 mListener.onDialogPositiveClick(AlertDialogFragmentViewHost.this);
+                dismiss();
             }
         });
         return v;
