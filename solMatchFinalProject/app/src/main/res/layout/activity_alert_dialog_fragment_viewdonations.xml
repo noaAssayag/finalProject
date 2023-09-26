@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical">
@@ -46,6 +46,17 @@
         android:text="@string/donationtitle"
         android:textColor="@color/log_in_color"
         android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/donationDes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/baseline_info_24"
+        android:ems="10" />
 
 
     <EditText
@@ -98,6 +109,8 @@
         android:backgroundTint="@color/colorBtSignIn"
         android:text="@string/btnsave"
         android:textColor="@color/white"
+        android:layout_marginBottom="15dp"
+        android:padding="5dp"
         android:textStyle="bold" />
 
 

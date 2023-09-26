@@ -55,7 +55,7 @@ public class AlertDialogFragmentViewDonations extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle b = getArguments();
         View v = inflater.inflate(R.layout.activity_alert_dialog_fragment_viewdonations, null);
-        donationDescription=v.findViewById(R.id.donationDescription);
+        donationDescription=v.findViewById(R.id.donationDes);
         category=v.findViewById(R.id.editTextCategory);
         donationLocation=v.findViewById(R.id.donationLocation);
         donationImg=v.findViewById(R.id.imageOfDonation);
@@ -105,7 +105,7 @@ public class AlertDialogFragmentViewDonations extends DialogFragment {
         if (dialog != null)
         {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
-            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
             dialog.getWindow().setLayout(width, height);
         }
     }

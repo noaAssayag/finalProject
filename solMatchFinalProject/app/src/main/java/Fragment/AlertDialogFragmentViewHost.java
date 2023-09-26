@@ -1,5 +1,6 @@
 package Fragment;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -129,5 +130,16 @@ public class AlertDialogFragmentViewHost extends DialogFragment {
 
     }
 
-
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null)
+        {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            dialog.getWindow().setLayout(width, height);
+        }
+    }
 }
