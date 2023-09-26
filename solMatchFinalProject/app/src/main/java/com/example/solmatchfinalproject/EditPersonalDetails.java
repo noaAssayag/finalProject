@@ -323,7 +323,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         Host hostToDelete = hosts.get(position);
 
         // 1. Instantiate an AlertDialog.Builder with its constructor
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // 2. Chain together various setter methods to set the dialog characteristics
         builder.setMessage(R.string.dialog_message);
