@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBgSideView">
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/navigation_header"
+                layout="@layout/navigation_header"
+
+                android:elevation="10dp" />
+
+
+
+            <Button
+                android:id="@+id/bt_home"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/nav_btn_selector"
+                android:drawablePadding="22dp"
+                android:gravity="center|start"
+                android:text="@string/menu_home"
+                app:icon="@drawable/ic_home"
+                app:iconSize="18dp"
+                app:iconPadding="16dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="16dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                />
+
+            <Button
+                android:id="@+id/addEvent"
+                android:text="@string/Add"
+                app:icon="@drawable/baseline_add_circle_outline_24"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/nav_btn_selector"
+                android:drawablePadding="22dp"
+                android:gravity="center|start"
+                app:iconSize="23dp"
+                app:iconPadding="16dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="16dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textColor="@color/white"/>
+
+            <Button
+                android:id="@+id/bt_history"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/nav_btn_selector"
+                android:gravity="center|start"
+                android:text="@string/menu_history"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:icon="@drawable/ic_service_history"
+                app:iconSize="18dp"
+                app:iconPadding="16dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="16dp"/>
+            <Button
+                android:id="@+id/bt_help"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/nav_btn_selector"
+                android:gravity="center|start"
+                android:text="@string/help"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:icon="@drawable/ic_help"
+                app:iconPadding="16dp"
+                app:iconSize="18dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="16dp"/>
+            <Button
+                android:id="@+id/bt_share"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/nav_btn_selector"
+                android:gravity="center|start"
+                android:text="@string/menu_share"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:icon="@drawable/ic_share"
+                app:iconPadding="16dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="16dp"
+                app:iconSize="18dp"/>
+
+            <Button
+                android:id="@+id/bt_logout"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/nav_btn_selector"
+                android:gravity="center|start"
+                android:text="@string/menu_logout"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:icon="@drawable/ic_logout"
+                app:iconSize="18dp"
+                app:iconPadding="16dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="16dp"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>
