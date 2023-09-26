@@ -97,6 +97,7 @@
                         android:layout_marginBottom="10dp"
                         android:src="@drawable/search_icon" />
 
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -190,8 +191,21 @@
                         android:layout_gravity="left"
                         android:layout_marginLeft="10dp"
                         android:entries="@array/israeliCities" />
-
+                    <EditText
+                        android:id="@+id/autoCompleteLocationPro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="10dp"
+                        android:hint="@string/autoDetected"
+                        android:textColorHint="@color/user_name" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/autoLocationMessage"
+                        android:textColor="@color/red"/>
                 </LinearLayout>
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

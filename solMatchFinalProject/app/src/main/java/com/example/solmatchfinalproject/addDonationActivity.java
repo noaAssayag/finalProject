@@ -12,6 +12,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -98,10 +100,39 @@ public class addDonationActivity extends Activity {
         uploadImage = findViewById(R.id.uploadImageButt);
         addItem = findViewById(R.id.btnAddDonation);
         spinner = findViewById(R.id.catagorySpinner);
-        autoCompleteLocation = findViewById(R.id.autoCompleteLocation);
+        autoCompleteLocation = findViewById(R.id.autoCompleteLocationDonation);
+        autoCompleteLocation.setEnabled(false);
         sqlDatabase = new DatabaseHelper(this);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
+
+        autoCompleteLocation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(autoCompleteLocation.getText().toString().isEmpty())
+                {
+                    cities.setEnabled(true);
+                    streets.setEnabled(true);
+                    apartNum.setEnabled(true);
+                }
+                else{
+                    cities.setEnabled(false);
+                    streets.setEnabled(false);
+                    apartNum.setEnabled(false);
+                }
+
+            }
+        });
 
 
         String[] options = {"home cooking", "furniture", "food supplies","other"};
@@ -197,46 +228,7 @@ public class addDonationActivity extends Activity {
             }
         });
 
-        addItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Upload the image to Firebase Storage
-                StorageReference storageRef = FirebaseStorage.getInstance().getReference(imageURI.toString());
-                storageRef.putFile(imageURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        boolean check = task.isSuccessful();
-                        if (task.isSuccessful()) {
-                            storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    URL = uri.toString();
-                                    FirebaseFirestore addDonationToFireStore = FirebaseFirestore.getInstance();
-                                    email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                                    String address=cities.getSelectedItem().toString()+", "+streets.getText().toString()+", "+apartNum.getText().toString();
-                                    donations formData = new donations(itemName.getText().toString(), address, selectedItem, ItemDescription.getText().toString(), URL, email);
-                                    userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                    formData.setUid(userId);
-                                    addDonationToFireStore.collection("Donations").document(userId).set(formData).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-                                            databaseHelper.insertDonationData(formData);
-                                            Toast.makeText(getApplicationContext(),"added donation succefully",Toast.LENGTH_LONG).show();
-                                            Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
-                                            startActivity(intent);
-                                        }
-                                    });
 
-                                }
-                            });
-                        }
-
-
-                    }
-                });
-            }
-        });
     }
 
     @Override
@@ -289,6 +281,7 @@ public class addDonationActivity extends Activity {
 
                                 String fullAddress = addressLine + ", " + city + ", " + state + ", " + country + ", " + postalCode;
                                 autoCompleteLocation.setText(fullAddress);
+                                autoCompleteLocation.setEnabled(true);
                             }
                         }
                     }

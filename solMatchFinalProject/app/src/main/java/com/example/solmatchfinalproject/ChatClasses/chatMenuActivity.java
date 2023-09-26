@@ -50,9 +50,6 @@ public class chatMenuActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance(app);
         FirebaseUser user = auth.getCurrentUser();
         String id = user.getUid();
-        BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
-        navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
-        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         sqlDataBase = new DatabaseHelper(this);
         List<chatItemInfo> userChats = new ArrayList<chatItemInfo>();
         chatList = findViewById(R.id.chatList);

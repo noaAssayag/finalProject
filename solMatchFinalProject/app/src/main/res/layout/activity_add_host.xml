@@ -281,6 +281,20 @@
                         android:hint="@string/Apartment"
                         android:textColorHint="@color/user_name" />
 
+                    <EditText
+                        android:id="@+id/autoCompleteLocationHost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="10dp"
+                        android:hint="@string/autoDetected"
+                        android:textColorHint="@color/user_name" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/autoLocationMessage"
+                        android:textColor="@color/red"/>
+
 
                 </LinearLayout>
             </LinearLayout>

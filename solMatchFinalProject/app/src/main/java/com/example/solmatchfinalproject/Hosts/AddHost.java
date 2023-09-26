@@ -14,6 +14,8 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -93,7 +95,7 @@ public class AddHost extends AppCompatActivity {
 
     Calendar mDateAndTime = Calendar.getInstance();
     Spinner cities;
-    EditText streets;
+    EditText streets,autoCompleteLocationHost;
     EditText apartNum;
     EditText description;
     ImageView locationImg;
@@ -142,6 +144,36 @@ public class AddHost extends AppCompatActivity {
         imgLocation = findViewById(R.id.imgLocation);
         sqlDataBase = new DatabaseHelper(this);
         back=(ImageView) findViewById(R.id.backArrow);
+        autoCompleteLocationHost = findViewById(R.id.autoCompleteLocationHost);
+        autoCompleteLocationHost.setEnabled(false);
+        autoCompleteLocationHost.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(autoCompleteLocationHost.getText().toString().isEmpty())
+                {
+                    cities.setEnabled(true);
+                    streets.setEnabled(true);
+                    apartNum.setEnabled(true);
+                }
+                else{
+                    cities.setEnabled(false);
+                    streets.setEnabled(false);
+                    apartNum.setEnabled(false);
+                }
+
+            }
+        });
+
         ActionBar ab=getSupportActionBar();
         ab.setTitle(R.string.ahhHostTitle);
         ab.setDisplayShowHomeEnabled(true);
@@ -175,14 +207,15 @@ public class AddHost extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hostDate = mDisplayDateTime.getText().toString();
-                if (cities == null && cities.getSelectedItem() == null)  {
-                    Toast.makeText(AddHost.this, "Please choose a city", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(streets==null||streets.getText().toString().isEmpty()||apartNum==null||apartNum.getText().toString().isEmpty()|| hostDate.isEmpty() || validDate == false)
-                {
-                    Toast.makeText(AddHost.this, "Please fill all the fileds and check they are valid", Toast.LENGTH_SHORT).show();
-                    return;
+                if(autoCompleteLocationHost.getText().toString().isEmpty()) {
+                    if (cities == null && cities.getSelectedItem() == null) {
+                        Toast.makeText(AddHost.this, "Please choose a city", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (streets == null || streets.getText().toString().isEmpty() || apartNum == null || apartNum.getText().toString().isEmpty() || hostDate.isEmpty() || validDate == false) {
+                        Toast.makeText(AddHost.this, "Please fill all the fileds and check they are valid", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
                 if (locationImg.getDrawable() == null) {
                     Toast.makeText(AddHost.this, "You must upload an image!", Toast.LENGTH_SHORT).show();
@@ -221,7 +254,12 @@ public class AddHost extends AppCompatActivity {
 
                                         URL = uri.toString();
 
-                                        hostAddress=cities.getSelectedItem().toString()+", "+streets.getText().toString()+", "+apartNum.getText().toString();
+                                        if(autoCompleteLocationHost.getText().toString().isEmpty()) {
+                                            hostAddress = cities.getSelectedItem().toString() + ", " + streets.getText().toString() + ", " + apartNum.getText().toString();
+                                        }
+                                        else {
+                                            hostAddress = autoCompleteLocationHost.getText().toString();
+                                        }
                                         if(!description.getText().toString().isEmpty())
                                         {
                                             hostDescription=description.getText().toString();
@@ -411,7 +449,8 @@ public class AddHost extends AppCompatActivity {
                                 String knownName = address.getFeatureName(); // Only if available else return NULL
 
                                 String fullAddress = addressLine + ", " + city + ", " + state + ", " + country + ", " + postalCode;
-                                streets.setText(fullAddress);
+                                autoCompleteLocationHost.setText(fullAddress);
+                                autoCompleteLocationHost.setEnabled(true);
                             }
                         }
                     }

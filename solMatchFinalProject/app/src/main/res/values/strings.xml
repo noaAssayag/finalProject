@@ -295,5 +295,6 @@
     <string name="profTitle">professionals</string>
     <string name="profileTitle">profile</string>
     <string name="searchTitle">search</string>
+    <string name="autoLocationMessage">if the location above has text you cant enter location manually</string>
 
 </resources>

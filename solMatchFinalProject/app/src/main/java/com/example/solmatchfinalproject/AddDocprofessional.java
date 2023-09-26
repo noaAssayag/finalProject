@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,7 +47,7 @@ import dataBase.DatabaseHelper;
 public class AddDocprofessional extends AppCompatActivity {
     private Spinner professCategory;
     private Spinner professAddress;
-    private EditText professDescription;
+    private EditText professDescription,autoCompleteLocationPro;
     private EditText professPhoneNum;
     TextView percentage;
     private ProgressBar progressBar;
@@ -54,7 +56,7 @@ public class AddDocprofessional extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     FirebaseAuth auth;
     FirebaseFirestore db;
-    String uid,email,userName,imageUser;
+    private String uid,email,userName,imageUser,address;
     DatabaseHelper sqlDataBase;
     String precentageAva="0";
     @Override
@@ -69,6 +71,8 @@ public class AddDocprofessional extends AppCompatActivity {
         progressBar=findViewById(R.id.prograssBar);
         seekBar = findViewById(R.id.seek_bar);
         btnSubmit=findViewById(R.id.btnSubmit);
+        autoCompleteLocationPro = findViewById(R.id.autoCompleteLocationPro);
+        autoCompleteLocationPro.setEnabled(false);
         ActionBar ab=getSupportActionBar();
         ab.setTitle(R.string.proTitle);
         ab.setDisplayShowHomeEnabled(true);
@@ -91,18 +95,42 @@ public class AddDocprofessional extends AppCompatActivity {
 
             }
         });
+        autoCompleteLocationPro.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+               if(autoCompleteLocationPro.getText().toString().isEmpty())
+               {
+                   professAddress.setEnabled(true);
+               }
+               else{
+                   professAddress.setEnabled(false);
+               }
+            }
+        });
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(autoCompleteLocationPro.getText().toString().isEmpty()) {
+                    if (professAddress == null || professAddress.getSelectedItem().toString().equals("Filter By city") || professAddress.getSelectedItem().toString().isEmpty()) {
+                        Toast.makeText(AddDocprofessional.this, "Please choose a area", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
                 if (professCategory == null || professCategory.getSelectedItem().toString().equals("Filter by category") || professCategory.getSelectedItem().toString().isEmpty()) {
                     Toast.makeText(AddDocprofessional.this, "Please choose a category", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (professAddress == null || professAddress.getSelectedItem().toString().equals("Filter By city") || professAddress.getSelectedItem().toString().isEmpty()) {
-                    Toast.makeText(AddDocprofessional.this, "Please choose a area", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (professDescription.getText().toString().isEmpty() || professPhoneNum.getText().toString().isEmpty()) {
+                }  else if (professDescription.getText().toString().isEmpty() || professPhoneNum.getText().toString().isEmpty()) {
                     Toast.makeText(AddDocprofessional.this, "Please fill all the fileds", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -130,8 +158,15 @@ public class AddDocprofessional extends AppCompatActivity {
                             }
                         }
                     });
+                    if(autoCompleteLocationPro.getText().toString().isEmpty()) {
+                        address = professAddress.getSelectedItem().toString();
+                    }
+                    else{
+                        address = autoCompleteLocationPro.getText().toString();
+                    }
+
                     Professional professional = new Professional(email,userName,imageUser,professCategory.getSelectedItem().toString()
-                            ,professAddress.getSelectedItem().toString()
+                            ,address
                             ,professPhoneNum.getText().toString()
                             ,professDescription.getText().toString(),precentageAva,uid);
                     db.collection("professional").document(uid).set(professional).addOnCompleteListener(new OnCompleteListener<Void>() {
