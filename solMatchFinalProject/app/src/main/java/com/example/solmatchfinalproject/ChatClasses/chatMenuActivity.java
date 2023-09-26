@@ -2,12 +2,16 @@ package com.example.solmatchfinalproject.ChatClasses;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
@@ -52,6 +56,9 @@ public class chatMenuActivity extends AppCompatActivity {
         sqlDataBase = new DatabaseHelper(this);
         List<chatItemInfo> userChats = new ArrayList<chatItemInfo>();
         chatList = findViewById(R.id.chatList);
+        ActionBar ab=getSupportActionBar();
+        ab.setTitle(R.string.chatTitle);
+        ab.setDisplayShowHomeEnabled(true);
         // we use valueEvent listener to recive the logged in user userName so we can get his chat history
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -114,6 +121,26 @@ public class chatMenuActivity extends AppCompatActivity {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemID = item.getItemId();
+        switch(item.getItemId()) {
+            case R.id.notificationIcon:
+                return true;
+            case R.id.chatIcon:
+                Intent i = new Intent(this, chatMenuActivity.class);
+                startActivity(i);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public String getUserName() {

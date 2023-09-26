@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,6 +66,9 @@ public class LoginActivity extends AppCompatActivity {
         hosts = new ArrayList<>();
         donationsList = new ArrayList<>();
         sqlData = new DatabaseHelper(this);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,5 +193,31 @@ public class LoginActivity extends AppCompatActivity {
     private static void showError(EditText input, String s) {
         input.setError(s);
         input.requestFocus();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId())
+        {
+            case R.id.notificationIcon:
+            {
+                return true;
+            }
+            case R.id.chatIcon:
+            {
+                Intent i = new Intent(this, chatMenuActivity.class);
+                startActivity(i);
+                return true;
+
+            }
+        }
+        return false;
     }
 }

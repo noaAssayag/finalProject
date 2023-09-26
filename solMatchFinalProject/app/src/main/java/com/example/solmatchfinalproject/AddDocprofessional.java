@@ -1,10 +1,14 @@
 package com.example.solmatchfinalproject;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -64,6 +69,9 @@ public class AddDocprofessional extends AppCompatActivity {
         progressBar=findViewById(R.id.prograssBar);
         seekBar = findViewById(R.id.seek_bar);
         btnSubmit=findViewById(R.id.btnSubmit);
+        ActionBar ab=getSupportActionBar();
+        ab.setTitle(R.string.proTitle);
+        ab.setDisplayShowHomeEnabled(true);
         sqlDataBase = new DatabaseHelper(this);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -141,4 +149,24 @@ public class AddDocprofessional extends AppCompatActivity {
 
     });
 }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemID = item.getItemId();
+        switch(item.getItemId()) {
+            case R.id.notificationIcon:
+                return true;
+            case R.id.chatIcon:
+                Intent i = new Intent(this, chatMenuActivity.class);
+                startActivity(i);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

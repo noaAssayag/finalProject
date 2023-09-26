@@ -3,6 +3,7 @@ package com.example.solmatchfinalproject.Hosts;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.location.Address;
 import android.location.Geocoder;
@@ -15,6 +16,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -34,6 +38,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -136,6 +142,9 @@ public class AddHost extends AppCompatActivity {
         imgLocation = findViewById(R.id.imgLocation);
         sqlDataBase = new DatabaseHelper(this);
         back=(ImageView) findViewById(R.id.backArrow);
+        ActionBar ab=getSupportActionBar();
+        ab.setTitle(R.string.ahhHostTitle);
+        ab.setDisplayShowHomeEnabled(true);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
 
@@ -419,5 +428,25 @@ public class AddHost extends AppCompatActivity {
             }
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemID = item.getItemId();
+        switch(item.getItemId()) {
+            case R.id.notificationIcon:
+                return true;
+            case R.id.chatIcon:
+                Intent i = new Intent(this, chatMenuActivity.class);
+                startActivity(i);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }

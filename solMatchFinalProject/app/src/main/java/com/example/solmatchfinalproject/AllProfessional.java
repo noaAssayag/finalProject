@@ -1,12 +1,16 @@
 package com.example.solmatchfinalproject;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -65,6 +69,9 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
         allProfessionalList = sqlDatabase.getAllProfessionals();
         ProfessionalAdapter adapter = new ProfessionalAdapter(allProfessionalList, AllProfessional.this, AllProfessional.this);
         recList.setAdapter(adapter);
+        ActionBar ab=getSupportActionBar();
+        ab.setTitle(R.string.profTitle);
+        ab.setDisplayShowHomeEnabled(true);
 //        menu = findViewById(R.id.menu);
 //        menu.setOnItemReselectedListener(item -> {
 //            switch (item.getItemId()) {
@@ -149,5 +156,24 @@ public void deleteDonation(int position){
 
         }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemID = item.getItemId();
+        switch(item.getItemId()) {
+            case R.id.notificationIcon:
+                return true;
+            case R.id.chatIcon:
+                Intent i = new Intent(this, chatMenuActivity.class);
+                startActivity(i);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
         }

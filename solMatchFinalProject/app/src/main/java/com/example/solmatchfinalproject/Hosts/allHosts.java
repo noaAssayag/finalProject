@@ -1,12 +1,16 @@
 package com.example.solmatchfinalproject.Hosts;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
+import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
@@ -83,6 +88,9 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         originalHostsList = new ArrayList<>(allHostsList);
         UserHostAdapter userHostAdapter = new UserHostAdapter(allHostsList, allHosts.this, allHosts.this, true);
         recList.setAdapter(userHostAdapter);
+        ActionBar ab=getSupportActionBar();
+        ab.setTitle(R.string.hostTitle);
+        ab.setDisplayShowHomeEnabled(true);
 
         filterByLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -179,6 +187,25 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemID = item.getItemId();
+        switch(item.getItemId()) {
+            case R.id.notificationIcon:
+                return true;
+            case R.id.chatIcon:
+                Intent i = new Intent(this, chatMenuActivity.class);
+                startActivity(i);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
 }
