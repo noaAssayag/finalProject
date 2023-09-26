@@ -1,6 +1,7 @@
 package Fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -95,6 +96,18 @@ public class AlertDialogFragmentViewDonations extends DialogFragment {
 
         return v;
 
+    }
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null)
+        {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setLayout(width, height);
+        }
     }
 
 
