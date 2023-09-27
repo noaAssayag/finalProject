@@ -40,10 +40,13 @@ import dataBase.DatabaseHelper;
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseFirestore database = FirebaseFirestore.getInstance();
+    UserStorageData userSignedIn;
 
     ArrayList<UserStorageData> users;
     ArrayList<Host> hosts;
     ArrayList<donations> donationsList;
+
+    ArrayList<notifications> notificationsList;
     Button signIn, forgotPassword;
     EditText inputUserEmail, inputPassword;
     Button btnLogin;
@@ -65,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         users = new ArrayList<>();
         hosts = new ArrayList<>();
         donationsList = new ArrayList<>();
+        notificationsList = new ArrayList<>();
         sqlData = new DatabaseHelper(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -86,18 +90,23 @@ public class LoginActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                         String UID = user.getUid();
-                                        database.collection("Users").document(UID).get()
-                                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+
+                                        database.collection("Users").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                     @Override
-                                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                        if (documentSnapshot.exists()) {
-                                                            UserStorageData userData = documentSnapshot.toObject(UserStorageData.class);
+                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                                                        for(QueryDocumentSnapshot snapshot:queryDocumentSnapshots) {
+                                                            UserStorageData userData = snapshot.toObject(UserStorageData.class);
                                                             users.add(userData);
+                                                            if(userData.getUID().equals(UID))
+                                                            {
+                                                                userSignedIn = userData;
+                                                            }
 
                                                             // Rest of your code for user data retrieval
                                                             // You can access userData fields like this:
                                                             // String userName = userData.getUserName();
-
+                                                        }
                                                             sqlData.compareAndUpdateUsers(users);
                                                             database.collection("Host").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                                 @Override
@@ -119,9 +128,21 @@ public class LoginActivity extends AppCompatActivity {
                                                                                 donationsList.add(donation);
                                                                             }
                                                                             sqlData.compareAndUpdateDonations(donationsList);
-                                                                            if (documentSnapshot.contains("info") && documentSnapshot.get("info")!=null) {
+
+                                                                            database.collection("Notifications").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                                                @Override
+                                                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                                                    for(QueryDocumentSnapshot snapshot:queryDocumentSnapshots)
+                                                                                    {
+                                                                                        notifications notification = snapshot.toObject(notifications.class);
+                                                                                        notificationsList.add(notification);
+                                                                                    }
+                                                                                    sqlData.compareAndUpdateNotifications(notificationsList);
+                                                                                }
+                                                                            });
+                                                                            if (!userSignedIn.getInfo().getDescription().isEmpty() || !userSignedIn.getInfo().getHobbies().isEmpty()) {
                                                                                 Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_SHORT).show();
-                                                                                Intent intent = new Intent(LoginActivity.this, AddHost.class);
+                                                                                Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
                                                                                 intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                                                                 startActivity(intent);
                                                                             } else {
@@ -137,10 +158,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                                             // Check if user has userInfo
 
-                                                        } else {
-                                                            // Handle the case where the document doesn't exist
-                                                            Toast.makeText(getApplicationContext(), "User data not found", Toast.LENGTH_SHORT).show();
-                                                        }
+
                                                     }
                                                 });
 

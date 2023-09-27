@@ -42,6 +42,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
+import com.example.solmatchfinalproject.EditPersonalDetails;
+import com.example.solmatchfinalproject.notifications;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -67,6 +69,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -83,6 +86,7 @@ import java.util.Locale;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import Fragment.NotificationDialogFragment;
 import Model.Host;
 import dataBase.DatabaseHelper;
 
@@ -274,9 +278,17 @@ public class AddHost extends AppCompatActivity {
                                             public void onSuccess(Void unused) {
                                                 sqlDataBase.insertHostData(newHost);
                                                 Toast.makeText(getApplicationContext(),"added host",Toast.LENGTH_LONG).show();
-                                                Intent intent = new Intent(AddHost.this, ProfileActivity.class);
-                                                startActivity(intent);
-                                                setContentView(R.layout.profilev2);
+                                                notifications noti = new notifications(uid,"you have created a hosting event for the date:" + hostDate);
+                                                dbFirestore.collection("Notifications").add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onSuccess(DocumentReference documentReference) {
+                                                        sqlDataBase.insertNotificationData(noti);
+                                                        Intent intent = new Intent(AddHost.this, EditPersonalDetails.class);
+                                                        startActivity(intent);
+
+                                                    }
+                                                });
+
                                             }
                                         });
 
@@ -476,8 +488,13 @@ public class AddHost extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemID = item.getItemId();
+        DatabaseHelper helper = new DatabaseHelper(this);
         switch(item.getItemId()) {
             case R.id.notificationIcon:
+                List<notifications> notificationsList = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+                NotificationDialogFragment dialogFragment = new NotificationDialogFragment(notificationsList);
+                dialogFragment.show(getSupportFragmentManager(), "NotificationDialogFragment");
+
                 return true;
             case R.id.chatIcon:
                 Intent i = new Intent(this, chatMenuActivity.class);
@@ -485,6 +502,19 @@ public class AddHost extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        DatabaseHelper helper = new DatabaseHelper(this);
+       List<notifications> notifications = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+        if(!notifications.isEmpty())
+        {
+            MenuItem item = menu.findItem(R.id.notificationIcon);
+            item.setIcon(R.drawable.notification_icon_full);
+
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
 

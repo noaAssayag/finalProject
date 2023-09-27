@@ -41,6 +41,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
 
+import java.util.List;
+
+import Fragment.NotificationDialogFragment;
 import Model.Professional;
 import dataBase.DatabaseHelper;
 
@@ -169,13 +172,23 @@ public class AddDocprofessional extends AppCompatActivity {
                             ,address
                             ,professPhoneNum.getText().toString()
                             ,professDescription.getText().toString(),precentageAva,uid);
+
+
                     db.collection("professional").document(uid).set(professional).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             sqlDataBase.insertProfessionalData(professional);
-                            Toast.makeText(getApplicationContext(),"succes",Toast.LENGTH_LONG);
-                            Intent intent = new Intent(getApplicationContext(),profileActivity.class);
-                            startActivity(intent);
+                            notifications noti = new notifications(uid,"you have created a professional offer for the" + professCategory.getSelectedItem().toString() +" category");
+                            db.collection("Notifications").add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    sqlDataBase.insertNotificationData(noti);
+                                    Toast.makeText(getApplicationContext(),"succes",Toast.LENGTH_LONG);
+                                    Intent intent = new Intent(AddDocprofessional.this, EditPersonalDetails.class);
+                                    startActivity(intent);
+
+                                }
+                            });
                         }
                     });
 
@@ -193,8 +206,13 @@ public class AddDocprofessional extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemID = item.getItemId();
+        DatabaseHelper helper = new DatabaseHelper(this);
         switch(item.getItemId()) {
             case R.id.notificationIcon:
+                List<notifications> notificationsList = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+                NotificationDialogFragment dialogFragment = new NotificationDialogFragment(notificationsList);
+                dialogFragment.show(getSupportFragmentManager(), "NotificationDialogFragment");
+
                 return true;
             case R.id.chatIcon:
                 Intent i = new Intent(this, chatMenuActivity.class);
@@ -202,6 +220,19 @@ public class AddDocprofessional extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        DatabaseHelper helper = new DatabaseHelper(this);
+        List<notifications> notifications = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+        if(!notifications.isEmpty())
+        {
+            MenuItem item = menu.findItem(R.id.notificationIcon);
+            item.setIcon(R.drawable.notification_icon_full);
+
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
 }

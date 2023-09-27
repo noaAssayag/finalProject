@@ -27,12 +27,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
+
+import Fragment.NotificationDialogFragment;
 import Model.Host;
 
+import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.LoginActivity;
 import com.example.solmatchfinalproject.R;
+import com.example.solmatchfinalproject.addDonationActivity;
+import com.example.solmatchfinalproject.notifications;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.example.solmatchfinalproject.searchNavigationMenue;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +47,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -63,6 +70,8 @@ import okhttp3.Response;
 
 public class chatActivity extends AppCompatActivity {
     String token = null;
+
+    String UIDToSendNoti;
     private static final String FCM_URL = "https://fcm.googleapis.com/fcm/send", KEY_STRING = "key=AAAAg1pSiQ0:APA91bH3Q7WXI_bctdvipJ5QjbRhehV5_a798RBK7SEe5-US9K0OW2l3IjB1YXwF4EarvBey9dHEvSys8a0Srv1YqOtU8CJju0ecarJ6nKuvBGVrDuBPaUXYcsItkT12W8lXN4-2CDaF";
 
     OkHttpClient client = new OkHttpClient();
@@ -77,6 +86,8 @@ public class chatActivity extends AppCompatActivity {
             });
 
     int counter = 0;
+
+    FirebaseFirestore db;
 
     int i = 1;
     long size = 0;
@@ -126,6 +137,7 @@ public class chatActivity extends AppCompatActivity {
         chatterName = findViewById(R.id.chatterName);
         addHostButt = findViewById(R.id.addHostButt);
         menu = findViewById(R.id.menu);
+        db = FirebaseFirestore.getInstance();
         chatterName.setText(intent.getStringExtra("userToPresent"));
         profileLayout = findViewById(R.id.profileLayout);
         sqlDatabase = new DatabaseHelper(this);
@@ -209,6 +221,14 @@ public class chatActivity extends AppCompatActivity {
                     // need to implement which user sent the message
                     messagedSent.put(String.valueOf(i), new chat(from, to, writeMessage.getText().toString()));
                     reference.child(String.valueOf(i)).setValue(messagedSent.get(String.valueOf(i)));
+                    notifications noti = new notifications(UID,""+ from +": "+ writeMessage.getText().toString());
+                    db.collection("Notifications").add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            sqlDatabase.insertNotificationData(noti);
+
+                        }
+                    });
                 }
             }
         });
@@ -401,8 +421,13 @@ public class chatActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemID = item.getItemId();
+        DatabaseHelper helper = new DatabaseHelper(this);
         switch(item.getItemId()) {
             case R.id.notificationIcon:
+                List<notifications> notificationsList = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+                NotificationDialogFragment dialogFragment = new NotificationDialogFragment(notificationsList);
+                dialogFragment.show(getSupportFragmentManager(), "NotificationDialogFragment");
+
                 return true;
             case R.id.chatIcon:
                 Intent i = new Intent(this, chatMenuActivity.class);
@@ -412,5 +437,17 @@ public class chatActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        DatabaseHelper helper = new DatabaseHelper(this);
+        List<notifications> notifications = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+        if(!notifications.isEmpty())
+        {
+            MenuItem item = menu.findItem(R.id.notificationIcon);
+            item.setIcon(R.drawable.notification_icon_full);
+
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 
 }

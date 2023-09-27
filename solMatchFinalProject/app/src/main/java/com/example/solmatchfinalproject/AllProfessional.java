@@ -24,6 +24,7 @@ import com.example.solmatchfinalproject.Hosts.UserHostAdapter;
 import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +37,7 @@ import java.util.List;
 import Fragment.AlertDialogFragmentViewHost;
 import Fragment.AlertListenerProf;
 import Fragment.MyAlertDialogFragmentListenerView;
+import Fragment.NotificationDialogFragment;
 import Model.Host;
 import Model.Professional;
 import dataBase.DatabaseHelper;
@@ -165,8 +167,13 @@ public void deleteDonation(int position){
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemID = item.getItemId();
+        DatabaseHelper helper = new DatabaseHelper(this);
         switch(item.getItemId()) {
             case R.id.notificationIcon:
+                List<notifications> notificationsList = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+                NotificationDialogFragment dialogFragment = new NotificationDialogFragment(notificationsList);
+                dialogFragment.show(getSupportFragmentManager(), "NotificationDialogFragment");
+
                 return true;
             case R.id.chatIcon:
                 Intent i = new Intent(this, chatMenuActivity.class);
@@ -176,4 +183,18 @@ public void deleteDonation(int position){
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        DatabaseHelper helper = new DatabaseHelper(this);
+        List<notifications> notifications = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+        if(!notifications.isEmpty())
+        {
+            MenuItem item = menu.findItem(R.id.notificationIcon);
+            item.setIcon(R.drawable.notification_icon_full);
+
         }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+
+}

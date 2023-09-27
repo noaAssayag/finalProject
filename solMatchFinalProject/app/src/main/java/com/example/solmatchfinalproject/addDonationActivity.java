@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
@@ -64,10 +65,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import Fragment.NotificationDialogFragment;
 import Model.donations;
 import dataBase.DatabaseHelper;
 
-public class addDonationActivity extends Activity {
+public class addDonationActivity extends AppCompatActivity {
     int PICK_IMAGE_REQUEST = 100;
     EditText itemName,ItemDescription,streets,apartNum,autoCompleteLocation;
     Spinner cities;
@@ -211,9 +213,16 @@ public class addDonationActivity extends Activity {
                                             db.collection("Donations").document(userId).set(formData).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
-                                                    sqlDatabase.insertDonationData(formData);
-                                                    Intent intent = new Intent(addDonationActivity.this, ProfileActivity.class);
-                                                    startActivity(intent);
+                                                    notifications noti = new notifications(userId,"you have created a donation post for the item: "+ itemName.getText().toString());
+                                                    db.collection("Notifications").add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
+                                                            sqlDatabase.insertNotificationData(noti);
+                                                            Intent intent = new Intent(addDonationActivity.this, EditPersonalDetails.class);
+                                                            startActivity(intent);
+
+                                                        }
+                                                    });
                                                 }
                                             });
                                         }
@@ -309,8 +318,13 @@ public class addDonationActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemID = item.getItemId();
+        DatabaseHelper helper = new DatabaseHelper(this);
         switch(item.getItemId()) {
             case R.id.notificationIcon:
+                List<notifications> notificationsList = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+                NotificationDialogFragment dialogFragment = new NotificationDialogFragment(notificationsList);
+                dialogFragment.show(getSupportFragmentManager(), "NotificationDialogFragment");
+
                 return true;
             case R.id.chatIcon:
                 Intent i = new Intent(this, chatMenuActivity.class);
@@ -318,6 +332,19 @@ public class addDonationActivity extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        DatabaseHelper helper = new DatabaseHelper(this);
+        List<notifications> notifications = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+        if(!notifications.isEmpty())
+        {
+            MenuItem item = menu.findItem(R.id.notificationIcon);
+            item.setIcon(R.drawable.notification_icon_full);
+
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
 }

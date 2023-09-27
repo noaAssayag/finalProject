@@ -21,12 +21,14 @@ import android.widget.TextView;
 
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Fragment.AlertDialogFragmentViewDonations;
 import Fragment.AletListener;
+import Fragment.NotificationDialogFragment;
 import Model.donations;
 import donations.donationAdapter;
 import dataBase.DatabaseHelper;
@@ -157,8 +159,13 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemID = item.getItemId();
+        DatabaseHelper helper = new DatabaseHelper(this);
         switch(item.getItemId()) {
             case R.id.notificationIcon:
+                List<notifications> notificationsList = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+                NotificationDialogFragment dialogFragment = new NotificationDialogFragment(notificationsList);
+                dialogFragment.show(getSupportFragmentManager(), "NotificationDialogFragment");
+
                 return true;
             case R.id.chatIcon:
                 Intent i = new Intent(this, chatMenuActivity.class);
@@ -166,6 +173,19 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        DatabaseHelper helper = new DatabaseHelper(this);
+        List<notifications> notifications = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+        if(!notifications.isEmpty())
+        {
+            MenuItem item = menu.findItem(R.id.notificationIcon);
+            item.setIcon(R.drawable.notification_icon_full);
+
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
 

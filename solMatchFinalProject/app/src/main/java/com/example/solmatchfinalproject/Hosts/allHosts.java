@@ -22,10 +22,12 @@ import com.example.solmatchfinalproject.BottomNavigationHandler;
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.R;
+import com.example.solmatchfinalproject.notifications;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +46,7 @@ import java.util.Locale;
 import Fragment.AlertDialogFragmentViewDonations;
 import Fragment.AlertDialogFragmentViewHost;
 import Fragment.MyAlertDialogFragmentListenerView;
+import Fragment.NotificationDialogFragment;
 import Model.Host;
 import dataBase.DatabaseHelper;
 
@@ -196,8 +199,13 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemID = item.getItemId();
+        DatabaseHelper helper = new DatabaseHelper(this);
         switch(item.getItemId()) {
             case R.id.notificationIcon:
+                List<notifications> notificationsList = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+                NotificationDialogFragment dialogFragment = new NotificationDialogFragment(notificationsList);
+                dialogFragment.show(getSupportFragmentManager(), "NotificationDialogFragment");
+
                 return true;
             case R.id.chatIcon:
                 Intent i = new Intent(this, chatMenuActivity.class);
@@ -207,6 +215,18 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        DatabaseHelper helper = new DatabaseHelper(this);
+        List<notifications> notifications = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
+        if(!notifications.isEmpty())
+        {
+            MenuItem item = menu.findItem(R.id.notificationIcon);
+            item.setIcon(R.drawable.notification_icon_full);
+
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 
 }
 

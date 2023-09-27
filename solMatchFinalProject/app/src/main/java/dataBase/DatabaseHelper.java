@@ -3,16 +3,19 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.solmatchfinalproject.notifications;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -26,8 +29,14 @@ import Model.UserStorageData;
 import Model.donations;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "YourDatabaseName";
-    private static final int DATABASE_VERSION = 15;
+    private static final String DATABASE_NAME = "YourDatabaseNamev17";
+    private static final int DATABASE_VERSION = 17;
+
+    // notification table
+
+    private static final String NOTIFICATION_TABLE_NAME = "notification";
+    private static final String NOTIFICATION_COLUMN_ID = "UID";
+    private static final String NOTIFICATION_COLUMN_message = "message";
 
     // User table
     private static final String USER_TABLE_NAME = "user";
@@ -84,6 +93,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL("CREATE TABLE " + NOTIFICATION_TABLE_NAME + " (" +
+                NOTIFICATION_COLUMN_ID + " TEXT, " +
+                NOTIFICATION_COLUMN_message + " TEXT, " +
+                "PRIMARY KEY (" + NOTIFICATION_COLUMN_ID + ", " + NOTIFICATION_COLUMN_message + "))");
+
         // Create user table
         db.execSQL("CREATE TABLE " + USER_TABLE_NAME + "(" +
                 USER_COLUMN_ID + " TEXT PRIMARY KEY," +
@@ -143,6 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DONATIONS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + HOSTS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PROFESSIONAL_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + NOTIFICATION_TABLE_NAME);
         onCreate(db);
     }
 
@@ -160,7 +176,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(USER_TABLE_NAME, null, contentValues);
         return result != -1;
     }
-
+    public boolean insertNotificationData(notifications notification) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NOTIFICATION_COLUMN_ID, notification.getId());
+        contentValues.put(NOTIFICATION_COLUMN_message, notification.getMessage());
+        long result = db.insert(NOTIFICATION_TABLE_NAME, null, contentValues);
+        return result != -1;
+    }
     // Donations table operations
     public boolean insertDonationData(donations donation) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -223,6 +246,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     {
 
     }
+    @SuppressLint("Range")
+    public List<notifications> getAllNotifications() {
+        List<notifications> notificationsList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + NOTIFICATION_TABLE_NAME, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String id = cursor.getString(cursor.getColumnIndexOrThrow(NOTIFICATION_COLUMN_ID));
+                String message = cursor.getString(cursor.getColumnIndexOrThrow(NOTIFICATION_COLUMN_message));
+                notifications notificationItem = new notifications(id, message);
+                notificationsList.add(notificationItem);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return notificationsList;
+    }
+
     @SuppressLint("Range")
     public List<UserStorageData> getAllUsers() {
         List<UserStorageData> users = new ArrayList<>();
@@ -360,6 +402,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return false;
     }
+    public void compareAndUpdateNotifications(List<notifications> firebaseNotifications) {
+        List<notifications> sqliteNotifications = getAllNotifications();
+
+        for (notifications firebaseNotification : firebaseNotifications) {
+            boolean notificationExists = false;
+            for (notifications sqliteNotification : sqliteNotifications) {
+                if (firebaseNotification.getId().equals(sqliteNotification.getId())) {
+                    notificationExists = true;
+                    // Compare other fields here
+                    if (!firebaseNotification.getMessage().equals(sqliteNotification.getMessage())) {
+                        updateNotification(firebaseNotification);
+                    }
+                    break;
+                }
+            }
+
+            if (!notificationExists) {
+                insertNotificationData(firebaseNotification);
+            }
+        }
+    }
+
+    public boolean updateNotification(notifications notification) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NOTIFICATION_COLUMN_ID, notification.getId());
+        contentValues.put(NOTIFICATION_COLUMN_message, notification.getMessage());
+
+        // Update the notification based on both ID and message
+        int updatedRows = db.update(NOTIFICATION_TABLE_NAME, contentValues,
+                NOTIFICATION_COLUMN_ID + " = ? AND " + NOTIFICATION_COLUMN_message + " = ?",
+                new String[]{notification.getId(), notification.getMessage()});
+
+        return updatedRows > 0;
+    }
+
+
+
     public void compareAndUpdateHosts(List<Host> firebaseHosts) {
         List<Host> sqliteHosts = getAllHosts();
 
@@ -381,6 +462,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
     }
+
 
     public boolean updateHost(Host host) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -466,6 +548,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return false;
     }
+
+    public List<notifications> getNotificationsByUserID(String UID) {
+        List<notifications> notificationList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query the database for all notifications related to the given UID
+        Cursor cursor = db.query(NOTIFICATION_TABLE_NAME, null, NOTIFICATION_COLUMN_ID + " = ?", new String[]{UID}, null, null, null);
+
+        // Iterate through the results and add them to the list
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                notifications notification = new notifications(
+                        cursor.getString(cursor.getColumnIndexOrThrow(NOTIFICATION_COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(NOTIFICATION_COLUMN_message))
+                );
+                notificationList.add(notification);
+            }
+            cursor.close();
+        }
+
+        return notificationList;
+    }
+
     public UserStorageData getUserByUID(String UID) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(USER_TABLE_NAME, null, USER_COLUMN_ID + " = ?", new String[]{UID}, null, null, null);
@@ -522,6 +627,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
 
             });
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeNotification(notifications notificationToDelete) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Delete the notification based on both ID and message
+        int deletedRows = db.delete(NOTIFICATION_TABLE_NAME,
+                NOTIFICATION_COLUMN_ID + " = ? AND " + NOTIFICATION_COLUMN_message + " = ?",
+                new String[]{notificationToDelete.getId(), notificationToDelete.getMessage()});
+
+        if (deletedRows > 0) {
+            // If you want to also delete from Firestore, you can do so here.
+            // Note: You might need to adjust how you identify the document in Firestore if it's based on both ID and message.
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            firestore.collection("Notifications").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    for (QueryDocumentSnapshot snapshot: queryDocumentSnapshots) {
+                        notifications notification = snapshot.toObject(com.example.solmatchfinalproject.notifications.class);
+                        if(notificationToDelete.getMessage().equals(notification.getMessage()) && notificationToDelete.getId().equals(notification.getId())) {
+                            snapshot.getReference().delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Document successfully deleted
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle the failure
+                                }
+                            });
+                            break;  // Exit the loop once you've found and attempted to delete the matching document
+                        }
+                    }
+                }
+            });
+
             return true;
         }
         return false;
