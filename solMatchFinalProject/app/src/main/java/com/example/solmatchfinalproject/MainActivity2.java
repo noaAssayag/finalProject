@@ -21,12 +21,12 @@ public class MainActivity2 extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(MainActivity2.this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,
                 R.string.close_nav);
