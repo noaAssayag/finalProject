@@ -85,6 +85,8 @@
         <item>Soldier</item>
         <item>Professional</item>
     </string-array>
+        <string name="open_nav">Open Navigation Drawer</string>
+        <string name="close_nav">Close Navigation Drawer</string>
     <string name="facebook_app_id">162580503315220</string>
     <string name="facebook_client_token">8d9b490db2f6a60a1e9b73ee7eb01c6c</string>
     <string name="default_notification_channel_id">default_solmatch</string>

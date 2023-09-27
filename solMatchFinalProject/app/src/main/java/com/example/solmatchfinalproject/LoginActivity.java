@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                             });
                                                                             if (!userSignedIn.getInfo().getDescription().isEmpty() || !userSignedIn.getInfo().getHobbies().isEmpty()) {
                                                                                 Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_SHORT).show();
-                                                                                Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
+                                                                                Intent intent = new Intent(LoginActivity.this, MainActivity2.class);
                                                                                 intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                                                                 startActivity(intent);
                                                                             } else {
