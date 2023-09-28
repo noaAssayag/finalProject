@@ -115,5 +115,7 @@
     <color name="colorBackground">#e8e8e8</color>
     <color name="colorHomeCellGrey">#48545c</color>
     <color name="colorTabIndicator">#00b3e6</color>
+    <color name="bgCornerButton">#485571</color>
+
 
 </resources>

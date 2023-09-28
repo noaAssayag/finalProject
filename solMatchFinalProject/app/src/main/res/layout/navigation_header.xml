@@ -13,24 +13,21 @@
         android:id="@+id/imgProfile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:layout_centerVertical="true"
-
         android:src="@drawable/ic_dummy_user"/>
 
     <TextView
         android:id="@+id/fullName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
-        android:layout_marginStart="10dp"
         android:text="@string/name"
         android:textColor="@color/white"
         android:textStyle="bold"
+        android:layout_marginTop="50dp"
         android:layout_toRightOf="@+id/imgProfile"
-       android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_alignBaseline="@+id/imgProfile"
+
         />
 
     <TextView
@@ -40,7 +37,6 @@
         android:text="@string/email"
         android:textColor="@color/white"
         android:textSize="14sp"
-        android:layout_marginStart="10dp"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="5dp"
          android:layout_below="@+id/fullName"

@@ -17,9 +17,9 @@
             android:icon="@drawable/baseline_add_circle_outline_24"
             android:title="@string/Add" />
         <item
-            android:id="@+id/bt_history"
-            android:icon="@drawable/ic_service_history"
-            android:title="@string/menu_history" />
+            android:id="@+id/bt_Profile"
+            android:icon="@drawable/outline_person_24"
+            android:title="@string/profile" />
     </group>
 
     <item android:title="Communicate">

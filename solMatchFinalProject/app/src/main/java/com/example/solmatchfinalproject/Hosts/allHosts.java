@@ -18,9 +18,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.solmatchfinalproject.All_donation_activity;
 import com.example.solmatchfinalproject.BottomNavigationHandler;
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.example.solmatchfinalproject.EditPersonalDetails;
+import com.example.solmatchfinalproject.Forms;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.notifications;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
@@ -94,7 +96,17 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         ActionBar ab=getSupportActionBar();
         ab.setTitle(R.string.hostTitle);
         ab.setDisplayShowHomeEnabled(true);
-
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backArrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(allHosts.this, Forms.class);
+                        startActivity(intent);            }
+                });
+            }
+        });
         filterByLoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

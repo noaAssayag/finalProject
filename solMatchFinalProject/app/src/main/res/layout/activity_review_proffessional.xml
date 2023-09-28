@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient"
+    tools:context=".ReviewProffessionalActivity">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_bike"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/bg_cvimg_radius"
+        android:src="@drawable/proffesional"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.26" />
+
+    <ImageView
+        android:id="@+id/iv_update_bike"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:padding="4dp"
+        android:src="@drawable/bike_plus_img"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_bike"
+        app:layout_constraintEnd_toEndOf="@+id/iv_bike"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/iv_bike"
+        app:layout_constraintTop_toTopOf="@+id/iv_bike"
+        app:layout_constraintVertical_bias="0.888" />
+<RatingBar
+    android:id="@+id/rating_bar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:stepSize="0.5"
+    android:numStars="5"
+    android:layout_marginTop="16dp"
+    app:layout_constraintTop_toBottomOf="@+id/iv_update_bike"
+    app:layout_constraintStart_toEndOf="@+id/gl_start"
+    app:layout_constraintEnd_toEndOf="@+id/gl_end"
+   />
+
+
+    <EditText
+        android:id="@+id/your_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_button_radius"
+        android:backgroundTint="@color/white"
+        android:hint="@string/your_name_string"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:padding="16dp"
+        android:inputType="text"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        app:layout_constraintTop_toBottomOf="@+id/rating_bar"
+        app:layout_constraintStart_toEndOf="@+id/gl_start"
+        app:layout_constraintEnd_toEndOf="@+id/gl_end" />
+
+    <EditText
+        android:id="@+id/et_comments"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_button_radius"
+        android:backgroundTint="@color/white"
+        android:hint="Comments : "
+        android:padding="16dp"
+        android:gravity="start"
+        android:inputType="text"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/your_name"
+        app:layout_constraintStart_toEndOf="@+id/gl_start"
+        app:layout_constraintEnd_toEndOf="@+id/gl_end" />
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/gl_end"
+        app:layout_constraintStart_toStartOf="@+id/gl_start"
+        app:layout_constraintTop_toBottomOf="@+id/et_comments">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_radius"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="13dp"
+            app:backgroundTint="#ffffff" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13dp"
+            android:background="@drawable/bg_button_radius"
+            app:backgroundTint="@color/colorBtSignIn" />
+
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

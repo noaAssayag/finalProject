@@ -54,7 +54,7 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
         searchBtn = findViewById(R.id.searchbtn);
         recyclerViewDon = findViewById(R.id.recyclerViewDon);
         categories = findViewById(R.id.catagorySpinner);
-
+        backArrow=findViewById(R.id.backArrow);
         sqlDatabase = new DatabaseHelper(this);
         donationList = sqlDatabase.getAllDonations();
 
@@ -68,6 +68,17 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
         ab.setTitle(R.string.donationPage);
         ab.setDisplayShowHomeEnabled(true);
 
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backArrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(All_donation_activity.this, Forms.class);
+                        startActivity(intent);            }
+                });
+            }
+        });
         categories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

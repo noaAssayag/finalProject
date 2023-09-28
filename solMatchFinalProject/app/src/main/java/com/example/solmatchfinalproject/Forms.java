@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.solmatchfinalproject.Hosts.AddHost;
 import com.example.solmatchfinalproject.Hosts.allHosts;
@@ -22,6 +23,7 @@ public class Forms extends AppCompatActivity {
     private CardView professionalCardView;
     private CardView hostCardView;
     private CardView donationCardView;
+    private TextView textProf, textHost, textDon;
     FirebaseAuth mAuth;
     UserStorageData user;
     FirebaseFirestore firestore;
@@ -37,10 +39,19 @@ public class Forms extends AppCompatActivity {
         professionalCardView = findViewById(R.id.cardProf);
         hostCardView = findViewById(R.id.cardHost);
         donationCardView = findViewById(R.id.cardDon);
-        mAuth=FirebaseAuth.getInstance();
-        firestore=FirebaseFirestore.getInstance();
-         search = getIntent().getBooleanExtra("Search", false);
-        if(!search) {
+        textProf = findViewById(R.id.textProf);
+        textHost = findViewById(R.id.texthost);
+        textDon = findViewById(R.id.textDon);
+        mAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+        search = getIntent().getBooleanExtra("Search", false);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Forms.this, MainActivity2.class);
+                startActivity(intent);            }
+        });
+        if (!search) {
             firestore.collection("Users").document(mAuth.getUid()).get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
@@ -56,6 +67,7 @@ public class Forms extends AppCompatActivity {
                             }
                         }
                     });
+
 
             professionalCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -78,8 +90,10 @@ public class Forms extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-        }
-        else{
+        } else {
+            textProf.setVisibility(View.GONE);
+            textHost.setVisibility(View.GONE);
+            textDon.setVisibility(View.GONE);
             professionalCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

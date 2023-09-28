@@ -305,5 +305,6 @@
     <string name="professionalForm">fill professional form</string>
     <string name="hostForm">fill host form</string>
     <string name="donationForm">fill donation form</string>
+    <string name="titleHome">Welcome to SolMatch!\nBy clicking on the left menu you can find all the actions in the application.</string>
 
 </resources>

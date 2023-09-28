@@ -48,6 +48,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
     Spinner filterByLoc;
     Button btnFilter;
     RecyclerView recList;
+    ImageView backArrow;
     List<Professional> allProfessionalList = new ArrayList<>();
 
     DatabaseHelper sqlDatabase;
@@ -62,6 +63,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
         filterByCategory = (Spinner) findViewById(R.id.spinnerFilterByCategory);
         filterByLoc = (Spinner) findViewById(R.id.spinnerFilterByLocation);
         btnFilter = (Button) findViewById(R.id.searchbtn);
+        backArrow=findViewById(R.id.backArrow);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recList.setLayoutManager(llm);
@@ -74,32 +76,17 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
         ActionBar ab=getSupportActionBar();
         ab.setTitle(R.string.profTitle);
         ab.setDisplayShowHomeEnabled(true);
-//        menu = findViewById(R.id.menu);
-//        menu.setOnItemReselectedListener(item -> {
-//            switch (item.getItemId()) {
-//                case R.id.myHome: {
-//                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-//                    overridePendingTransition(0, 0);
-//                    break;
-//                }
-//                case R.id.chatMenu: {
-//                    startActivity(new Intent(getApplicationContext(), chatMenuActivity.class));
-//                    overridePendingTransition(0, 0);
-//                    break;
-//                }
-//                case R.id.search: {
-//                    startActivity(new Intent(getApplicationContext(), searchNavigationMenue.class));
-//                    overridePendingTransition(0, 0);
-//                    break;
-//                }
-//                case R.id.logOut: {
-//                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-//                    overridePendingTransition(0, 0);
-//                    break;
-//                }
-//            }
-//        });
-
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backArrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(AllProfessional.this, Forms.class);
+                        startActivity(intent);            }
+                });
+            }
+        });
         btnFilter.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
