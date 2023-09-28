@@ -14,4 +14,9 @@
 
         app:showAsAction="ifRoom"
         android:title="@string/startChat" />
+    <item
+        android:id="@+id/profileIcon"
+        android:icon="@drawable/anonymousman"
+        app:showAsAction="always"
+        android:title="@string/profile"/>
 </menu>

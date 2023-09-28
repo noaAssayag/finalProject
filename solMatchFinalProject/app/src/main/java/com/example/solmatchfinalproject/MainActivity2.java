@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -47,7 +48,6 @@ import java.util.List;
 import Model.UserStorageData;
 
 public class MainActivity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
     private DrawerLayout drawerLayout;
     FirebaseAuth mAuth=FirebaseAuth.getInstance();
     FirebaseFirestore firestore=FirebaseFirestore.getInstance();
@@ -63,10 +63,11 @@ public class MainActivity2 extends AppCompatActivity implements NavigationView.O
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        Menu menu=navigationView.getMenu();
-        MenuItem imgProf=menu.findItem(R.id.imgProfile);
-        MenuItem userName=menu.findItem(R.id.fullName);
-        MenuItem userEmail=menu.findItem(R.id.emailAddress);
+        View headerView = navigationView.getHeaderView(0);
+        ImageView imgProf = headerView.findViewById(R.id.imgProfile);
+        TextView userName = headerView.findViewById(R.id.fullName);
+        TextView userEmail = headerView.findViewById(R.id.emailAddress);
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,
                 R.string.close_nav);
@@ -79,8 +80,12 @@ public class MainActivity2 extends AppCompatActivity implements NavigationView.O
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
                             user = documentSnapshot.toObject(UserStorageData.class);
-                            userName.setTitle(user.getUserName());
-                            userEmail.setTitle(user.getEmail());
+                                if (userName != null) {
+                                    userName.setText(user.getUserName());
+                                }
+                                if (userEmail != null) {
+                                    userEmail.setText(user.getEmail());
+                                }
                             if (documentSnapshot.contains("image") && documentSnapshot.getString("image") != null) {
                                 Glide.with(getApplicationContext())
                                         .load(documentSnapshot.getString("image"))

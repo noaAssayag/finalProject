@@ -15,6 +15,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.solmatchfinalproject.BottomNavigationHandler;
+import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.notifications;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -142,6 +143,11 @@ public class chatMenuActivity extends AppCompatActivity {
             case R.id.chatIcon:
                 Intent i = new Intent(this, chatMenuActivity.class);
                 startActivity(i);
+                return true;
+
+            case R.id.profileIcon:
+                Intent iProfile= new Intent(this, EditPersonalDetails.class);
+                startActivity(iProfile);
                 return true;
         }
         return super.onOptionsItemSelected(item);

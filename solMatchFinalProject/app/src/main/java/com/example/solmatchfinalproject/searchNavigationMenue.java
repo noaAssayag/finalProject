@@ -94,6 +94,11 @@ public class searchNavigationMenue extends AppCompatActivity {
                 Intent i = new Intent(this, chatMenuActivity.class);
                 startActivity(i);
                 return true;
+
+            case R.id.profileIcon:
+                Intent iProfile= new Intent(this, EditPersonalDetails.class);
+                startActivity(iProfile);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
