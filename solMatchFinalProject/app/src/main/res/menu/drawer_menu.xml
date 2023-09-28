@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_home"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/bt_search"
+            android:icon="@drawable/search_icon"
+            android:title="@string/searchText" />
+        <item
             android:id="@+id/addEvent"
             android:icon="@drawable/baseline_add_circle_outline_24"
             android:title="@string/Add" />

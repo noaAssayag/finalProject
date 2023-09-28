@@ -85,8 +85,8 @@
         <item>Soldier</item>
         <item>Professional</item>
     </string-array>
-        <string name="open_nav">Open Navigation Drawer</string>
-        <string name="close_nav">Close Navigation Drawer</string>
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
     <string name="facebook_app_id">162580503315220</string>
     <string name="facebook_client_token">8d9b490db2f6a60a1e9b73ee7eb01c6c</string>
     <string name="default_notification_channel_id">default_solmatch</string>
@@ -241,6 +241,8 @@
     <string name="upload_image">upload</string>
     <string name="dialog_message">are you sure you want to add this user to be hosted?</string>
     <string name="dialog_title">Confirm</string>
+    <string name="dialog_messageLogOut">Are you sure you want to LogOut??</string>
+    <string name="dialog_titleLogOut">LogOut</string>
     <string name="ok">ok</string>
     <string name="cancel">cancel</string>
     <string name="yes">yes</string>
@@ -298,5 +300,10 @@
     <string name="profileTitle">profile</string>
     <string name="searchTitle">search</string>
     <string name="autoLocationMessage">if the location above has text you cant enter location manually</string>
+    <string name="service_Professinal">Professional Form</string>
+    <string name="forms">Forms:\n</string>
+    <string name="professionalForm">fill professional form</string>
+    <string name="hostForm">fill host form</string>
+    <string name="donationForm">fill donation form</string>
 
 </resources>

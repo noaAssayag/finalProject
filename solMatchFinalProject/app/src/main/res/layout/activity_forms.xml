@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".Forms">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@drawable/bg_gradient"
+        android:elevation="10dp">
+
+        <ImageView
+            android:id="@+id/backArrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp"
+            android:src="@drawable/view_back_rtl"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:gravity="start|center"
+            android:text="@string/forms"
+            android:textAlignment="viewStart"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+          >
+                <LinearLayout
+                    android:id="@+id/professionalForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardDon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="15dp"
+                        app:cardCornerRadius="1dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/doationImg"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="end"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:tint="@color/black"
+                                android:visibility="gone" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgDon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="200dp"
+                                android:layout_gravity="center"
+                                android:background="@color/white"
+                                android:padding="10dp"
+                                android:src="@drawable/donation"
+                                app:civ_border_color="@color/colorBgSideView"
+                                app:civ_border_width="2dp"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="@string/donationForm"
+                                android:textColor="@color/colorBgSideView"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardHost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="15dp"
+                        app:cardCornerRadius="1dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/imgAfterComments"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="end"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:tint="@color/black"
+                                android:visibility="gone" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgAfterService"
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:layout_gravity="center"
+                                android:background="@color/white"
+                                android:padding="10dp"
+                                android:src="@drawable/host"
+                                app:civ_border_color="@color/colorBgSideView"
+                                app:civ_border_width="2dp"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="@string/hostForm"
+                                android:textColor="@color/colorBgSideView"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/lblAfterService"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:gravity="center"
+                                android:textColor="@color/user_name"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardProf"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        app:cardCornerRadius="1dp"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/professionalImg"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="end"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginEnd="20dp"
+                                android:tint="@color/black"
+                                android:visibility="gone" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imgProfe"
+                                android:layout_width="wrap_content"
+                                android:layout_height="200dp"
+                                android:layout_gravity="center"
+                                android:background="@color/white"
+                                android:padding="10dp"
+                                android:src="@drawable/proffesional"
+                                app:civ_border_color="@color/colorBgSideView"
+                                app:civ_border_width="2dp"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center"
+                                android:text="@string/professionalForm"
+                                android:textColor="@color/colorBgSideView"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+        </FrameLayout>
+    </ScrollView>
+</LinearLayout>

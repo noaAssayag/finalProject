@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="196dp"
+    android:layout_height="170dp"
     android:gravity="bottom"
     android:padding="16dp"
     android:background="@color/colorBgHeaderView"
@@ -13,8 +13,8 @@
         android:id="@+id/imgProfile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="24dp"
         android:layout_marginBottom="32dp"
+        android:layout_marginTop="40dp"
         android:layout_centerVertical="true"
 
         android:src="@drawable/ic_dummy_user"/>
@@ -34,6 +34,7 @@
         />
 
     <TextView
+        android:id="@+id/emailAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/email"
