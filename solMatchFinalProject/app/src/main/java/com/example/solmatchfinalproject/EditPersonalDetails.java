@@ -61,6 +61,8 @@ import java.util.List;
 import Fragment.AlertDialogFragmentViewHost;
 import Fragment.NotificationDialogFragment;
 import Model.Host;
+import Model.Professional;
+import Model.Review;
 import Model.UserStorageData;
 import Model.donations;
 import dataBase.DatabaseHelper;
@@ -195,8 +197,18 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
 
                             }
                             case "Professional": {
+                                DatabaseHelper databaseHelper=new DatabaseHelper(EditPersonalDetails.this);
+                                List<Professional> list=databaseHelper.getAllProfessionals();
+                                for(Professional professional:list)
+                                {
+                                    if(user.getUID().equals(professional.getUID()))
+                                    {
+                                        List<Review> reviews=professional.getReviews();
+                                        ReviewAdapter adapter= new ReviewAdapter(reviews,EditPersonalDetails.this);
+                                        recReviews.setAdapter(adapter);
+                                    }
+                                }
 
-                                //todo get all reviews
                             }
                         }
                     }
