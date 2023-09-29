@@ -111,10 +111,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "PRIMARY KEY (" + NOTIFICATION_COLUMN_ID + ", " + NOTIFICATION_COLUMN_message + "))");
 
         db.execSQL("CREATE TABLE " + PROFESSIONALREVIEW_TABLE_NAME + " (" +
-                PROFESSIONALREVIEW_COLUMN_ID + " TEXT PRIMARY KEY, " +
+                PROFESSIONALREVIEW_COLUMN_ID + " TEXT, " +
                 PROFESSIONALREVIEW_COLUMN_REVIEWERNAME + " TEXT, " +
                 PROFESSIONALREVIEW_COLUMN_review + " TEXT, " +
-                PROFESSIONALREVIEW_COLUMN_RATING + " REAL)");
+                PROFESSIONALREVIEW_COLUMN_RATING + " REAL, " +
+                "PRIMARY KEY (" + PROFESSIONALREVIEW_COLUMN_ID + ", " + PROFESSIONALREVIEW_COLUMN_REVIEWERNAME + "))");
+
 
 
 
@@ -513,6 +515,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
     public void compareAndUpdateProfessionals(List<Professional> firebaseProfessionals) {
+        if(firebaseProfessionals == null)
+        {
+            return;
+        }
         List<Professional> sqliteProfessionals = getAllProfessionals();
 
         for (Professional firebaseProfessional : firebaseProfessionals) {
