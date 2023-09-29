@@ -63,7 +63,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import Fragment.AlertDialogFragmentViewDonations;
 import Fragment.AlertDialogFragmentViewHost;
+import Fragment.AlertListenerProf;
+import Fragment.AletListener;
+import Fragment.MyAlertDialogFragmentListenerView;
 import Fragment.NotificationDialogFragment;
 import Model.Host;
 import Model.Professional;
@@ -74,7 +78,7 @@ import dataBase.DatabaseHelper;
 import donations.donationAdapter;
 
 
-public class EditPersonalDetails extends AppCompatActivity implements RecycleViewInterface, OnImageSelectedListener,NavigationView.OnNavigationItemSelectedListener{
+public class EditPersonalDetails extends AppCompatActivity implements RecycleViewInterface, OnImageSelectedListener,NavigationView.OnNavigationItemSelectedListener, MyAlertDialogFragmentListenerView, AletListener, AlertListenerProf {
     private static final int PICK_IMAGE_REQUEST = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 11;
     // todo add bell icon with notifications
@@ -399,8 +403,6 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         // Add the buttons
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
-                Toast.makeText(getApplicationContext(), "User clicked OK button", Toast.LENGTH_SHORT).show();
                 switch (user.getType().toString()) {
                     case "Soldier": {
                         // Check if the host has residents and the current user is one of them
@@ -492,7 +494,14 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
 
     @Override
     public void onDonationClick(int position,View v) {
-
+        sqlDatabase = new DatabaseHelper(this);
+        List<donations> allDonList = sqlDatabase.getAllDonations();
+        donations newDon = allDonList.get(position);
+        AlertDialogFragmentViewDonations frag = new AlertDialogFragmentViewDonations();
+        Bundle b = new Bundle();
+        b.putSerializable("Donation", newDon);
+        frag.setArguments(b);
+        frag.show(getFragmentManager(), "dialog");
     }
 
     @Override
@@ -673,4 +682,18 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         }
     }
 
+    @Override
+    public void onDialogPositiveClick(AlertDialogFragmentViewHost dialog) {
+
+    }
+
+    @Override
+    public void onDialogPositiveClick(AlertDialogFragmentViewProf dialog) {
+
+    }
+
+    @Override
+    public void onDialogPositiveClick(AlertDialogFragmentViewDonations dialog) {
+
+    }
 }
