@@ -73,13 +73,6 @@
         <activity
             android:name=".Hosts.AddHost"
             android:exported="false" />
-        <activity
-            android:name=".profileActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity android:name=".personalQuestionsActivity" />
         <activity
             android:name=".ChatClasses.chatMenuActivity"
@@ -94,7 +87,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".searchNavigationMenue" />
         <activity
             android:name=".addDonationActivity"
             android:exported="false" />

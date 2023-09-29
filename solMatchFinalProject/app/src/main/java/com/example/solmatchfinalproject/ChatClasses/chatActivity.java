@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,20 +38,15 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.solmatchfinalproject.AllProfessional;
-import com.example.solmatchfinalproject.BottomNavigationHandler;
 
 import Fragment.NotificationDialogFragment;
 import Model.Host;
 
-import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.Forms;
 import com.example.solmatchfinalproject.LoginActivity;
 import com.example.solmatchfinalproject.R;
-import com.example.solmatchfinalproject.addDonationActivity;
 import com.example.solmatchfinalproject.notifications;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
-import com.example.solmatchfinalproject.searchNavigationMenue;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -117,7 +111,6 @@ public class chatActivity extends AppCompatActivity implements NavigationView.On
 
     DataSnapshot addHostToReference;
 
-    private BottomNavigationHandler navigationHandler;
     List<chatItemInfo> userChats = new ArrayList<chatItemInfo>();
     FirebaseApp app = FirebaseApp.getInstance();
     Intent intent;
@@ -146,9 +139,6 @@ public class chatActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.chat_layout);
         writeMessage = findViewById(R.id.messageEditText);
         sendButt = findViewById(R.id.sendButton);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.menu);
-        navigationHandler = new BottomNavigationHandler(this, getApplicationContext());
-        bottomNavigationView.setOnNavigationItemSelectedListener(navigationHandler);
         messages = findViewById(R.id.chatMessages);
         chatterName = findViewById(R.id.chatterName);
         addHostButt = findViewById(R.id.addHostButt);

@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.R;
-import com.example.solmatchfinalproject.profileActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -82,7 +82,7 @@ public class chatListAdapter extends ArrayAdapter<chatItemInfo> {
                         {
                             if(child.child("userName").getValue().toString().equals(name))
                             {
-                                intent = new Intent(getContext(), profileActivity.class);
+                                intent = new Intent(getContext(), EditPersonalDetails.class);
                                 intent.putExtra("UID", child.child("userName").getValue().toString());
                                 getContext().startActivity(intent);
 

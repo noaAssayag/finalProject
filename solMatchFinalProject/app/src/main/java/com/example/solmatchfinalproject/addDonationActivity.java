@@ -437,24 +437,25 @@ public class addDonationActivity extends AppCompatActivity implements Navigation
         Intent intent;
         switch (item.getItemId()) {
             case R.id.bt_home:
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
-                break;
+                intent = new Intent(addDonationActivity.this, MainActivity2.class);
+                startActivity(intent);
 
             case R.id.addEvent:
                 intent = new Intent(addDonationActivity.this, Forms.class);
-                intent.putExtra("Search",false);
+                intent.putExtra("action","addEvent");
                 startActivity(intent);
 
                 break;
             case R.id.bt_search:
                 intent = new Intent(addDonationActivity.this, Forms.class);
-                intent.putExtra("Search",true);
+                intent.putExtra("action","search");
                 startActivity(intent);
                 break;
 
-            case R.id.bt_history:
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
-
+            case R.id.bt_Profile:
+                intent = new Intent(addDonationActivity.this, EditPersonalDetails.class);
+                intent.putExtra("Search",true);
+                startActivity(intent);
                 break;
 
             case R.id.nav_share:
@@ -521,6 +522,7 @@ public class addDonationActivity extends AppCompatActivity implements Navigation
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public void onBackPressed() {

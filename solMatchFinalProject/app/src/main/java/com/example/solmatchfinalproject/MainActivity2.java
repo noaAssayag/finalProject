@@ -69,8 +69,7 @@ public class MainActivity2 extends AppCompatActivity implements NavigationView.O
         TextView userEmail = headerView.findViewById(R.id.emailAddress);
 
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,
-                R.string.close_nav);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -116,18 +115,18 @@ public class MainActivity2 extends AppCompatActivity implements NavigationView.O
         Intent intent;
         switch (item.getItemId()) {
             case R.id.bt_home:
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
-                break;
+                intent = new Intent(MainActivity2.this, MainActivity2.class);
+                startActivity(intent);
 
             case R.id.addEvent:
-                 intent = new Intent(MainActivity2.this, Forms.class);
-                intent.putExtra("Search",false);
+                intent = new Intent(MainActivity2.this, Forms.class);
+                intent.putExtra("action","addEvent");
                 startActivity(intent);
 
                 break;
             case R.id.bt_search:
-                 intent = new Intent(MainActivity2.this, Forms.class);
-                 intent.putExtra("Search",true);
+                intent = new Intent(MainActivity2.this, Forms.class);
+                intent.putExtra("action","search");
                 startActivity(intent);
                 break;
 
@@ -139,31 +138,40 @@ public class MainActivity2 extends AppCompatActivity implements NavigationView.O
 
             case R.id.nav_share:
                 try {
-                        // Create a new intent with the action ACTION_SEND to share data.
-                        Intent i = new Intent(Intent.ACTION_SEND);
+                    // Create a new intent with the action ACTION_SEND to share data.
+                    Intent i = new Intent(Intent.ACTION_SEND);
 
-                        // Set the type of data to be shared to plain text.
-                        i.setType("text/plain");
+                    // Set the type of data to be shared to plain text.
+                    i.setType("text/plain");
 
-                        // Set the subject of the message (optional).
-                        i.putExtra(Intent.EXTRA_SUBJECT, "My app");
+                    // Set the subject of the message (optional).
+                    i.putExtra(Intent.EXTRA_SUBJECT, "My app name");
 
-                        // Create a message to be shared.
-                        String strShareMessage = "\nLet me recommend you this application\n\n";
+                    // Create a message to be shared.
+                    String strShareMessage = "\nLet me recommend you this application\n\n";
 
-                        // Add a Play Store link to your app using your app's package name.
-                        strShareMessage = strShareMessage + "https://play.google.com/store/apps/details?id=" + getPackageName();
+                    // Add a Play Store link to your app using your app's package name.
+                    strShareMessage = strShareMessage + "https://play.google.com/store/apps/details?id=" + getPackageName();
 
-                        // Set the text message to be shared (includes the Play Store link).
-                        i.putExtra(Intent.EXTRA_TEXT, strShareMessage);
+                    // Create a Uri for an image (screenshot) to be shared.
+                    Uri screenshotUri = Uri.parse("android.resource://packagename/drawable/image_name");
 
-                        // Create a chooser dialog to let the user choose which app to use for sharing.
-                        startActivity(Intent.createChooser(i, "Share via"));
-                    } catch (Exception e) {
-                        // Handle any exceptions that may occur during the sharing process.
-                    }
+                    // Set the type of data to be shared to image/png.
+                    i.setType("image/png");
 
-                    break;
+                    // Attach the image Uri to the intent as an EXTRA_STREAM.
+                    i.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+
+                    // Set the text message to be shared (includes the Play Store link).
+                    i.putExtra(Intent.EXTRA_TEXT, strShareMessage);
+
+                    // Create a chooser dialog to let the user choose which app to use for sharing.
+                    startActivity(Intent.createChooser(i, "Share via"));
+                } catch(Exception e) {
+                    // Handle any exceptions that may occur during the sharing process.
+                }
+
+                break;
 
             case R.id.bt_logout:
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
@@ -172,7 +180,7 @@ public class MainActivity2 extends AppCompatActivity implements NavigationView.O
                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        mAuth.signOut();
+                        FirebaseAuth.getInstance().signOut();
                         Intent intent1=new Intent(MainActivity2.this,LoginActivity.class);
                         startActivity(intent1);
                         finish();

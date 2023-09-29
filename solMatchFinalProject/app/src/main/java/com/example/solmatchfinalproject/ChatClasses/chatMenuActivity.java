@@ -11,8 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,14 +30,10 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.solmatchfinalproject.AllProfessional;
-import com.example.solmatchfinalproject.BottomNavigationHandler;
-import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.Forms;
 import com.example.solmatchfinalproject.LoginActivity;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.notifications;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -67,7 +61,6 @@ public class chatMenuActivity extends AppCompatActivity implements NavigationVie
     String userName = null;
 
     DatabaseHelper sqlDataBase;
-    private BottomNavigationHandler navigationHandler;
 
 
     @Override

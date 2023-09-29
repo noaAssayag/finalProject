@@ -8,366 +8,366 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity"
     tools:openDrawer="start">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context=".EditPersonalDetails">
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@drawable/bg_gradient"
-        android:elevation="10dp">
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:context=".EditPersonalDetails">
 
-    <!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@drawable/bg_gradient"
+            android:elevation="10dp">
+        </LinearLayout>
+
+        <!--
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">-->
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">-->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/nav_header">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:background="@drawable/bg_gradient"
-                    android:orientation="horizontal">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/iv_profile"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="80dp"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_dummy_user" />
-
-                    <ImageView
-                        android:id="@+id/iv_update_pic"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-
-                        android:layout_below="@id/iv_profile"
-                        android:layout_centerHorizontal="true"
-                        android:layout_toRightOf="@id/iv_profile"
-                        android:background="#0B0707"
-                        android:backgroundTint="#170E0E"
-                        android:onClick="showCustomAlertDialog"
-                        android:padding="4dp"
-                        android:src="@drawable/ic_edit" />
-
-
-
-
-
-                </RelativeLayout>
-
-
-            </LinearLayout>
-
+            android:layout_height="wrap_content">
 
             <FrameLayout
-
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="210dp">
+                android:layout_height="match_parent"
+                android:background="@color/nav_header">
 
-                <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:background="@drawable/bg_gradient"
+                        android:orientation="horizontal">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_profile"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="80dp"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_dummy_user" />
+
+                        <ImageView
+                            android:id="@+id/iv_update_pic"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+
+                            android:layout_below="@id/iv_profile"
+                            android:layout_centerHorizontal="true"
+                            android:layout_toRightOf="@id/iv_profile"
+                            android:background="#0B0707"
+                            android:backgroundTint="#170E0E"
+                            android:onClick="showCustomAlertDialog"
+                            android:padding="4dp"
+                            android:src="@drawable/ic_edit" />
+
+
+
+
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+
+                <FrameLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="15dp"
-                    android:elevation="15dp"
-                    card_view:cardCornerRadius="4dp">
+                    android:layout_marginTop="210dp">
 
-
-                    <LinearLayout
+                    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-
-                        <View
-                            android:id="@+id/last_name_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:background="@color/user_name"
-                            android:visibility="gone" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/name"
-                                android:textColor="@color/user_name"
-                                android:textSize="12sp" />
-
-
-                            <EditText
-                                android:id="@+id/et_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:background="@null"
-                                android:enabled="false"
-                                android:hint=""
-                                android:imeOptions="actionDone"
-                                android:inputType="phone"
-                                android:maxLines="1"
-                                android:textColor="@android:color/black"
-                                android:textSize="12sp" />
-
-
-                        </LinearLayout>
-
-                        <View
-                            android:id="@+id/view"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:background="@color/user_name"
-                            android:visibility="gone" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/email"
-                                android:textColor="@color/user_name"
-                                android:textSize="12sp" />
-
-                            <EditText
-                                android:id="@+id/et_email"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:background="@null"
-                                android:enabled="false"
-                                android:hint=""
-                                android:inputType="textEmailAddress"
-                                android:maxLines="1"
-                                android:textColor="@android:color/black"
-                                android:textSize="12sp" />
-
-                        </LinearLayout>
+                        android:layout_gravity="center"
+                        android:layout_margin="15dp"
+                        android:elevation="15dp"
+                        card_view:cardCornerRadius="4dp">
 
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
                             android:orientation="vertical">
 
-                            <TextView
+
+                            <View
+                                android:id="@+id/last_name_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@color/user_name"
+                                android:visibility="gone" />
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/birthdate"
-                                android:textColor="@color/user_name"
-                                android:textSize="12sp" />
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="vertical">
 
-                            <EditText
-                                android:id="@+id/birthDateEditTxt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:background="@null"
-                                android:enabled="false"
-                                android:hint=""
-                                android:inputType="textEmailAddress"
-                                android:maxLines="1"
-                                android:textColor="@android:color/black"
-                                android:textSize="12sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="About"
-                                android:textColor="@color/user_name"
-                                android:textSize="12sp" />
-
-
-                            <EditText
-                                android:id="@+id/attributes"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:background="@null"
-                                android:enabled="false"
-                                android:hint=""
-                                android:inputType="textEmailAddress"
-                                android:maxLines="1"
-                                android:text="@string/profile"
-                                android:textColor="@android:color/black"
-                                android:textSize="12sp" />
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/hostTitle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/hosts"
-                                android:textColor="@color/user_name"
-                                android:textSize="12sp" />
-
-                            <androidx.core.widget.NestedScrollView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:fillViewport="true"
-                                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/hostingPromptRecycler"
+                                <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:padding="5dp" />
+                                    android:text="@string/name"
+                                    android:textColor="@color/user_name"
+                                    android:textSize="12sp" />
 
-                            </androidx.core.widget.NestedScrollView>
 
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/donationtitle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/AllDonations"
-                                android:textColor="@color/user_name"
-                                android:textSize="12sp" />
-
-                            <androidx.core.widget.NestedScrollView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:fillViewport="true"
-                                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/donationsPromptRecycler"
+                                <EditText
+                                    android:id="@+id/et_name"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:padding="5dp" />
+                                    android:layout_marginTop="5dp"
+                                    android:background="@null"
+                                    android:enabled="false"
+                                    android:hint=""
+                                    android:imeOptions="actionDone"
+                                    android:inputType="phone"
+                                    android:maxLines="1"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="12sp" />
 
-                            </androidx.core.widget.NestedScrollView>
 
-                        </LinearLayout>
+                            </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:orientation="vertical">
+                            <View
+                                android:id="@+id/view"
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@color/user_name"
+                                android:visibility="gone" />
 
-                            <TextView
-                                android:id="@+id/reviewTitle"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/review"
-                                android:textColor="@color/user_name"
-                                android:textSize="12sp" />
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="vertical">
 
-                            <androidx.core.widget.NestedScrollView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:fillViewport="true"
-                                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/ReviewRecycler"
+                                <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:padding="5dp" />
+                                    android:text="@string/email"
+                                    android:textColor="@color/user_name"
+                                    android:textSize="12sp" />
 
-                            </androidx.core.widget.NestedScrollView>
+                                <EditText
+                                    android:id="@+id/et_email"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@null"
+                                    android:enabled="false"
+                                    android:hint=""
+                                    android:inputType="textEmailAddress"
+                                    android:maxLines="1"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/birthdate"
+                                    android:textColor="@color/user_name"
+                                    android:textSize="12sp" />
+
+                                <EditText
+                                    android:id="@+id/birthDateEditTxt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@null"
+                                    android:enabled="false"
+                                    android:hint=""
+                                    android:inputType="textEmailAddress"
+                                    android:maxLines="1"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="About"
+                                    android:textColor="@color/user_name"
+                                    android:textSize="12sp" />
+
+
+                                <EditText
+                                    android:id="@+id/attributes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@null"
+                                    android:enabled="false"
+                                    android:hint=""
+                                    android:inputType="textEmailAddress"
+                                    android:maxLines="1"
+                                    android:text="@string/profile"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="12sp" />
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/hostTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/hosts"
+                                    android:textColor="@color/user_name"
+                                    android:textSize="12sp" />
+
+                                <androidx.core.widget.NestedScrollView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fillViewport="true"
+                                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/hostingPromptRecycler"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp" />
+
+                                </androidx.core.widget.NestedScrollView>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/donationtitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/AllDonations"
+                                    android:textColor="@color/user_name"
+                                    android:textSize="12sp" />
+
+                                <androidx.core.widget.NestedScrollView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fillViewport="true"
+                                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/donationsPromptRecycler"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp" />
+
+                                </androidx.core.widget.NestedScrollView>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/reviewTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/review"
+                                    android:textColor="@color/user_name"
+                                    android:textSize="12sp" />
+
+                                <androidx.core.widget.NestedScrollView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:fillViewport="true"
+                                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/ReviewRecycler"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:padding="5dp" />
+
+                                </androidx.core.widget.NestedScrollView>
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
-                    </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
 
 
-                </androidx.cardview.widget.CardView>
+                </FrameLayout>
 
 
             </FrameLayout>
 
-
-        </FrameLayout>
-
-    </ScrollView>
-    <Button
-        android:id="@+id/bt_Edit"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:text="Edit"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-        android:textColor="@android:color/white"
-        app:backgroundTint="@color/colorBtSignIn" />
+        </ScrollView>
+        <Button
+            android:id="@+id/bt_Edit"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:text="Edit"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/colorBtSignIn" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

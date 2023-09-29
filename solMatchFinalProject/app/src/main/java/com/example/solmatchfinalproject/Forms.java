@@ -48,23 +48,14 @@ import dataBase.DatabaseHelper;
 public class Forms extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private CardView professionalCardView;
     private DrawerLayout drawerLayout;
-
-
-
     private CardView hostCardView;
     private CardView donationCardView;
     private TextView textProf, textHost, textDon;
-
     private DatabaseHelper helper;
     FirebaseAuth mAuth;
     UserStorageData user;
     FirebaseFirestore firestore;
-
-
-    boolean search;
-    /*todo change to sqllite*/
-
-
+    String action=" ";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,16 +67,18 @@ public class Forms extends AppCompatActivity implements NavigationView.OnNavigat
         textHost = findViewById(R.id.texthost);
         textDon = findViewById(R.id.textDon);
         helper = new DatabaseHelper(this);
-
         mAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        search = getIntent().getBooleanExtra("Search", false);
-        if (!search) {
+
+        Intent intent=getIntent();
+        action=intent.getStringExtra("action");
+        if (action.toString().equals("addEvent")) {
         user = helper.getUserByUID(mAuth.getUid());
         if (user.getType().equals("Solider")) {
             hostCardView.setVisibility(View.GONE);
             professionalCardView.setVisibility(View.GONE);
-        } else if (user.getType().equals("Host")) {
+        }
+        else if (user.getType().equals("Host")) {
             professionalCardView.setVisibility(View.GONE);
         }
             ActionBar ab = getSupportActionBar();
@@ -148,9 +141,12 @@ public class Forms extends AppCompatActivity implements NavigationView.OnNavigat
                 }
             });
         } else {
-            textProf.setVisibility(View.GONE);
-            textHost.setVisibility(View.GONE);
-            textDon.setVisibility(View.GONE);
+            hostCardView.setVisibility(View.VISIBLE);
+            donationCardView.setVisibility(View.VISIBLE);
+            professionalCardView.setVisibility(View.VISIBLE);
+            textProf.setText("Search Proffessional");
+            textHost.setText("Search host");
+            textDon.setText("Search donation");
             professionalCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -250,7 +246,8 @@ public class Forms extends AppCompatActivity implements NavigationView.OnNavigat
         Intent intent;
         switch (item.getItemId()) {
             case R.id.bt_home:
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+                intent = new Intent(Forms.this, MainActivity2.class);
+                intent.putExtra("Search",false);
                 break;
 
             case R.id.addEvent:
@@ -331,7 +328,6 @@ public class Forms extends AppCompatActivity implements NavigationView.OnNavigat
                 AlertDialog dialog = builder.create();
                 dialog.show();        }
 
-        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 

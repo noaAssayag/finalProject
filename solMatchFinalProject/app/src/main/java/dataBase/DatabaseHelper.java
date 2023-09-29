@@ -31,8 +31,8 @@ import Model.UserStorageData;
 import Model.donations;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "YourDatabaseNamev18";
-    private static final int DATABASE_VERSION = 18;
+    private static final String DATABASE_NAME = "DB";
+    private static final int DATABASE_VERSION = 20;
 
     // notification table
 

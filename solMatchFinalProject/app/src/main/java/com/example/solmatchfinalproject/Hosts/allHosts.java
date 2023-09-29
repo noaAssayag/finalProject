@@ -34,37 +34,20 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.solmatchfinalproject.AllProfessional;
-import com.example.solmatchfinalproject.All_donation_activity;
-import com.example.solmatchfinalproject.BottomNavigationHandler;
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
-import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.Forms;
 import com.example.solmatchfinalproject.LoginActivity;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.notifications;
-import com.example.solmatchfinalproject.profile.ProfileActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import Fragment.AlertDialogFragmentViewDonations;
 import Fragment.AlertDialogFragmentViewHost;
 import Fragment.MyAlertDialogFragmentListenerView;
 import Fragment.NotificationDialogFragment;
@@ -83,7 +66,6 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
     RecyclerView recList;
 
     List<Host> list = new ArrayList<>();
-    private BottomNavigationHandler navigationHandler;
 
     private List<Host> originalHostsList;
 
