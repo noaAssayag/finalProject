@@ -280,6 +280,11 @@ public class ProfileActivity extends AppCompatActivity implements RecycleViewInt
 
     }
 
+    @Override
+    public void AddComments(int position) {
+
+    }
+
     public void presentHostSql(int userType, String Email) {
         List<Host> hosts = sqlDatabase.getAllHosts();
         List<Host> relevantHosts = new ArrayList<>();

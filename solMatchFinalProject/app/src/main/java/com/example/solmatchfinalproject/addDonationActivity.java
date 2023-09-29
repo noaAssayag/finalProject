@@ -204,7 +204,7 @@ public class addDonationActivity extends AppCompatActivity {
                                                 address = cities.getSelectedItem().toString() + ", " + streets.getText().toString() + ", " + apartNum.getText().toString();
                                             }
                                             else{
-                                                address = autoCompleteLocation.getText().toString();
+                                                address = autoCompleteLocation.getText().toString().split(",")[0];
                                             }
                                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                             userId = user.getUid();

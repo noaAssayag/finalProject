@@ -162,7 +162,7 @@ public class AddDocprofessional extends AppCompatActivity {
                         }
                     });
                     if(autoCompleteLocationPro.getText().toString().isEmpty()) {
-                        address = professAddress.getSelectedItem().toString();
+                        address = professAddress.getSelectedItem().toString().split(",")[0];
                     }
                     else{
                         address = autoCompleteLocationPro.getText().toString();

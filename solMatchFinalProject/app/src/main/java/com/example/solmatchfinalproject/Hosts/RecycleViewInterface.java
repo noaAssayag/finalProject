@@ -7,6 +7,7 @@ public interface RecycleViewInterface {
     void deleteItem(int position);
     void onDonationClick(int position, View view);
     void deleteDonation(int position);
+    void AddComments(int position);
 
 
 }

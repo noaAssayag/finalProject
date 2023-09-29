@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import Model.Host;
 import Model.Professional;
+import Model.Review;
 import Model.UserStorageData;
 import dataBase.DatabaseHelper;
 
@@ -71,7 +73,9 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
         private TextView txtCategoryTextView;
         private TextView txtHostAddressTextView;
         private TextView txtAvaTextView;
+        TextView txtReview;
         private ImageButton hostBtnImageButton;
+        private Button addReview;
         private Professional professional;
 
         public profViewHolder(View v,RecycleViewInterface recycleViewInterface) {
@@ -84,8 +88,27 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
             txtCategoryTextView = v.findViewById(R.id.txtCategory);
             txtHostAddressTextView = v.findViewById(R.id.txtHostAddress);
             txtAvaTextView = v.findViewById(R.id.txtAva);
+            txtReview=v.findViewById(R.id.txtReview);
             hostBtnImageButton = v.findViewById(R.id.hostBtn);
+            addReview=v.findViewById(R.id.review);
+            //todo add chat
 
+            addReview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(recycleViewInterface!=null)
+                    {
+                        int position=getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION)
+                        {
+                            recycleViewInterface.AddComments(position);
+                        }
+
+
+                    }
+
+                }
+            });
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -103,6 +126,7 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
             });
         }
         public void setData(Professional professional) {
+            float rate=0;
             this.professional = professional;
             DatabaseHelper helper = new DatabaseHelper(context);
             UserStorageData user = helper.getUserByUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -129,6 +153,17 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
                         }
                     })
                     .into(profImgImageView);
+            if(professional.getReviews()!=null&&!professional.getReviews().isEmpty()) {
+                for (Review review : professional.getReviews()) {
+                    rate += review.getRate();
+                }
+                rate/=(professional.getReviews().size());
+                txtReview.setText("Rating"+rate+"/5 Stars");
+            }
+            else{
+                txtReview.setText("Nobody add Reviews");
+            }
+
         }
     }
 

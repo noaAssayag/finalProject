@@ -161,6 +161,12 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
     public void deleteDonation(int position) {
 
     }
+
+    @Override
+    public void AddComments(int position) {
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

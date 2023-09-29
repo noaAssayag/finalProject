@@ -73,10 +73,10 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
     // todo add bell icon with notifications
     ImageView userImg;
     EditText userName, userEmail, birthDate, attributes;
-    TextView donationTitle, hostTitle;
+    TextView donationTitle, hostTitle,reviewsTitle;
     Button btEdit;
     ImageView changeImage;
-    RecyclerView recHosts, recDonations;
+    RecyclerView recHosts, recDonations,recReviews;
     FirebaseAuth auth;
     FirebaseFirestore firestore;
     String URL;
@@ -100,6 +100,8 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         changeImage = findViewById(R.id.iv_update_pic);
         donationTitle = findViewById(R.id.donationtitle);
         hostTitle = findViewById(R.id.hostTitle);
+        reviewsTitle=findViewById(R.id.reviewTitle);
+        recReviews=findViewById(R.id.ReviewRecycler);
         recHosts = findViewById(R.id.hostingPromptRecycler);
         recDonations = findViewById(R.id.donationsPromptRecycler);
         firestore = FirebaseFirestore.getInstance();
@@ -116,6 +118,11 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         LinearLayoutManager llm2 = new LinearLayoutManager(this);
         llm2.setOrientation(LinearLayoutManager.VERTICAL);
         recDonations.setLayoutManager(llm2);
+
+        LinearLayoutManager llm3 = new LinearLayoutManager(this);
+        llm3.setOrientation(LinearLayoutManager.VERTICAL);
+        recReviews.setLayoutManager(llm3);
+
 
 
         changeImage.setOnClickListener(new View.OnClickListener() {
@@ -167,11 +174,13 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                         }
                         switch (user.getType().toString()) {
                             case "Soldier": {
+                                reviewsTitle.setVisibility(View.GONE);
                                 presentHostSql(0, user.getUID());
                                 donationTitle.setVisibility(View.GONE);
                                 break;
                             }
                             case "Host": {
+                                reviewsTitle.setVisibility(View.GONE);
                                 presentHostSql(1, user.getEmail());
                                 List<donations> allDonations = new ArrayList<>();
                                 allDonations = sqlDatabase.getAllDonations();
@@ -186,8 +195,8 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
 
                             }
                             case "Professional": {
-                                donationTitle.setVisibility(View.GONE);
-                                hostTitle.setVisibility(View.GONE);
+
+                                //todo get all reviews
                             }
                         }
                     }
@@ -440,6 +449,12 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
     public void deleteDonation(int position) {
 
     }
+
+    @Override
+    public void AddComments(int position) {
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

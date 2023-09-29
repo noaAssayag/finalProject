@@ -28,13 +28,14 @@ import com.example.solmatchfinalproject.R;
 
 import Fragment.AlertListenerProf;
 import Model.Professional;
+import Model.donations;
 
 
 public class AlertDialogFragmentViewProf extends DialogFragment {
     TextView description;
     Button btnOk;
     AlertListenerProf mListener;
-    private Professional professional;
+    private Professional professional1;
 
     // Override the Fragment.onAttach() method to instantiate the MyAlertDialogFragmentListenerEdit
     @Override
@@ -52,11 +53,10 @@ public class AlertDialogFragmentViewProf extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle b = getArguments();
         View v = inflater.inflate(R.layout.activity_alert_dialog_fragment_view_prof, null);
-        description=v.findViewById(R.id.descriptionProfessional);
-        btnOk=v.findViewById(R.id.btnOk);
+        description = v.findViewById(R.id.descriptionProfessional);
+        btnOk = v.findViewById(R.id.btnOk);
 
-        if(b!=null)
-        {
+        if (b != null) {
             description.setText(b.getString("Description"));
         }
 
@@ -69,13 +69,12 @@ public class AlertDialogFragmentViewProf extends DialogFragment {
         });
         return v;
     }
+
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
-        if (dialog != null)
-        {
+        if (dialog != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int height = ViewGroup.LayoutParams.WRAP_CONTENT;
             dialog.getWindow().setLayout(width, height);

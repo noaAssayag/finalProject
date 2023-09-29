@@ -1,6 +1,10 @@
 package Model;
 
-public class Professional {
+import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
+
+public class Professional implements Serializable {
 
     String UID;
     String email;
@@ -11,6 +15,7 @@ public class Professional {
     String phoneNum;
     String description;
     String precAvailability;
+    List<Review> reviews;
 
     public Professional(String email, String userNmae, String imageUrl, String category, String address, String phoneNum, String description, String precAvailability,String UID) {
         this.email = email;
@@ -23,6 +28,19 @@ public class Professional {
         this.precAvailability = precAvailability;
         this.UID = UID;
     }
+    public Professional(String email, String userNmae, String imageUrl, String category, String address, String phoneNum, String description, String precAvailability,String UID,List<Review> reviews) {
+        this.email = email;
+        this.userName = userNmae;
+        this.imageUrl = imageUrl;
+        this.category = category;
+        this.address = address;
+        this.phoneNum = phoneNum;
+        this.description = description;
+        this.precAvailability = precAvailability;
+        this.UID = UID;
+        this.reviews=reviews;
+    }
+
 
     public String getUID() {
         return UID;
@@ -99,4 +117,13 @@ public class Professional {
     public void setPrecAvailability(String precAvailability) {
         this.precAvailability = precAvailability;
     }
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+
 }

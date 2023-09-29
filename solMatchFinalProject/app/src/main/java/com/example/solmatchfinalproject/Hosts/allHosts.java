@@ -198,6 +198,11 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
     }
 
     @Override
+    public void AddComments(int position) {
+
+    }
+
+    @Override
     public void onDialogPositiveClick(AlertDialogFragmentViewHost dialog) {
 
     }
