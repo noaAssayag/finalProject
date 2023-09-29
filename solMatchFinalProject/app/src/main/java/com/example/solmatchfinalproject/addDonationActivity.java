@@ -110,6 +110,7 @@ public class addDonationActivity extends AppCompatActivity implements Navigation
         setContentView(R.layout.add_donation_page);
         Places.initialize(getApplicationContext(), "AIzaSyCS00xXyYjpPy7c51Yo9CFgr6Xia1ZMRF8");
         itemName = findViewById(R.id.inputItemName);
+        userId = FirebaseAuth.getInstance().getUid();
         ItemDescription = findViewById(R.id.inputItemDescription);
         cities =(Spinner) findViewById(R.id.hostAddress);
         streets=(EditText)findViewById(R.id.hostStreet);
@@ -247,7 +248,7 @@ public class addDonationActivity extends AppCompatActivity implements Navigation
                                 public void onSuccess(Uri uri) {
                                     URL = uri.toString();
                                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                    db.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    db.collection("Users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                                             String address = "";

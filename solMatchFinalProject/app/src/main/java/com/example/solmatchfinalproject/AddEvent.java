@@ -59,7 +59,7 @@ public class AddEvent extends AppCompatActivity implements NavigationView.OnNavi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forms);
+        setContentView(R.layout.activity_add_event);
         professionalCardView = findViewById(R.id.cardProf);
         hostCardView = findViewById(R.id.cardHost);
         donationCardView = findViewById(R.id.cardDon);

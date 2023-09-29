@@ -223,14 +223,6 @@ public class AddHost extends AppCompatActivity implements NavigationView.OnNavig
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AddHost.this, ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-
         btnAddImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,11 +268,13 @@ public class AddHost extends AppCompatActivity implements NavigationView.OnNavig
                                 {
                                     email = doc.get("email").toString();
                                     userName = doc.get("userName").toString();
-                                    if(!doc.get("image").toString().isEmpty())
-                                    {
-                                        imageURLHost = doc.get("image").toString();
+                                    if(doc.get("image") != null) {
+                                        if (!doc.get("image").toString().isEmpty()) {
+                                            imageURLHost = doc.get("image").toString();
+                                        }
                                     }
                                 }
+
                             }
                         }
                     });
