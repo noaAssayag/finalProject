@@ -1,12 +1,17 @@
 package Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class Professional implements Serializable {
+public class Professional implements Parcelable {
 
-    String UID;
+    String uid;
     String email;
     String userName;
     String imageUrl;
@@ -26,7 +31,7 @@ public class Professional implements Serializable {
         this.phoneNum = phoneNum;
         this.description = description;
         this.precAvailability = precAvailability;
-        this.UID = UID;
+        this.uid = UID;
     }
     public Professional(String email, String userNmae, String imageUrl, String category, String address, String phoneNum, String description, String precAvailability,String UID,List<Review> reviews) {
         this.email = email;
@@ -37,17 +42,41 @@ public class Professional implements Serializable {
         this.phoneNum = phoneNum;
         this.description = description;
         this.precAvailability = precAvailability;
-        this.UID = UID;
+        this.uid = UID;
         this.reviews=reviews;
     }
 
 
+    protected Professional(Parcel in) {
+        uid = in.readString();
+        email = in.readString();
+        userName = in.readString();
+        imageUrl = in.readString();
+        category = in.readString();
+        address = in.readString();
+        phoneNum = in.readString();
+        description = in.readString();
+        precAvailability = in.readString();
+    }
+
+    public static final Creator<Professional> CREATOR = new Creator<Professional>() {
+        @Override
+        public Professional createFromParcel(Parcel in) {
+            return new Professional(in);
+        }
+
+        @Override
+        public Professional[] newArray(int size) {
+            return new Professional[size];
+        }
+    };
+
     public String getUID() {
-        return UID;
+        return uid;
     }
 
     public void setUID(String UID) {
-        this.UID = UID;
+        this.uid = UID;
     }
 
     public Professional() {
@@ -126,4 +155,21 @@ public class Professional implements Serializable {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(uid);
+        parcel.writeString(email);
+        parcel.writeString(userName);
+        parcel.writeString(imageUrl);
+        parcel.writeString(category);
+        parcel.writeString(address);
+        parcel.writeString(phoneNum);
+        parcel.writeString(description);
+        parcel.writeString(precAvailability);
+    }
 }

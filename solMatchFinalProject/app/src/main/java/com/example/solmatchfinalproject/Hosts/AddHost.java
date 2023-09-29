@@ -588,7 +588,7 @@ public class AddHost extends AppCompatActivity implements NavigationView.OnNavig
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(AddHost.this, MainActivity2.class);
-                intent.putExtra("Search", false);
+                startActivity(intent);
                 break;
 
             case R.id.addEvent:

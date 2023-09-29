@@ -208,7 +208,7 @@ public class AddDocprofessional extends AppCompatActivity implements NavigationV
                                 {
                                     email = doc.get("email").toString();
                                     userName = doc.get("userName").toString();
-                                    if(!doc.get("image").toString().isEmpty())
+                                    if(doc.get("image")!=null&&!doc.get("image").toString().isEmpty())
                                     {
                                         imageUser = doc.get("image").toString();
                                     }
@@ -232,13 +232,13 @@ public class AddDocprofessional extends AppCompatActivity implements NavigationV
                     db.collection("professional").document(uid).set(professional).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getApplicationContext(),"succes",Toast.LENGTH_LONG);
                             sqlDataBase.insertProfessionalData(professional);
                             notifications noti = new notifications(uid,"you have created a professional offer for the" + professCategory.getSelectedItem().toString() +" category");
                             db.collection("Notifications").add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
                                     sqlDataBase.insertNotificationData(noti);
-                                    Toast.makeText(getApplicationContext(),"succes",Toast.LENGTH_LONG);
                                     Intent intent = new Intent(AddDocprofessional.this, EditPersonalDetails.class);
                                     startActivity(intent);
 
@@ -328,7 +328,7 @@ public class AddDocprofessional extends AppCompatActivity implements NavigationV
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(AddDocprofessional.this, MainActivity2.class);
-                intent.putExtra("Search", false);
+                startActivity(intent);
                 break;
 
             case R.id.addEvent:

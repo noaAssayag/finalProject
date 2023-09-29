@@ -55,7 +55,6 @@
     android:layout_height="wrap_content"
     android:stepSize="0.5"
     android:numStars="5"
-    android:progressBackgroundTint="#FBBC00"
     android:progressTint="#FBBC00"
     app:layout_constraintTop_toBottomOf="@+id/description"
     app:layout_constraintStart_toEndOf="@+id/gl_start"
