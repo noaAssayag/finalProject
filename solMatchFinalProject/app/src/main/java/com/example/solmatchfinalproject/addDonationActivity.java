@@ -438,23 +438,21 @@ public class addDonationActivity extends AppCompatActivity implements Navigation
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(addDonationActivity.this, MainActivity2.class);
-                startActivity(intent);
+                intent.putExtra("Search", false);
+                break;
 
             case R.id.addEvent:
-                intent = new Intent(addDonationActivity.this, Forms.class);
-                intent.putExtra("action","addEvent");
+                intent = new Intent(addDonationActivity.this, AddEvent.class);
                 startActivity(intent);
 
                 break;
             case R.id.bt_search:
                 intent = new Intent(addDonationActivity.this, Forms.class);
-                intent.putExtra("action","search");
                 startActivity(intent);
                 break;
 
             case R.id.bt_Profile:
                 intent = new Intent(addDonationActivity.this, EditPersonalDetails.class);
-                intent.putExtra("Search",true);
                 startActivity(intent);
                 break;
 
@@ -489,7 +487,7 @@ public class addDonationActivity extends AppCompatActivity implements Navigation
 
                     // Create a chooser dialog to let the user choose which app to use for sharing.
                     startActivity(Intent.createChooser(i, "Share via"));
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // Handle any exceptions that may occur during the sharing process.
                 }
 
@@ -503,7 +501,7 @@ public class addDonationActivity extends AppCompatActivity implements Navigation
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent1=new Intent(addDonationActivity.this,LoginActivity.class);
+                        Intent intent1 = new Intent(addDonationActivity.this, LoginActivity.class);
                         startActivity(intent1);
                         finish();
                         Toast.makeText(addDonationActivity.this, "Logout!", Toast.LENGTH_SHORT).show();
@@ -517,9 +515,10 @@ public class addDonationActivity extends AppCompatActivity implements Navigation
 
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
-                dialog.show();        }
-
+                dialog.show();
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
     }
 

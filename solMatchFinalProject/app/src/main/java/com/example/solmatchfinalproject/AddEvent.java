@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -15,19 +16,12 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,71 +32,55 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
 import com.example.solmatchfinalproject.Hosts.AddHost;
-import com.example.solmatchfinalproject.profile.ProfileActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.example.solmatchfinalproject.Hosts.allHosts;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.model.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Fragment.NotificationDialogFragment;
-import Model.Professional;
-import Model.Review;
 import Model.UserStorageData;
 import dataBase.DatabaseHelper;
 
-public class AddDocprofessional extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
-    private Spinner professCategory;
-    private Spinner professAddress;
+public class AddEvent extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private CardView professionalCardView;
     private DrawerLayout drawerLayout;
-    private EditText professDescription,autoCompleteLocationPro;
-    private EditText professPhoneNum;
-    TextView percentage;
-    private ProgressBar progressBar;
-    private SeekBar seekBar;
-    private Button btnSubmit;
-    private BottomNavigationView bottomNavigationView;
-    FirebaseAuth auth;
-    FirebaseFirestore db;
-    private String uid,email,userName,imageUser,address;
-    DatabaseHelper sqlDataBase;
-    String precentageAva="0";
+    private CardView hostCardView;
+    private CardView donationCardView;
+    private TextView textProf, textHost, textDon;
+    private DatabaseHelper helper;
+    FirebaseAuth mAuth;
+    UserStorageData user;
+    FirebaseFirestore firestore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_docprofessional);
-        professCategory = findViewById(R.id.professCategory);
-        professAddress = findViewById(R.id.professAddress);
-        professDescription = findViewById(R.id.professDescription);
-        professPhoneNum = findViewById(R.id.ProfessphoneNum);
-        percentage=findViewById(R.id.percentage);
-        progressBar=findViewById(R.id.prograssBar);
-        seekBar = findViewById(R.id.seek_bar);
-        btnSubmit=findViewById(R.id.btnSubmit);
-        autoCompleteLocationPro = findViewById(R.id.autoCompleteLocationPro);
-        autoCompleteLocationPro.setEnabled(false);
-        sqlDataBase = new DatabaseHelper(this);
+        setContentView(R.layout.activity_forms);
+        professionalCardView = findViewById(R.id.cardProf);
+        hostCardView = findViewById(R.id.cardHost);
+        donationCardView = findViewById(R.id.cardDon);
+        textProf = findViewById(R.id.textProf);
+        textHost = findViewById(R.id.texthost);
+        textDon = findViewById(R.id.textDon);
+        helper = new DatabaseHelper(this);
+        mAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
 
+        user = helper.getUserByUID(mAuth.getUid());
+        if (user.getType().equals("Solider")) {
+            hostCardView.setVisibility(View.GONE);
+            professionalCardView.setVisibility(View.GONE);
+        } else if (user.getType().equals("Host")) {
+            professionalCardView.setVisibility(View.GONE);
+        }
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_gradient));
-            ab.setTitle(R.string.profTitle);
+            ab.setTitle(R.string.searchTitle);
             ab.setDisplayShowHomeEnabled(false); // Set this to false
             ab.setDisplayHomeAsUpEnabled(false);  // Set this to false
         }
@@ -135,123 +113,31 @@ public class AddDocprofessional extends AppCompatActivity implements NavigationV
             public void onDrawerStateChanged(int newState) {
             }
         });
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+
+        professionalCardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressBar.setProgress(progress);
-                percentage.setText(""+progress+"%");
-                precentageAva=""+progress;
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
+            public void onClick(View view) {
+                Intent intent = new Intent(AddEvent.this, AddDocprofessional.class);
+                startActivity(intent);
             }
         });
-        autoCompleteLocationPro.addTextChangedListener(new TextWatcher() {
+        hostCardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-               if(autoCompleteLocationPro.getText().toString().isEmpty())
-               {
-                   professAddress.setEnabled(true);
-               }
-               else{
-                   professAddress.setEnabled(false);
-               }
+            public void onClick(View view) {
+                Intent intent = new Intent(AddEvent.this, AddHost.class);
+                startActivity(intent);
             }
         });
-
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
+        donationCardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if(autoCompleteLocationPro.getText().toString().isEmpty()) {
-                    if (professAddress == null || professAddress.getSelectedItem().toString().equals("Filter By city") || professAddress.getSelectedItem().toString().isEmpty()) {
-                        Toast.makeText(AddDocprofessional.this, "Please choose a area", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-                if (professCategory == null || professCategory.getSelectedItem().toString().equals("Filter by category") || professCategory.getSelectedItem().toString().isEmpty()) {
-                    Toast.makeText(AddDocprofessional.this, "Please choose a category", Toast.LENGTH_SHORT).show();
-                    return;
-                }  else if (professDescription.getText().toString().isEmpty() || professPhoneNum.getText().toString().isEmpty()) {
-                    Toast.makeText(AddDocprofessional.this, "Please fill all the fileds", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if(professPhoneNum.getText().toString().length()!=10){
-                    Toast.makeText(AddDocprofessional.this, "Invalid phone number", Toast.LENGTH_SHORT).show();
-                }else {
-                    auth = FirebaseAuth.getInstance();
-                    uid = auth.getCurrentUser().getUid();
-                    db = FirebaseFirestore.getInstance();
-
-                    db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            for(QueryDocumentSnapshot doc: task.getResult())
-                            {
-                                if(doc.getId().equals(uid))
-                                {
-                                    email = doc.get("email").toString();
-                                    userName = doc.get("userName").toString();
-                                    if(!doc.get("image").toString().isEmpty())
-                                    {
-                                        imageUser = doc.get("image").toString();
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    if(autoCompleteLocationPro.getText().toString().isEmpty()) {
-                        address = professAddress.getSelectedItem().toString().split(",")[0];
-                    }
-                    else{
-                        address = autoCompleteLocationPro.getText().toString();
-                    }
-
-                    Professional professional = new Professional(email,userName,imageUser,professCategory.getSelectedItem().toString()
-                            ,address
-                            ,professPhoneNum.getText().toString()
-                            ,professDescription.getText().toString(),precentageAva,uid,new ArrayList<>());
-
-
-                    db.collection("professional").document(uid).set(professional).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            sqlDataBase.insertProfessionalData(professional);
-                            notifications noti = new notifications(uid,"you have created a professional offer for the" + professCategory.getSelectedItem().toString() +" category");
-                            db.collection("Notifications").add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    sqlDataBase.insertNotificationData(noti);
-                                    Toast.makeText(getApplicationContext(),"succes",Toast.LENGTH_LONG);
-                                    Intent intent = new Intent(AddDocprofessional.this, EditPersonalDetails.class);
-                                    startActivity(intent);
-
-                                }
-                            });
-                        }
-                    });
-
-                }
+            public void onClick(View view) {
+                Intent intent = new Intent(AddEvent.this, addDonationActivity.class);
+                startActivity(intent);
             }
+        });
+    }
 
-    });
-}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -322,27 +208,28 @@ public class AddDocprofessional extends AppCompatActivity implements NavigationV
         }
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.bt_home:
-                intent = new Intent(AddDocprofessional.this, MainActivity2.class);
+                intent = new Intent(AddEvent.this, MainActivity2.class);
                 intent.putExtra("Search", false);
                 break;
 
             case R.id.addEvent:
-                intent = new Intent(AddDocprofessional.this, AddEvent.class);
+                intent = new Intent(AddEvent.this, AddEvent.class);
                 startActivity(intent);
 
                 break;
             case R.id.bt_search:
-                intent = new Intent(AddDocprofessional.this, Forms.class);
+                intent = new Intent(AddEvent.this, Forms.class);
                 startActivity(intent);
                 break;
 
             case R.id.bt_Profile:
-                intent = new Intent(AddDocprofessional.this, EditPersonalDetails.class);
+                intent = new Intent(AddEvent.this, EditPersonalDetails.class);
                 startActivity(intent);
                 break;
 
@@ -391,10 +278,10 @@ public class AddDocprofessional extends AppCompatActivity implements NavigationV
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent1 = new Intent(AddDocprofessional.this, LoginActivity.class);
+                        Intent intent1 = new Intent(AddEvent.this, LoginActivity.class);
                         startActivity(intent1);
                         finish();
-                        Toast.makeText(AddDocprofessional.this, "Logout!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddEvent.this, "Logout!", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -421,4 +308,8 @@ public class AddDocprofessional extends AppCompatActivity implements NavigationV
         }
     }
 
+    public void clickPro() {
+        Intent intent = new Intent(AddEvent.this, AddDocprofessional.class);
+        startActivity(intent);
+    }
 }

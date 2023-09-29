@@ -34,9 +34,12 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.solmatchfinalproject.AddEvent;
 import com.example.solmatchfinalproject.ChatClasses.chatMenuActivity;
+import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.Forms;
 import com.example.solmatchfinalproject.LoginActivity;
+import com.example.solmatchfinalproject.MainActivity2;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.notifications;
 import com.google.android.material.navigation.NavigationView;
@@ -299,24 +302,23 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         Intent intent;
         switch (item.getItemId()) {
             case R.id.bt_home:
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+                intent = new Intent(allHosts.this, MainActivity2.class);
+                intent.putExtra("Search", false);
                 break;
 
             case R.id.addEvent:
-                intent = new Intent(allHosts.this, Forms.class);
-                intent.putExtra("Search",false);
+                intent = new Intent(allHosts.this, AddEvent.class);
                 startActivity(intent);
 
                 break;
             case R.id.bt_search:
                 intent = new Intent(allHosts.this, Forms.class);
-                intent.putExtra("Search",true);
                 startActivity(intent);
                 break;
 
-            case R.id.bt_history:
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
-
+            case R.id.bt_Profile:
+                intent = new Intent(allHosts.this, EditPersonalDetails.class);
+                startActivity(intent);
                 break;
 
             case R.id.nav_share:
@@ -350,7 +352,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
 
                     // Create a chooser dialog to let the user choose which app to use for sharing.
                     startActivity(Intent.createChooser(i, "Share via"));
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // Handle any exceptions that may occur during the sharing process.
                 }
 
@@ -364,7 +366,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent1=new Intent(allHosts.this, LoginActivity.class);
+                        Intent intent1 = new Intent(allHosts.this, LoginActivity.class);
                         startActivity(intent1);
                         finish();
                         Toast.makeText(allHosts.this, "Logout!", Toast.LENGTH_SHORT).show();
@@ -378,9 +380,10 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
 
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
-                dialog.show();        }
-
+                dialog.show();
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
     }
 

@@ -24,6 +24,9 @@
         android:theme="@style/Theme.SolMatchFinalProject"
         tools:targetApi="31">
         <activity
+            android:name=".AddEvent"
+            android:exported="false" />
+        <activity
             android:name=".ReviewProffessionalActivity"
             android:exported="false" />
         <activity

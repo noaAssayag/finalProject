@@ -295,23 +295,21 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(AllProfessional.this, MainActivity2.class);
-                startActivity(intent);
+                intent.putExtra("Search", false);
+                break;
 
             case R.id.addEvent:
-                intent = new Intent(AllProfessional.this, Forms.class);
-                intent.putExtra("action","addEvent");
+                intent = new Intent(AllProfessional.this, AddEvent.class);
                 startActivity(intent);
 
                 break;
             case R.id.bt_search:
                 intent = new Intent(AllProfessional.this, Forms.class);
-                intent.putExtra("action","search");
                 startActivity(intent);
                 break;
 
             case R.id.bt_Profile:
                 intent = new Intent(AllProfessional.this, EditPersonalDetails.class);
-                intent.putExtra("Search",true);
                 startActivity(intent);
                 break;
 
@@ -346,7 +344,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
 
                     // Create a chooser dialog to let the user choose which app to use for sharing.
                     startActivity(Intent.createChooser(i, "Share via"));
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // Handle any exceptions that may occur during the sharing process.
                 }
 
@@ -360,7 +358,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent1=new Intent(AllProfessional.this,LoginActivity.class);
+                        Intent intent1 = new Intent(AllProfessional.this, LoginActivity.class);
                         startActivity(intent1);
                         finish();
                         Toast.makeText(AllProfessional.this, "Logout!", Toast.LENGTH_SHORT).show();
@@ -374,9 +372,10 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
 
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
-                dialog.show();        }
-
+                dialog.show();
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
     }
 

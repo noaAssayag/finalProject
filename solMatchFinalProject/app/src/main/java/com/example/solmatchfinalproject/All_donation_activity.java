@@ -276,29 +276,28 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
         }
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(All_donation_activity.this, MainActivity2.class);
-                startActivity(intent);
+                intent.putExtra("Search", false);
+                break;
 
             case R.id.addEvent:
-                intent = new Intent(All_donation_activity.this, Forms.class);
-                intent.putExtra("action","addEvent");
+                intent = new Intent(All_donation_activity.this, AddEvent.class);
                 startActivity(intent);
 
                 break;
             case R.id.bt_search:
                 intent = new Intent(All_donation_activity.this, Forms.class);
-                intent.putExtra("action","search");
                 startActivity(intent);
                 break;
 
             case R.id.bt_Profile:
                 intent = new Intent(All_donation_activity.this, EditPersonalDetails.class);
-                intent.putExtra("Search",true);
                 startActivity(intent);
                 break;
 
@@ -333,7 +332,7 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
 
                     // Create a chooser dialog to let the user choose which app to use for sharing.
                     startActivity(Intent.createChooser(i, "Share via"));
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // Handle any exceptions that may occur during the sharing process.
                 }
 
@@ -347,7 +346,7 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent1=new Intent(All_donation_activity.this,LoginActivity.class);
+                        Intent intent1 = new Intent(All_donation_activity.this, LoginActivity.class);
                         startActivity(intent1);
                         finish();
                         Toast.makeText(All_donation_activity.this, "Logout!", Toast.LENGTH_SHORT).show();
@@ -361,9 +360,10 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
 
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
-                dialog.show();        }
-
+                dialog.show();
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
     }
 

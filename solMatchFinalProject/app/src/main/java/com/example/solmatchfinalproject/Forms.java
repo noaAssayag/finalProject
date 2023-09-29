@@ -55,7 +55,8 @@ public class Forms extends AppCompatActivity implements NavigationView.OnNavigat
     FirebaseAuth mAuth;
     UserStorageData user;
     FirebaseFirestore firestore;
-    String action=" ";
+    String action = " ";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,107 +71,74 @@ public class Forms extends AppCompatActivity implements NavigationView.OnNavigat
         mAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
-        Intent intent=getIntent();
-        action=intent.getStringExtra("action");
-        if (action.toString().equals("addEvent")) {
-        user = helper.getUserByUID(mAuth.getUid());
-        if (user.getType().equals("Solider")) {
-            hostCardView.setVisibility(View.GONE);
-            professionalCardView.setVisibility(View.GONE);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_gradient));
+            ab.setTitle(R.string.searchTitle);
+            ab.setDisplayShowHomeEnabled(false); // Set this to false
+            ab.setDisplayHomeAsUpEnabled(false);  // Set this to false
         }
-        else if (user.getType().equals("Host")) {
-            professionalCardView.setVisibility(View.GONE);
-        }
-            ActionBar ab = getSupportActionBar();
-            if (ab != null) {
-                ab.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_gradient));
-                ab.setTitle(R.string.searchTitle);
-                ab.setDisplayShowHomeEnabled(false); // Set this to false
-                ab.setDisplayHomeAsUpEnabled(false);  // Set this to false
-            }
 
-            drawerLayout = findViewById(R.id.drawer_layout);
-            NavigationView navigationView = findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
 // Create the ActionBarDrawerToggle but don't sync its state
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_nav, R.string.close_nav);
-            drawerLayout.addDrawerListener(toggle);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_nav, R.string.close_nav);
+        drawerLayout.addDrawerListener(toggle);
 
-            drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-                @Override
-                public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-                }
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            }
 
-                @Override
-                public void onDrawerOpened(@NonNull View drawerView) {
-                }
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+            }
 
-                @Override
-                public void onDrawerClosed(@NonNull View drawerView) {
-                    if (getSupportActionBar() != null) {
-                        getSupportActionBar().show();
-                    }
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().show();
                 }
+            }
 
-                @Override
-                public void onDrawerStateChanged(int newState) {
-                }
-            });
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
+
+        hostCardView.setVisibility(View.VISIBLE);
+        donationCardView.setVisibility(View.VISIBLE);
+        professionalCardView.setVisibility(View.VISIBLE);
+        textProf.setText("Search Proffessional");
+        textHost.setText("Search host");
+        textDon.setText("Search donation");
+        professionalCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Forms.this, AllProfessional.class);
+                startActivity(intent);
+            }
+        });
+        hostCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Forms.this, allHosts.class);
+                startActivity(intent);
+            }
+        });
+        donationCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Forms.this, All_donation_activity.class);
+                startActivity(intent);
+            }
+        });
 
 
-            professionalCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Forms.this, AddDocprofessional.class);
-                    startActivity(intent);
-                }
-            });
-            hostCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Forms.this, AddHost.class);
-                    startActivity(intent);
-                }
-            });
-            donationCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Forms.this, addDonationActivity.class);
-                    startActivity(intent);
-                }
-            });
-        } else {
-            hostCardView.setVisibility(View.VISIBLE);
-            donationCardView.setVisibility(View.VISIBLE);
-            professionalCardView.setVisibility(View.VISIBLE);
-            textProf.setText("Search Proffessional");
-            textHost.setText("Search host");
-            textDon.setText("Search donation");
-            professionalCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Forms.this, AllProfessional.class);
-                    startActivity(intent);
-                }
-            });
-            hostCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Forms.this, allHosts.class);
-                    startActivity(intent);
-                }
-            });
-            donationCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Forms.this, All_donation_activity.class);
-                    startActivity(intent);
-                }
-            });
-        }
+}
 
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -241,30 +209,29 @@ public class Forms extends AppCompatActivity implements NavigationView.OnNavigat
         }
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(Forms.this, MainActivity2.class);
-                intent.putExtra("Search",false);
+                intent.putExtra("Search", false);
                 break;
 
             case R.id.addEvent:
-                intent = new Intent(Forms.this, Forms.class);
-                intent.putExtra("Search",false);
+                intent = new Intent(Forms.this, AddEvent.class);
                 startActivity(intent);
 
                 break;
             case R.id.bt_search:
                 intent = new Intent(Forms.this, Forms.class);
-                intent.putExtra("Search",true);
                 startActivity(intent);
                 break;
 
-            case R.id.bt_history:
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
-
+            case R.id.bt_Profile:
+                intent = new Intent(Forms.this, EditPersonalDetails.class);
+                startActivity(intent);
                 break;
 
             case R.id.nav_share:
@@ -298,7 +265,7 @@ public class Forms extends AppCompatActivity implements NavigationView.OnNavigat
 
                     // Create a chooser dialog to let the user choose which app to use for sharing.
                     startActivity(Intent.createChooser(i, "Share via"));
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // Handle any exceptions that may occur during the sharing process.
                 }
 
@@ -312,7 +279,7 @@ public class Forms extends AppCompatActivity implements NavigationView.OnNavigat
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent1=new Intent(Forms.this,LoginActivity.class);
+                        Intent intent1 = new Intent(Forms.this, LoginActivity.class);
                         startActivity(intent1);
                         finish();
                         Toast.makeText(Forms.this, "Logout!", Toast.LENGTH_SHORT).show();
@@ -326,8 +293,9 @@ public class Forms extends AppCompatActivity implements NavigationView.OnNavigat
 
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
-                dialog.show();        }
-
+                dialog.show();
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -338,5 +306,10 @@ public class Forms extends AppCompatActivity implements NavigationView.OnNavigat
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void clickPro() {
+        Intent intent = new Intent(Forms.this, AddDocprofessional.class);
+        startActivity(intent);
     }
 }

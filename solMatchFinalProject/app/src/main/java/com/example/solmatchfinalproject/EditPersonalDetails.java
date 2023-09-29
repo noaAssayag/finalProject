@@ -580,23 +580,21 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(EditPersonalDetails.this, MainActivity2.class);
-                startActivity(intent);
+                intent.putExtra("Search", false);
+                break;
 
             case R.id.addEvent:
-                intent = new Intent(EditPersonalDetails.this, Forms.class);
-                intent.putExtra("action","addEvent");
+                intent = new Intent(EditPersonalDetails.this, AddEvent.class);
                 startActivity(intent);
 
                 break;
             case R.id.bt_search:
                 intent = new Intent(EditPersonalDetails.this, Forms.class);
-                intent.putExtra("action","search");
                 startActivity(intent);
                 break;
 
             case R.id.bt_Profile:
                 intent = new Intent(EditPersonalDetails.this, EditPersonalDetails.class);
-                intent.putExtra("Search",true);
                 startActivity(intent);
                 break;
 
@@ -631,7 +629,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
 
                     // Create a chooser dialog to let the user choose which app to use for sharing.
                     startActivity(Intent.createChooser(i, "Share via"));
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // Handle any exceptions that may occur during the sharing process.
                 }
 
@@ -645,7 +643,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent1=new Intent(EditPersonalDetails.this,LoginActivity.class);
+                        Intent intent1 = new Intent(EditPersonalDetails.this, LoginActivity.class);
                         startActivity(intent1);
                         finish();
                         Toast.makeText(EditPersonalDetails.this, "Logout!", Toast.LENGTH_SHORT).show();
@@ -659,9 +657,10 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
 
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
-                dialog.show();        }
-
+                dialog.show();
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
