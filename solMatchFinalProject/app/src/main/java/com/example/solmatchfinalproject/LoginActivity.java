@@ -33,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import Model.Host;
+import Model.Professional;
 import Model.UserStorageData;
 import Model.donations;
 import dataBase.DatabaseHelper;
@@ -45,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<UserStorageData> users;
     ArrayList<Host> hosts;
     ArrayList<donations> donationsList;
+
+    ArrayList<Professional> professionalList;
 
     ArrayList<notifications> notificationsList;
     Button signIn, forgotPassword;
@@ -69,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         hosts = new ArrayList<>();
         donationsList = new ArrayList<>();
         notificationsList = new ArrayList<>();
+        professionalList = new ArrayList<>();
         sqlData = new DatabaseHelper(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -118,6 +122,18 @@ public class LoginActivity extends AppCompatActivity {
                                                                         hosts.add(host);
                                                                     }
                                                                     sqlData.compareAndUpdateHosts(hosts);
+                                                                    database.collection("professional").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                            for(QueryDocumentSnapshot snapshot:queryDocumentSnapshots)
+                                                                            {
+                                                                                Professional professional = snapshot.toObject(Professional.class);
+                                                                                professional.setUID(snapshot.getId());
+                                                                                professionalList.add(professional);
+                                                                            }
+                                                                            sqlData.compareAndUpdateProfessionals(professionalList);
+                                                                        }
+                                                                    });
                                                                     database.collection("Donations").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                                         @Override
                                                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -140,9 +156,9 @@ public class LoginActivity extends AppCompatActivity {
                                                                                     sqlData.compareAndUpdateNotifications(notificationsList);
                                                                                 }
                                                                             });
-                                                                            if (!userSignedIn.getInfo().getDescription().isEmpty() || !userSignedIn.getInfo().getHobbies().isEmpty()) {
+                                                                            if (userSignedIn.getInfo() !=null) {
                                                                                 Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_SHORT).show();
-                                                                                Intent intent = new Intent(LoginActivity.this, MainActivity2.class);
+                                                                                Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
                                                                                 intent.putExtra("UserEmail", inputUserEmail.getText().toString());
                                                                                 startActivity(intent);
                                                                             } else {

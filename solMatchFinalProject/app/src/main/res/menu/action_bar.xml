@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
 
     <item
@@ -16,7 +17,7 @@
         android:title="@string/startChat" />
     <item
         android:id="@+id/profileIcon"
-        android:icon="@drawable/anonymousman"
+        android:icon="@drawable/baseline_dehaze_24"
         app:showAsAction="always"
         android:title="@string/profile"/>
 </menu>

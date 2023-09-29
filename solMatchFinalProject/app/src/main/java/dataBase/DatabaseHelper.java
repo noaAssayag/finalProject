@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.NonNull;
 
+import com.example.solmatchfinalproject.ReviewProffessionalActivity;
 import com.example.solmatchfinalproject.notifications;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,15 +26,25 @@ import java.util.List;
 
 import Model.Host;
 import Model.Professional;
+import Model.Review;
 import Model.UserStorageData;
 import Model.donations;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "YourDatabaseNamev17";
-    private static final int DATABASE_VERSION = 17;
+    private static final String DATABASE_NAME = "YourDatabaseNamev18";
+    private static final int DATABASE_VERSION = 18;
 
     // notification table
 
+    private static final String PROFESSIONALREVIEW_TABLE_NAME = "professionalReview";
+
+    private static final String PROFESSIONALREVIEW_COLUMN_ID = "UID";
+
+    private static final String PROFESSIONALREVIEW_COLUMN_REVIEWERNAME = "nameOfReviwer";
+
+    private static final String PROFESSIONALREVIEW_COLUMN_review = "review";
+
+    private static final String PROFESSIONALREVIEW_COLUMN_RATING = "rate";
     private static final String NOTIFICATION_TABLE_NAME = "notification";
     private static final String NOTIFICATION_COLUMN_ID = "UID";
     private static final String NOTIFICATION_COLUMN_message = "message";
@@ -99,6 +110,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 NOTIFICATION_COLUMN_message + " TEXT, " +
                 "PRIMARY KEY (" + NOTIFICATION_COLUMN_ID + ", " + NOTIFICATION_COLUMN_message + "))");
 
+        db.execSQL("CREATE TABLE " + PROFESSIONALREVIEW_TABLE_NAME + " (" +
+                PROFESSIONALREVIEW_COLUMN_ID + " TEXT PRIMARY KEY, " +
+                PROFESSIONALREVIEW_COLUMN_REVIEWERNAME + " TEXT, " +
+                PROFESSIONALREVIEW_COLUMN_review + " TEXT, " +
+                PROFESSIONALREVIEW_COLUMN_RATING + " REAL)");
+
+
+
         // Create user table
         db.execSQL("CREATE TABLE " + USER_TABLE_NAME + "(" +
                 USER_COLUMN_ID + " TEXT PRIMARY KEY," +
@@ -159,6 +178,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + HOSTS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PROFESSIONAL_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + NOTIFICATION_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + PROFESSIONALREVIEW_TABLE_NAME);
         onCreate(db);
     }
 
@@ -176,6 +196,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(USER_TABLE_NAME, null, contentValues);
         return result != -1;
     }
+
+    public boolean insertProfessionalReviewData(Review review) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(PROFESSIONALREVIEW_COLUMN_ID, review.getUID());
+        contentValues.put(PROFESSIONALREVIEW_COLUMN_REVIEWERNAME, review.getNameReview());
+        contentValues.put(PROFESSIONALREVIEW_COLUMN_review, review.getComments());
+        contentValues.put(PROFESSIONALREVIEW_COLUMN_RATING, review.getRate());
+
+        long result = db.insert(PROFESSIONALREVIEW_TABLE_NAME, null, contentValues);
+        return result != -1;
+    }
+
+
     public boolean insertNotificationData(notifications notification) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -548,6 +583,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return false;
     }
+    // proffesional review
+    public List<Review> getProfessionalReviewsByUserID(String UID) {
+        List<Review> reviewList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query the database for all reviews related to the given UID
+        Cursor cursor = db.query(PROFESSIONALREVIEW_TABLE_NAME, null, PROFESSIONALREVIEW_COLUMN_ID + " = ?", new String[]{UID}, null, null, null);
+
+        // Iterate through the results and add them to the list
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                Review review = new Review(
+                        cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONALREVIEW_COLUMN_REVIEWERNAME)),
+                        cursor.getFloat(cursor.getColumnIndexOrThrow(PROFESSIONALREVIEW_COLUMN_RATING)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONALREVIEW_COLUMN_review)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONALREVIEW_COLUMN_ID))
+                );
+                reviewList.add(review);
+            }
+            cursor.close();
+        }
+
+        return reviewList;
+    }
+
 
     public List<notifications> getNotificationsByUserID(String UID) {
         List<notifications> notificationList = new ArrayList<>();
@@ -631,6 +691,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return false;
     }
+    public Professional getProfessionalByUID(String UID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(PROFESSIONAL_TABLE_NAME, null, PROFESSIONAL_COLUMN_ID + " = ?", new String[]{UID}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            Professional professional = new Professional();
+            professional.setUID(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_ID)));
+            professional.setUserName(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_USER_NAME)));
+            professional.setEmail(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_EMAIL)));
+            professional.setImageUrl(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_IMAGE_URL)));
+            professional.setCategory(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_CATEGORY)));
+            professional.setAddress(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_ADDRESS)));
+            professional.setPhoneNum(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_PHONE_NUM)));
+            professional.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_DESCRIPTION)));
+            professional.setPrecAvailability(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_PREC_AVAILABILITY)));
+            professional.setReviews(getProfessionalReviewsByUserID(professional.getUID()));
+            // Note: The reviews list is not populated here as it's not part of the table structure you provided.
+            cursor.close();
+            return professional;
+        }
+
+        return null; // Return null if no professional found with the given UID
+    }
+
 
     public boolean removeNotification(notifications notificationToDelete) {
         SQLiteDatabase db = this.getWritableDatabase();

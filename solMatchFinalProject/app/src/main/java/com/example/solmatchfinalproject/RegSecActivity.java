@@ -299,6 +299,7 @@ public class RegSecActivity extends Activity {
 
                 imageURI = getImageUri(this, imageBitmap);
                 userImg.setImageURI(imageURI);
+                isPhoto = true;
             }
         }
     }

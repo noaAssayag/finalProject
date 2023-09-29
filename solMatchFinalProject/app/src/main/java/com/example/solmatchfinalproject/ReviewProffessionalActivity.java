@@ -45,9 +45,10 @@ public class ReviewProffessionalActivity extends AppCompatActivity {
     EditText et_comments;
     TextView description;
     Button btn_cancel,btn_submit;
-    ImageView backArrow,proImg;
+    ImageView proImg;
     Professional professional;
     Professional updateProfessional;
+
 
     FirebaseFirestore firestore=FirebaseFirestore.getInstance();
     FirebaseAuth mAuth=FirebaseAuth.getInstance();
@@ -65,7 +66,6 @@ public class ReviewProffessionalActivity extends AppCompatActivity {
         btn_cancel=findViewById(R.id.btn_cancel);
         btn_submit=findViewById(R.id.btn_submit);
         description=findViewById(R.id.description);
-        backArrow=findViewById(R.id.backArrow);
         proImg=findViewById(R.id.professionImg);
         sqlDatabase = new DatabaseHelper(this);
         allProfessionalList = sqlDatabase.getAllProfessionals();
@@ -92,13 +92,6 @@ public class ReviewProffessionalActivity extends AppCompatActivity {
                         .into(proImg);
             }
         }
-        backArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ReviewProffessionalActivity.this, AllProfessional.class);
-                startActivity(intent);
-            }
-        });
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
@@ -145,10 +138,17 @@ public class ReviewProffessionalActivity extends AppCompatActivity {
                     else{
                         commentName=name.getText().toString();
                     }
-                    Review review=new Review(commentName,rate,et_comments.getText().toString());
+                    Review review=new Review(commentName,rate,et_comments.getText().toString(),professional.getUID());
                     if(professional!=null)
                     {
-                        ArrayList<Review> list=new ArrayList<>();
+                        ArrayList<Review> list;
+                        if(professional.getReviews()!=null) {
+                            list = (ArrayList<Review>) professional.getReviews();
+                        }
+                        else{
+                            list = new ArrayList<>();
+
+                        }
                         list.add(review);
                         professional.setReviews(list);
 
@@ -167,6 +167,7 @@ public class ReviewProffessionalActivity extends AppCompatActivity {
                                                 firestore.collection("professional").document(document.getId()).set(professional).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void unused) {
+                                                        sqlDatabase.insertProfessionalReviewData(review);
                                                         Toast.makeText(ReviewProffessionalActivity.this,"Review Added Successfully", Toast.LENGTH_SHORT).show();
                                                         Intent intent = new Intent(ReviewProffessionalActivity.this, AllProfessional.class);
                                                         startActivity(intent);                                                    }

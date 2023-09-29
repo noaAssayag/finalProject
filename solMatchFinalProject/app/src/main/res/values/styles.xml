@@ -41,6 +41,12 @@
 		<item name="cornerFamily">rounded</item>
 	</style>
 
+
+	<style name="MyActionBar" parent="Widget.AppCompat.ActionBar">
+		<item name="android:background">@drawable/bg_gradient</item>
+		<item name="background">@drawable/bg_gradient</item>
+	</style>
+
 	<style name="MyToolbarStyle" parent="AppTheme">
 		<item name="android:textColorSecondary">@color/white</item>
 	</style>

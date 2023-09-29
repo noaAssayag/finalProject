@@ -116,7 +116,7 @@ public class personalQuestionsActivity extends Activity {
                 db.collection("Users").document(UID).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Intent intent = new Intent(personalQuestionsActivity.this, ProfileActivity.class);
+                        Intent intent = new Intent(personalQuestionsActivity.this, EditPersonalDetails.class);
                         startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

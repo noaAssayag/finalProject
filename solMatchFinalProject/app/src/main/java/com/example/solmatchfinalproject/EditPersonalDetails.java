@@ -5,7 +5,11 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +46,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -69,13 +74,15 @@ import dataBase.DatabaseHelper;
 import donations.donationAdapter;
 
 
-public class EditPersonalDetails extends AppCompatActivity implements RecycleViewInterface, OnImageSelectedListener {
+public class EditPersonalDetails extends AppCompatActivity implements RecycleViewInterface, OnImageSelectedListener,NavigationView.OnNavigationItemSelectedListener{
     private static final int PICK_IMAGE_REQUEST = 100;
     private static final int REQUEST_IMAGE_CAPTURE = 11;
     // todo add bell icon with notifications
     ImageView userImg;
     EditText userName, userEmail, birthDate, attributes;
     TextView donationTitle, hostTitle,reviewsTitle;
+
+    DrawerLayout drawerLayout;
     Button btEdit;
     ImageView changeImage;
     RecyclerView recHosts, recDonations,recReviews;
@@ -109,10 +116,6 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         sqlDatabase = new DatabaseHelper(this);
-        ActionBar ab=getSupportActionBar();
-        ab.setTitle(R.string.profileTitle);
-        ab.setDisplayShowHomeEnabled(true);
-
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recHosts.setLayoutManager(llm);
@@ -126,7 +129,42 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         recReviews.setLayoutManager(llm3);
 
 
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_gradient));
+            ab.setTitle(R.string.profileTitle);
+            ab.setDisplayShowHomeEnabled(false); // Set this to false
+            ab.setDisplayHomeAsUpEnabled(false);  // Set this to false
+        }
 
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+// Create the ActionBarDrawerToggle but don't sync its state
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_nav, R.string.close_nav);
+        drawerLayout.addDrawerListener(toggle);
+
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().show();
+                }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
         changeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -466,18 +504,18 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
     public void AddComments(int position) {
 
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.action_bar, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemID = item.getItemId();
         DatabaseHelper helper = new DatabaseHelper(this);
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.notificationIcon:
                 List<notifications> notificationsList = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
                 NotificationDialogFragment dialogFragment = new NotificationDialogFragment(notificationsList);
@@ -488,6 +526,39 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                 Intent i = new Intent(this, chatMenuActivity.class);
                 startActivity(i);
                 return true;
+
+            case R.id.profileIcon:
+                getSupportActionBar().hide();
+                DrawerLayout drawerLayout;
+                drawerLayout = findViewById(R.id.drawer_layout);
+                NavigationView navigationView = findViewById(R.id.nav_view);
+                navigationView.setNavigationItemSelectedListener(this);
+                View headerView = navigationView.getHeaderView(0);
+                ImageView imgProf = headerView.findViewById(R.id.imgProfile);
+                TextView userName = headerView.findViewById(R.id.fullName);
+                TextView userEmail = headerView.findViewById(R.id.emailAddress);
+                UserStorageData user = sqlDatabase.getUserByUID(FirebaseAuth.getInstance().getUid());
+                userName.setText(user.getUserName());
+                userEmail.setText(user.getEmail());
+                Glide.with(getApplicationContext())
+                        .load(user.getImage())
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target<Drawable> target, boolean isFirstResource) {
+                                // Handle image loading failure
+                                Log.e("Glide", "Image loading failed: " + e.getMessage());
+                                return false; // Return false to allow Glide to handle the error and show any error placeholder you have set
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                // Image successfully loaded
+                                return false; // Return false to allow Glide to handle the resource and display it
+                            }
+                        })
+                        .into((ImageView) imgProf);
+                drawerLayout.openDrawer(GravityCompat.START);
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -496,13 +567,110 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
     public boolean onPrepareOptionsMenu(Menu menu) {
         DatabaseHelper helper = new DatabaseHelper(this);
         List<notifications> notifications = helper.getNotificationsByUserID(FirebaseAuth.getInstance().getUid());
-        if(!notifications.isEmpty())
-        {
+        if (!notifications.isEmpty()) {
             MenuItem item = menu.findItem(R.id.notificationIcon);
             item.setIcon(R.drawable.notification_icon_full);
 
         }
         return super.onPrepareOptionsMenu(menu);
+    }
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.bt_home:
+                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.addEvent:
+                intent = new Intent(EditPersonalDetails.this, Forms.class);
+                intent.putExtra("Search",false);
+                startActivity(intent);
+
+                break;
+            case R.id.bt_search:
+                intent = new Intent(EditPersonalDetails.this, Forms.class);
+                intent.putExtra("Search",true);
+                startActivity(intent);
+                break;
+
+            case R.id.bt_history:
+                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+
+                break;
+
+            case R.id.nav_share:
+                try {
+                    // Create a new intent with the action ACTION_SEND to share data.
+                    Intent i = new Intent(Intent.ACTION_SEND);
+
+                    // Set the type of data to be shared to plain text.
+                    i.setType("text/plain");
+
+                    // Set the subject of the message (optional).
+                    i.putExtra(Intent.EXTRA_SUBJECT, "My app name");
+
+                    // Create a message to be shared.
+                    String strShareMessage = "\nLet me recommend you this application\n\n";
+
+                    // Add a Play Store link to your app using your app's package name.
+                    strShareMessage = strShareMessage + "https://play.google.com/store/apps/details?id=" + getPackageName();
+
+                    // Create a Uri for an image (screenshot) to be shared.
+                    Uri screenshotUri = Uri.parse("android.resource://packagename/drawable/image_name");
+
+                    // Set the type of data to be shared to image/png.
+                    i.setType("image/png");
+
+                    // Attach the image Uri to the intent as an EXTRA_STREAM.
+                    i.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+
+                    // Set the text message to be shared (includes the Play Store link).
+                    i.putExtra(Intent.EXTRA_TEXT, strShareMessage);
+
+                    // Create a chooser dialog to let the user choose which app to use for sharing.
+                    startActivity(Intent.createChooser(i, "Share via"));
+                } catch(Exception e) {
+                    // Handle any exceptions that may occur during the sharing process.
+                }
+
+                break;
+
+            case R.id.bt_logout:
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+                builder.setMessage(R.string.dialog_messageLogOut);
+                builder.setTitle(R.string.dialog_titleLogOut);
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent1=new Intent(EditPersonalDetails.this,LoginActivity.class);
+                        startActivity(intent1);
+                        finish();
+                        Toast.makeText(EditPersonalDetails.this, "Logout!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+
+                // 3. Get the AlertDialog from create()
+                AlertDialog dialog = builder.create();
+                dialog.show();        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
 }
