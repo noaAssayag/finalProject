@@ -105,8 +105,15 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
          reviews = new ArrayList<>();
         for(Professional professional: allProfessionalList)
         {
+
            reviews = sqlDatabase.getProfessionalReviewsByUserID(professional.getUID());
-           professional.setReviews(reviews);
+           if(reviews == null)
+           {
+               professional.setReviews(new ArrayList<>());
+           }
+           else {
+               professional.setReviews(reviews);
+           }
            allProfWithReviews.add(professional);
 
         }

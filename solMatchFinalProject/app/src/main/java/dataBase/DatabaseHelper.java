@@ -32,7 +32,7 @@ import Model.donations;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "DB10";
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 26;
 
     // notification table
 
@@ -445,12 +445,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for (notifications firebaseNotification : firebaseNotifications) {
             boolean notificationExists = false;
             for (notifications sqliteNotification : sqliteNotifications) {
-                if (firebaseNotification.getId().equals(sqliteNotification.getId())) {
+                if (firebaseNotification.getId().equals(sqliteNotification.getId()) && firebaseNotification.getMessage().equals(sqliteNotification.getMessage())) {
                     notificationExists = true;
                     // Compare other fields here
-                    if (!firebaseNotification.getMessage().equals(sqliteNotification.getMessage())) {
-                        updateNotification(firebaseNotification);
-                    }
                     break;
                 }
             }

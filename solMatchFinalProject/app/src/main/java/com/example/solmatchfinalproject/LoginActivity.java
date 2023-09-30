@@ -122,9 +122,10 @@ public class LoginActivity extends AppCompatActivity {
                                                                         hosts.add(host);
                                                                     }
                                                                     sqlData.compareAndUpdateHosts(hosts);
-                                                                    database.collection("professional").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                                                                    database.collection("professional").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                                         @Override
-                                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                                             for(QueryDocumentSnapshot snapshot:queryDocumentSnapshots)
                                                                             {
                                                                                 Professional professional = snapshot.toObject(Professional.class);
@@ -132,8 +133,8 @@ public class LoginActivity extends AppCompatActivity {
                                                                                 professionalList.add(professional);
                                                                             }
                                                                             sqlData.compareAndUpdateProfessionals(professionalList);
-                                                                        }
-                                                                    });
+
+
                                                                     database.collection("Donations").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                                                         @Override
                                                                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -168,7 +169,10 @@ public class LoginActivity extends AppCompatActivity {
                                                                             }
                                                                         }
                                                                     });
+                                                                        }
+                                                                    });
                                                                 }
+
                                                             });
                                                             // Fetch other data here (hosts, donations, etc.)
 
