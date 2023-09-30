@@ -269,7 +269,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean insertProfessionalData(Professional professional) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(PROFESSIONAL_COLUMN_ID, "");
+        contentValues.put(PROFESSIONAL_COLUMN_ID, professional.getUID());
         contentValues.put(PROFESSIONAL_COLUMN_ADDRESS, professional.getAddress());
         contentValues.put(PROFESSIONAL_COLUMN_CATEGORY, professional.getCategory());
         contentValues.put(PROFESSIONAL_COLUMN_DESCRIPTION, professional.getDescription());
