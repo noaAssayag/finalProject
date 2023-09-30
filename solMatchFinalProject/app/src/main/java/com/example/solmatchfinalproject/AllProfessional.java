@@ -214,7 +214,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
     public void AddComments(int position) {
         Professional professional = allProfessionalList.get(position);
         Intent i = new Intent(this, ReviewProffessionalActivity.class);
-        i.putExtra("professsional",professional);
+        i.putExtra("professional",professional);
         startActivity(i);
 
     }
@@ -295,7 +295,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(AllProfessional.this, MainActivity2.class);
-                intent.putExtra("Search", false);
+                startActivity(intent);
                 break;
 
             case R.id.addEvent:

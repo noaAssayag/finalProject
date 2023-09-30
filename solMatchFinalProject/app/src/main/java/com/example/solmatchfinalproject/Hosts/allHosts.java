@@ -303,7 +303,7 @@ public class allHosts extends AppCompatActivity implements RecycleViewInterface,
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(allHosts.this, MainActivity2.class);
-                intent.putExtra("Search", false);
+                startActivity(intent);
                 break;
 
             case R.id.addEvent:

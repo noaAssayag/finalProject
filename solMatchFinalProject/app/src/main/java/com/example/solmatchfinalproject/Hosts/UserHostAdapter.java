@@ -126,14 +126,6 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
                             if(position!=RecyclerView.NO_POSITION)
                             {
                                 recycleViewInterface.deleteItem(position);
-                                DatabaseHelper databaseHelper = new DatabaseHelper(context);
-                                if(databaseHelper.removeHostById(FirebaseAuth.getInstance().getUid()))
-                                {
-                                    Toast.makeText(context,"host deleted succesfully", Toast.LENGTH_LONG).show();
-                                }
-                                else{
-                                    Toast.makeText(context,"Error deleting host", Toast.LENGTH_LONG).show();
-                                }
 
                             }
                         }

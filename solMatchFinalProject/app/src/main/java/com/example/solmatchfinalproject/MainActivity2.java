@@ -116,7 +116,7 @@ public class MainActivity2 extends AppCompatActivity implements NavigationView.O
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(MainActivity2.this, MainActivity2.class);
-                intent.putExtra("Search", false);
+                startActivity(intent);
                 break;
 
             case R.id.addEvent:

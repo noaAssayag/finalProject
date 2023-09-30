@@ -439,7 +439,7 @@ public class addDonationActivity extends AppCompatActivity implements Navigation
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(addDonationActivity.this, MainActivity2.class);
-                intent.putExtra("Search", false);
+                startActivity(intent);
                 break;
 
             case R.id.addEvent:

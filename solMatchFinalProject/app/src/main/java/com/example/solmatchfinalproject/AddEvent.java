@@ -215,7 +215,7 @@ public class AddEvent extends AppCompatActivity implements NavigationView.OnNavi
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(AddEvent.this, MainActivity2.class);
-                intent.putExtra("Search", false);
+                startActivity(intent);
                 break;
 
             case R.id.addEvent:

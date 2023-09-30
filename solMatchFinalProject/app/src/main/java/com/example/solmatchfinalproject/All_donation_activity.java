@@ -283,7 +283,7 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
         switch (item.getItemId()) {
             case R.id.bt_home:
                 intent = new Intent(All_donation_activity.this, MainActivity2.class);
-                intent.putExtra("Search", false);
+                startActivity(intent);
                 break;
 
             case R.id.addEvent:
