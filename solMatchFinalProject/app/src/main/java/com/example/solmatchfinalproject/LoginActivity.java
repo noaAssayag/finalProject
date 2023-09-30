@@ -157,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
                                                                                     sqlData.compareAndUpdateNotifications(notificationsList);
                                                                                 }
                                                                             });
+
                                                                             if (userSignedIn.getInfo() !=null) {
                                                                                 Toast.makeText(getApplicationContext(), "Login was successful", Toast.LENGTH_SHORT).show();
                                                                                 Intent intent = new Intent(LoginActivity.this, EditPersonalDetails.class);
