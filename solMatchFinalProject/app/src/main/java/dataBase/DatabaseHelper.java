@@ -47,6 +47,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String PROFESSIONALREVIEW_COLUMN_RATING = "rate";
     private static final String NOTIFICATION_TABLE_NAME = "notification";
     private static final String NOTIFICATION_COLUMN_ID = "UID";
+    private static final String NOTIFICATION_COLUMN_AUTOINCREMENT = "ID";
+
     private static final String NOTIFICATION_COLUMN_message = "message";
 
     // User table
@@ -106,9 +108,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("CREATE TABLE " + NOTIFICATION_TABLE_NAME + " (" +
+                NOTIFICATION_COLUMN_AUTOINCREMENT + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 NOTIFICATION_COLUMN_ID + " TEXT, " +
                 NOTIFICATION_COLUMN_message + " TEXT, " +
-                "PRIMARY KEY (" + NOTIFICATION_COLUMN_ID + ", " + NOTIFICATION_COLUMN_message + "))");
+                "UNIQUE (" + NOTIFICATION_COLUMN_ID + ", " + NOTIFICATION_COLUMN_AUTOINCREMENT + "))");
+
 
         db.execSQL("CREATE TABLE " + PROFESSIONALREVIEW_TABLE_NAME + " (" +
                 PROFESSIONALREVIEW_COLUMN_ID + " TEXT, " +
@@ -221,6 +225,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(NOTIFICATION_TABLE_NAME, null, contentValues);
         return result != -1;
     }
+
     // Donations table operations
     public boolean insertDonationData(donations donation) {
         SQLiteDatabase db = this.getWritableDatabase();
