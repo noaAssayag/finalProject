@@ -208,44 +208,46 @@ public class AddDocprofessional extends AppCompatActivity implements NavigationV
                                 {
                                     email = doc.get("email").toString();
                                     userName = doc.get("userName").toString();
-                                    if(!doc.get("image").toString().isEmpty())
+                                    if(doc.get("image") != null)
                                     {
                                         imageUser = doc.get("image").toString();
                                     }
                                 }
                             }
-                        }
-                    });
-                    if(autoCompleteLocationPro.getText().toString().isEmpty()) {
-                        address = professAddress.getSelectedItem().toString().split(",")[0];
-                    }
-                    else{
-                        address = autoCompleteLocationPro.getText().toString();
-                    }
+                            if(autoCompleteLocationPro.getText().toString().isEmpty()) {
+                                address = professAddress.getSelectedItem().toString().split(",")[0];
+                            }
+                            else{
+                                address = autoCompleteLocationPro.getText().toString();
+                            }
 
-                    Professional professional = new Professional(email,userName,imageUser,professCategory.getSelectedItem().toString()
-                            ,address
-                            ,professPhoneNum.getText().toString()
-                            ,professDescription.getText().toString(),precentageAva,uid,new ArrayList<>());
-
-
-                    db.collection("professional").document(uid).set(professional).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            sqlDataBase.insertProfessionalData(professional);
-                            notifications noti = new notifications(uid,"you have created a professional offer for the" + professCategory.getSelectedItem().toString() +" category");
-                            db.collection("Notifications").add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            Professional professional = new Professional(email,userName,imageUser,professCategory.getSelectedItem().toString()
+                                    ,address
+                                    ,professPhoneNum.getText().toString()
+                                    ,professDescription.getText().toString(),precentageAva,uid,new ArrayList<>());
+                            db.collection("professional").document(uid).set(professional).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    sqlDataBase.insertNotificationData(noti);
-                                    Toast.makeText(getApplicationContext(),"succes",Toast.LENGTH_LONG);
-                                    Intent intent = new Intent(AddDocprofessional.this, EditPersonalDetails.class);
-                                    startActivity(intent);
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    sqlDataBase.insertProfessionalData(professional);
+                                    notifications noti = new notifications(uid,"you have created a professional offer for the" + professCategory.getSelectedItem().toString() +" category");
+                                    db.collection("Notifications").add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            sqlDataBase.insertNotificationData(noti);
+                                            Toast.makeText(getApplicationContext(),"succes",Toast.LENGTH_LONG);
+                                            Intent intent = new Intent(AddDocprofessional.this, EditPersonalDetails.class);
+                                            startActivity(intent);
 
+                                        }
+                                    });
                                 }
                             });
                         }
                     });
+
+
+
+
 
                 }
             }

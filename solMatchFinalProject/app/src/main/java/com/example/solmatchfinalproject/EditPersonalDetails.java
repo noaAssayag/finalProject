@@ -237,11 +237,18 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                             case "Professional": {
                                 DatabaseHelper databaseHelper=new DatabaseHelper(EditPersonalDetails.this);
                                 List<Professional> list=databaseHelper.getAllProfessionals();
+                                List<Review> reviews;
                                 for(Professional professional:list)
                                 {
                                     if(user.getUID().equals(professional.getUID()))
                                     {
-                                        List<Review> reviews=professional.getReviews();
+                                        if(professional.getReviews()!=null) {
+                                           reviews  = professional.getReviews();
+                                        }
+                                        else{
+                                            reviews = new ArrayList<>();
+                                            professional.setReviews(reviews);
+                                        }
                                         ReviewAdapter adapter= new ReviewAdapter(reviews,EditPersonalDetails.this);
                                         recReviews.setAdapter(adapter);
                                     }
