@@ -221,6 +221,7 @@ public class AddDocprofessional extends AppCompatActivity implements NavigationV
                                 address = autoCompleteLocationPro.getText().toString();
                             }
 
+
                             Professional professional = new Professional(email,userName,imageUser,professCategory.getSelectedItem().toString()
                                     ,address
                                     ,professPhoneNum.getText().toString()
