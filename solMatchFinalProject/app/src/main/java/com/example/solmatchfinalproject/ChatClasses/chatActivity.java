@@ -39,12 +39,17 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import Fragment.AlertDialogFragmentViewDonations;
+import Fragment.AlertDialogFragmentViewHost;
 import Fragment.NotificationDialogFragment;
 import Model.Host;
 
+import com.example.solmatchfinalproject.AddEvent;
+import com.example.solmatchfinalproject.AlertDialogFragmentViewProf;
 import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.Forms;
 import com.example.solmatchfinalproject.LoginActivity;
+import com.example.solmatchfinalproject.MainActivity2;
 import com.example.solmatchfinalproject.R;
 import com.example.solmatchfinalproject.notifications;
 import com.example.solmatchfinalproject.profile.ProfileActivity;
@@ -143,7 +148,6 @@ public class chatActivity extends AppCompatActivity implements NavigationView.On
         messages = findViewById(R.id.chatMessages);
         chatterName = findViewById(R.id.chatterName);
         addHostButt = findViewById(R.id.addHostButt);
-        menu = findViewById(R.id.menu);
         db = FirebaseFirestore.getInstance();
         chatterName.setText(intent.getStringExtra("userToPresent"));
         profileLayout = findViewById(R.id.profileLayout);
@@ -534,24 +538,23 @@ public class chatActivity extends AppCompatActivity implements NavigationView.On
         Intent intent;
         switch (item.getItemId()) {
             case R.id.bt_home:
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+                intent = new Intent(chatActivity.this, MainActivity2.class);
+                startActivity(intent);
                 break;
 
             case R.id.addEvent:
-                intent = new Intent(chatActivity.this, Forms.class);
-                intent.putExtra("Search",false);
+                intent = new Intent(chatActivity.this, AddEvent.class);
                 startActivity(intent);
 
                 break;
             case R.id.bt_search:
                 intent = new Intent(chatActivity.this, Forms.class);
-                intent.putExtra("Search",true);
                 startActivity(intent);
                 break;
 
-            case R.id.bt_history:
-                Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
-
+            case R.id.bt_Profile:
+                intent = new Intent(chatActivity.this, EditPersonalDetails.class);
+                startActivity(intent);
                 break;
 
             case R.id.nav_share:
@@ -585,7 +588,7 @@ public class chatActivity extends AppCompatActivity implements NavigationView.On
 
                     // Create a chooser dialog to let the user choose which app to use for sharing.
                     startActivity(Intent.createChooser(i, "Share via"));
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // Handle any exceptions that may occur during the sharing process.
                 }
 
@@ -599,7 +602,7 @@ public class chatActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         FirebaseAuth.getInstance().signOut();
-                        Intent intent1=new Intent(chatActivity.this,LoginActivity.class);
+                        Intent intent1 = new Intent(chatActivity.this, LoginActivity.class);
                         startActivity(intent1);
                         finish();
                         Toast.makeText(chatActivity.this, "Logout!", Toast.LENGTH_SHORT).show();
@@ -613,9 +616,10 @@ public class chatActivity extends AppCompatActivity implements NavigationView.On
 
                 // 3. Get the AlertDialog from create()
                 AlertDialog dialog = builder.create();
-                dialog.show();        }
-
+                dialog.show();
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -627,5 +631,6 @@ public class chatActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+
 
 }

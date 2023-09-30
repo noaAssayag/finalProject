@@ -85,7 +85,7 @@ public class All_donation_activity extends AppCompatActivity implements RecycleV
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_gradient));
-            ab.setTitle(R.string.donationtitle);
+            ab.setTitle(R.string.donationtitlePrompt);
             ab.setDisplayShowHomeEnabled(false); // Set this to false
             ab.setDisplayHomeAsUpEnabled(false);  // Set this to false
         }

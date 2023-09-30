@@ -159,7 +159,7 @@ public class AddHost extends AppCompatActivity implements NavigationView.OnNavig
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_gradient));
-            ab.setTitle(R.string.hostTitle);
+            ab.setTitle(R.string.hostTitlePrompt);
             ab.setDisplayShowHomeEnabled(false); // Set this to false
             ab.setDisplayHomeAsUpEnabled(false);  // Set this to false
         }

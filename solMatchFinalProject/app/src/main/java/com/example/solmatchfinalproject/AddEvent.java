@@ -80,7 +80,7 @@ public class AddEvent extends AppCompatActivity implements NavigationView.OnNavi
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_gradient));
-            ab.setTitle(R.string.searchTitle);
+            ab.setTitle(R.string.addeventPrompt);
             ab.setDisplayShowHomeEnabled(false); // Set this to false
             ab.setDisplayHomeAsUpEnabled(false);  // Set this to false
         }

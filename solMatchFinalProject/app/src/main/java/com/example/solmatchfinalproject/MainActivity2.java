@@ -72,6 +72,7 @@ public class MainActivity2 extends AppCompatActivity implements NavigationView.O
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        toolbar.setTitle("Home");
 
 
         firestore.collection("Users").document(mAuth.getUid()).get()

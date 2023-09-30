@@ -293,10 +293,10 @@
     <string name="deleteMessage">Are you sure you want to delete this item?</string>
     <string name="donationPage">Donations</string>
     <string name="chatTitle">chat</string>
-    <string name="hostTitle">hosts</string>
+    <string name="hostTitle">Hosts</string>
     <string name="ahhHostTitle">add host</string>
     <string name="proTitle">add service</string>
-    <string name="profTitle">professionals</string>
+    <string name="profTitle">Professionals</string>
     <string name="profileTitle">profile</string>
     <string name="searchTitle">search</string>
     <string name="autoLocationMessage">if the location above has text you cant enter location manually</string>
@@ -310,5 +310,9 @@
     <string name="review">Reviews</string>
     <string name="rating">rating</string>
     <string name="donationRating">donation Rating\n</string>
+    <string name="addevent">Add event</string>
+    <string name="addeventPrompt">Create new donation</string>
+    <string name="hostTitlePrompt">Add new host</string>
+    <string name="donationtitlePrompt">Donations</string>
 
 </resources>
