@@ -42,6 +42,7 @@ import com.bumptech.glide.request.target.Target;
 import Fragment.NotificationDialogFragment;
 import Model.Host;
 
+import com.example.solmatchfinalproject.EditPersonalDetails;
 import com.example.solmatchfinalproject.Forms;
 import com.example.solmatchfinalproject.LoginActivity;
 import com.example.solmatchfinalproject.R;
@@ -222,7 +223,7 @@ public class chatActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(chatActivity.this,ProfileActivity.class);
+                Intent intent = new Intent(chatActivity.this, EditPersonalDetails.class);
                 intent.putExtra("UID", UID);
                 intent.putExtra("status",1);
                 startActivity(intent);

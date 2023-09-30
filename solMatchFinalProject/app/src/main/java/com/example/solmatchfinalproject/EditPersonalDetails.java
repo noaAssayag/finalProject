@@ -99,6 +99,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
     List<donations> donationList = new ArrayList<>();
     UserHostAdapter userHostAdapter;
 
+    private String UID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +120,15 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         recDonations = findViewById(R.id.donationsPromptRecycler);
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.getString("UID")!=null) {
+
+            UID = extras.getString("UID");
+            btEdit.setVisibility(View.GONE);
+        }
+        else{
+            UID = auth.getCurrentUser().getUid();
+        }
         sqlDatabase = new DatabaseHelper(this);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -178,7 +188,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
         });
 
 
-        firestore.collection("Users").document(auth.getUid()).get()
+        firestore.collection("Users").document(UID).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
