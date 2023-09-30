@@ -148,6 +148,12 @@ public class chatActivity extends AppCompatActivity implements NavigationView.On
         chatterName.setText(intent.getStringExtra("userToPresent"));
         profileLayout = findViewById(R.id.profileLayout);
         sqlDatabase = new DatabaseHelper(this);
+        UserStorageData userTalking = sqlDatabase.getUserByUID(FirebaseAuth.getInstance().getUid());
+        if(userTalking!=null) {
+            if (!userTalking.getType().equals("Host")) {
+            addHostButt.setVisibility(View.GONE);
+            }
+        }
         List<UserStorageData> users = sqlDatabase.getAllUsers();
         for(UserStorageData user:users)
         {
