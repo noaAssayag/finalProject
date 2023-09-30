@@ -12,6 +12,10 @@ public class Review {
         this.comments = comments;
         this.UID = UID;
     }
+    public Review()
+    {
+
+    }
 
     public String getUID() {
         return UID;
@@ -37,9 +41,6 @@ public class Review {
         return rate;
     }
 
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
 
     public String getComments() {
         return comments;
