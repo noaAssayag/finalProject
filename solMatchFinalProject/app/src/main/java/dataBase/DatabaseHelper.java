@@ -722,7 +722,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             professional.setPhoneNum(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_PHONE_NUM)));
             professional.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_DESCRIPTION)));
             professional.setPrecAvailability(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_PREC_AVAILABILITY)));
-            professional.setReviews(getProfessionalReviewsByUserID(professional.getUID()));
+            ArrayList<Review> reviews = (ArrayList<Review>) getProfessionalReviewsByUserID(professional.getUID());
+            if(!reviews.isEmpty())
+            {
+                professional.setReviews(reviews);
+            }
+            else {
+                professional.setReviews(new ArrayList<>());
+            }
+            professional.setReviews(reviews);
             // Note: The reviews list is not populated here as it's not part of the table structure you provided.
             cursor.close();
             return professional;
