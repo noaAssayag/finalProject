@@ -1,6 +1,9 @@
 package com.example.solmatchfinalproject;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,8 +24,14 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.solmatchfinalproject.ChatClasses.chatActivity;
 import com.example.solmatchfinalproject.Hosts.RecycleViewInterface;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -35,6 +45,13 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
     private final RecycleViewInterface recycleViewInterface;
     Context context;
     List<Professional> list;
+
+    String userToSendMessage;
+
+    String username;
+    String userPresented;
+
+    String fullName;
 
     public ProfessionalAdapter( List<Professional> list,Context context,RecycleViewInterface recycleViewInterface ) {
         this.recycleViewInterface = recycleViewInterface;
@@ -77,6 +94,7 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
         private ImageButton hostBtnImageButton;
         private Button addReview;
         private Professional professional;
+        String proffesionalEmail;
 
         public profViewHolder(View v,RecycleViewInterface recycleViewInterface) {
             super(v);
@@ -109,6 +127,67 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
 
                 }
             });
+            hostBtnImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int atIndex = proffesionalEmail.indexOf("@");
+                    userPresented  = proffesionalEmail.substring(0, atIndex);
+                    username = proffesionalEmail.replace("@", "").replace(".", "");
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
+
+                    DatabaseHelper helper = new DatabaseHelper(context);
+                    UserStorageData user = helper.getUserByUID(FirebaseAuth.getInstance().getUid());
+                    if(user.getEmail().replace("@", "").replace(".", "").equals(username))
+                    {
+                        Toast.makeText(context,"you cant start chatting with yourself", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else{
+                        userToSendMessage = user.getEmail().replace("@", "").replace(".", "");
+                        DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference().child("chats");
+                        chatReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                for(DataSnapshot child: snapshot.getChildren())
+                                {
+                                    fullName = child.getKey();
+                                    String[] parts = fullName.split("-");
+                                    String user1 = parts[0].trim().replace("@", "").replace(".", "");
+                                    String user2 = parts[1].trim().replace("@", "").replace(".", "");
+                                    if(user1.equals(userToSendMessage) && user2.equals(username) || user1.equals(username) && user2.equals(userToSendMessage))
+                                    {
+                                        Intent intent = new Intent(context, chatActivity.class);
+                                        intent.putExtra("chatID", fullName);
+                                        intent.putExtra("from", userToSendMessage);
+                                        intent.putExtra("to",username);
+                                        intent.putExtra("userToPresent",username);
+                                        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                        context.startActivity(intent);
+                                        return;
+                                    }
+                                }
+                                chatReference.child(username.replace("@", "").replace(".", "")+"-"+userToSendMessage.replace("@", "").replace(".", "")).setValue(null);
+                                Intent intent = new Intent(context, chatActivity.class);
+                                intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("chatID", username+"-"+userToSendMessage);
+                                intent.putExtra("from", userToSendMessage);
+                                intent.putExtra("to",username);
+                                intent.putExtra("userToPresent",username);
+                                context.startActivity(intent);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+
+                }
+            });
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -124,14 +203,17 @@ public class ProfessionalAdapter extends RecyclerView.Adapter<ProfessionalAdapte
                     }
                 }
             });
+
         }
+
         public void setData(Professional professional) {
             float rate=0;
             this.professional = professional;
+            proffesionalEmail = professional.getEmail();
             DatabaseHelper helper = new DatabaseHelper(context);
-            UserStorageData user = helper.getUserByUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
-            txtProfNameTextView.setText(user.getUserName());
-            txtProfEmailTextView.setText(user.getEmail());
+            UserStorageData user = helper.getUserByUID(professional.getUID());
+            txtProfNameTextView.setText(professional.getUserName());
+            txtProfEmailTextView.setText(professional.getEmail());
             txtPhoneNumTextView.setText(professional.getPhoneNum());
             txtCategoryTextView.setText(professional.getCategory());
             txtHostAddressTextView.setText(professional.getAddress());

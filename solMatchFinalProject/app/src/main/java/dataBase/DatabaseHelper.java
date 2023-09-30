@@ -31,8 +31,8 @@ import Model.UserStorageData;
 import Model.donations;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "DB10";
-    private static final int DATABASE_VERSION = 27;
+    private static final String DATABASE_NAME = "DB11";
+    private static final int DATABASE_VERSION = 28;
 
     // notification table
 
@@ -369,6 +369,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 professional.setPhoneNum(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_PHONE_NUM)));
                 professional.setPrecAvailability(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_PREC_AVAILABILITY)));
                 professional.setUserName(cursor.getString(cursor.getColumnIndexOrThrow(PROFESSIONAL_COLUMN_USER_NAME)));
+               ArrayList<Review> reviews = (ArrayList<Review>) getProfessionalReviewsByUserID(professional.getUID());
+               if(!reviews.isEmpty())
+               {
+                   professional.setReviews(reviews);
+               }
+               else {
+                   professional.setReviews(new ArrayList<>());
+               }
                 professionals.add(professional);
             } while (cursor.moveToNext());
         }

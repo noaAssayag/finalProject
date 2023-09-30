@@ -79,6 +79,8 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
 
     DatabaseHelper sqlDatabase;
     BottomNavigationView menu;
+    private List<Professional> originalProfessionalList;
+    ProfessionalAdapter adapter;
 
 
     @Override
@@ -101,6 +103,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
 
         sqlDatabase = new DatabaseHelper(this);
         allProfessionalList = sqlDatabase.getAllProfessionals();
+        originalProfessionalList = new ArrayList<>(allProfessionalList);
 
          reviews = new ArrayList<>();
         for(Professional professional: allProfessionalList)
@@ -118,7 +121,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
 
         }
 
-        ProfessionalAdapter adapter = new ProfessionalAdapter(allProfWithReviews, AllProfessional.this, AllProfessional.this);
+        adapter = new ProfessionalAdapter(allProfWithReviews, AllProfessional.this, AllProfessional.this);
         recList.setAdapter(adapter);
 
         ActionBar ab = getSupportActionBar();
@@ -160,28 +163,47 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
 
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 List<Professional> filteredList = new ArrayList<>();
-                if (!filterByLoc.getSelectedItem().toString().equals("City")) {
-                    for (Professional pro : allProfessionalList) {
-                        if (filterByLoc.getSelectedItem().toString().equals(pro.getAddress())) {
-                            filteredList.add(pro);
+                boolean useCategory;
+                boolean useCity;
+                String category=  filterByCategory.getSelectedItem().toString();
+                String city = filterByLoc.getSelectedItem().toString();
+                List<donations> filterDonationList = new ArrayList<>();
+                if (filterByCategory == null || filterByCategory.getSelectedItem().toString().equals("Category")) {
+                    useCategory = false;
+                } else {
+                    useCategory = true;
+                }
+                if (filterByLoc.getSelectedItem().toString().equals("City") || filterByLoc == null) {
+                    useCity = false;
+                }
+                else {
+                    useCity = true;
+                }
+                if (!useCity && !useCategory) {
+                    filteredList.addAll(allProfessionalList);
+                } else {
+                    if (useCategory) {
+                        for (Professional professional : allProfessionalList) {
+                            if (professional.getCategory().equals(filterByCategory)) {
+                                filteredList.add(professional);
+                            }
                         }
-
+                    }
+                    if (useCity) {
+                        for (Professional professional : allProfessionalList) {
+                            if (professional.getAddress().equals(filterByLoc.getSelectedItem().toString())) {
+                                filteredList.add(professional);
+                            }
+                        }
                     }
                 }
-                if (!filterByCategory.getSelectedItem().toString().equals("Category")) {
-                    for (Professional pro : allProfessionalList) {
-                        if (pro.getCategory().equals(filterByCategory.getSelectedItem().toString())) {
-                            filteredList.add(pro);
-                        }
-
-
-                    }
-                }
-                adapter.notifyDataSetChanged();
+                adapter = new ProfessionalAdapter(filteredList, AllProfessional.this, AllProfessional.this);
+                recList.setAdapter(adapter);
+                return;
             }
-        });
+    });
     }
 
     @Override
