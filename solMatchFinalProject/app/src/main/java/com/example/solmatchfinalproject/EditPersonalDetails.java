@@ -51,6 +51,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -98,6 +99,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
     boolean isEdit = false;
     List<donations> donationList = new ArrayList<>();
     UserHostAdapter userHostAdapter;
+    donationAdapter adapter;
 
     private String UID;
 
@@ -243,7 +245,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                                         donationList.add(donation);
                                     }
                                 }
-                                donationAdapter adapter = new donationAdapter(donationList, EditPersonalDetails.this, EditPersonalDetails.this,false);
+                                adapter = new donationAdapter(donationList, EditPersonalDetails.this, EditPersonalDetails.this,false);
                                 recDonations.setAdapter(adapter);
                                 break;
 
@@ -347,7 +349,27 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     Toast.makeText(getApplicationContext(), "image has changed", Toast.LENGTH_SHORT).show();
+                                    NavigationView navigationView = findViewById(R.id.nav_view);
+                                    navigationView.setNavigationItemSelectedListener(EditPersonalDetails.this);
+                                    View headerView = navigationView.getHeaderView(0);
+                                    ImageView imgProf = headerView.findViewById(R.id.imgProfile);
+                                    Glide.with(getApplicationContext())
+                                            .load(user.getImage())
+                                            .listener(new RequestListener<Drawable>() {
+                                                @Override
+                                                public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target<Drawable> target, boolean isFirstResource) {
+                                                    // Handle image loading failure
+                                                    Log.e("Glide", "Image loading failed: " + e.getMessage());
+                                                    return false; // Return false to allow Glide to handle the error and show any error placeholder you have set
+                                                }
 
+                                                @Override
+                                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                    // Image successfully loaded
+                                                    return false; // Return false to allow Glide to handle the resource and display it
+                                                }
+                                            })
+                                            .into((ImageView) imgProf);
                                 }
                             });
                         }
@@ -398,7 +420,15 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
     public void onItemClick(int position) {
         sqlDatabase = new DatabaseHelper(this);
         List<Host> allHostsList = sqlDatabase.getAllHosts();
-        Host newHost = allHostsList.get(position);
+        List<Host> releventHost = new ArrayList<>();
+        for(Host host: allHostsList)
+        {
+            if(host.getUid().equals(UID))
+            {
+                releventHost.add(host);
+            }
+        }
+        Host newHost = releventHost.get(position);
         AlertDialogFragmentViewHost frag = new AlertDialogFragmentViewHost();
         Bundle b = new Bundle();
         b.putSerializable("Host", newHost);
@@ -409,13 +439,21 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
     @Override
     public void deleteItem(int position) {
         List<Host> hosts = sqlDatabase.getAllHosts();
-        Host hostToDelete = hosts.get(position);
+        List<Host> releventHost = new ArrayList<>();
+        for(Host host: hosts)
+        {
+            if(host.getUid().equals(UID))
+            {
+                releventHost.add(host);
+            }
+        }
+        Host hostToDelete = releventHost.get(position);
 
         // 1. Instantiate an AlertDialog.Builder with its constructor
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // 2. Chain together various setter methods to set the dialog characteristics
-        builder.setMessage(R.string.dialog_message);
+        builder.setMessage(R.string.deleteHost);
         builder.setTitle(R.string.dialog_title);
         // Add the buttons
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -444,6 +482,7 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                                                                 @Override
                                                                 public void onSuccess(Void unused) {
                                                                     userHostAdapter.notifyDataSetChanged();
+                                                                    userHostAdapter.notifyItemRemoved(position);
                                                                     Toast.makeText(getApplicationContext(), "The hosting has been successfully deleted, a message will be sent to the host", Toast.LENGTH_SHORT).show();
                                                                     //todo send message to host about cancel
                                                                 }
@@ -467,6 +506,20 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                                     soliders = hostToDelete.getListOfResidents();
                                 }
                                 if (!soliders.isEmpty()) {
+                                    for(UserStorageData user: soliders)
+                                    {
+                                        notifications noti = new notifications(user.getUID(),"you have been removed from a host");
+                                        FirebaseFirestore.getInstance().collection("Notifications").add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                sqlDatabase.insertNotificationData(noti);
+                                                sqlDatabase.removeHostById(hostToDelete.getUid());
+                                            }
+                                        });
+
+
+                                    }
+
                                     //todo send each user message in chat that the host cancel the order
                                 }
 
@@ -480,6 +533,9 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                                         public void onSuccess(Void aVoid) {
                                             // Notify the RecyclerView adapter of the data change
                                             Toast.makeText(getApplicationContext(), "The hosting was successfully deleted", Toast.LENGTH_SHORT).show();
+                                            userHostAdapter.notifyDataSetChanged();
+                                            userHostAdapter.notifyItemRemoved(position);
+                                            sqlDatabase.removeHostById(auth.getUid());
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -523,6 +579,46 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
 
     @Override
     public void deleteDonation(int position) {
+        List<donations> DonationsList = sqlDatabase.getAllDonations();
+        List<donations> releventDonations = new ArrayList<>();
+        for(donations donations: DonationsList)
+        {
+            if(donations.getUid().equals(UID))
+            {
+                releventDonations.add(donations);
+            }
+        }
+        donations donationToDelete = releventDonations.get(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditPersonalDetails.this);
+                builder.setMessage(R.string.deleteMessage);
+                builder.setTitle(R.string.dialog_title);
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                        firestore.collection("Donations").document(FirebaseAuth.getInstance().getUid()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                DatabaseHelper databaseHelper = new DatabaseHelper(EditPersonalDetails.this);
+                                databaseHelper.removeDonationById(FirebaseAuth.getInstance().getUid());
+                                adapter.notifyDataSetChanged();
+                                adapter.notifyItemRemoved(position);
+                                Toast.makeText(EditPersonalDetails.this,"donation removed succesfully",Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                    }
+                });
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        Toast.makeText(EditPersonalDetails.this, "User cancelled the dialog", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
 
     }
 
@@ -564,25 +660,32 @@ public class EditPersonalDetails extends AppCompatActivity implements RecycleVie
                 TextView userName = headerView.findViewById(R.id.fullName);
                 TextView userEmail = headerView.findViewById(R.id.emailAddress);
                 UserStorageData user = sqlDatabase.getUserByUID(FirebaseAuth.getInstance().getUid());
-                userName.setText(user.getUserName());
-                userEmail.setText(user.getEmail());
-                Glide.with(getApplicationContext())
-                        .load(user.getImage())
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target<Drawable> target, boolean isFirstResource) {
-                                // Handle image loading failure
-                                Log.e("Glide", "Image loading failed: " + e.getMessage());
-                                return false; // Return false to allow Glide to handle the error and show any error placeholder you have set
-                            }
+                FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                      UserStorageData userStorageData = documentSnapshot.toObject(UserStorageData.class);
+                        userName.setText(user.getUserName());
+                        userEmail.setText(user.getEmail());
+                        Glide.with(getApplicationContext())
+                                .load(userStorageData.getImage())
+                                .listener(new RequestListener<Drawable>() {
+                                    @Override
+                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, com.bumptech.glide.request.target.Target<Drawable> target, boolean isFirstResource) {
+                                        // Handle image loading failure
+                                        Log.e("Glide", "Image loading failed: " + e.getMessage());
+                                        return false; // Return false to allow Glide to handle the error and show any error placeholder you have set
+                                    }
 
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                // Image successfully loaded
-                                return false; // Return false to allow Glide to handle the resource and display it
-                            }
-                        })
-                        .into((ImageView) imgProf);
+                                    @Override
+                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                        // Image successfully loaded
+                                        return false; // Return false to allow Glide to handle the resource and display it
+                                    }
+                                })
+                                .into((ImageView) imgProf);
+                    }
+                });
+
                 drawerLayout.openDrawer(GravityCompat.START);
 
         }

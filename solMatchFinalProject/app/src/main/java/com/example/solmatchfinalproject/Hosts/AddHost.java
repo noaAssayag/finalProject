@@ -309,6 +309,7 @@ public class AddHost extends AppCompatActivity implements NavigationView.OnNavig
                                         dbFirestore.collection("Host").document(uid).set(newHost).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
+                                                newHost.setUid(uid);
                                                 sqlDataBase.insertHostData(newHost);
                                                 Toast.makeText(getApplicationContext(),"added host",Toast.LENGTH_LONG).show();
                                                 notifications noti = new notifications(uid,"you have created a hosting event for the date:" + hostDate);

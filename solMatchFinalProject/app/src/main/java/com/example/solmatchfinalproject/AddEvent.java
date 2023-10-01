@@ -71,7 +71,7 @@ public class AddEvent extends AppCompatActivity implements NavigationView.OnNavi
         firestore = FirebaseFirestore.getInstance();
 
         user = helper.getUserByUID(mAuth.getUid());
-        if (user.getType().equals("Solider")) {
+        if (user.getType().equals("Soldier")) {
             hostCardView.setVisibility(View.GONE);
             professionalCardView.setVisibility(View.GONE);
         } else if (user.getType().equals("Host")) {

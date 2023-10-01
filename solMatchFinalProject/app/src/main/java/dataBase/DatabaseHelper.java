@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -31,8 +32,8 @@ import Model.UserStorageData;
 import Model.donations;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "DB11";
-    private static final int DATABASE_VERSION = 28;
+    private static final String DATABASE_NAME = "DB14";
+    private static final int DATABASE_VERSION = 31;
 
     // notification table
 
@@ -490,6 +491,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void compareAndUpdateHosts(List<Host> firebaseHosts) {
         List<Host> sqliteHosts = getAllHosts();
+        if(firebaseHosts.isEmpty() || firebaseHosts == null)
+        {
+            List<Host> hosts =  getAllHosts();
+            for(Host host:hosts)
+            {
+                removeHostById(host.getUid());
+            }
+        }
 
         for (Host firebaseHost : firebaseHosts) {
             boolean hostExists = false;
@@ -566,6 +575,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void compareAndUpdateDonations(List<donations> firebaseDonations) {
         List<donations> sqliteDonations = getAllDonations();
+        if(firebaseDonations.isEmpty() || firebaseDonations == null)
+        {
+            for(donations donations: firebaseDonations)
+            {
+                removeDonationById(donations.getUid());
+            }
+        }
 
         for (donations firebaseDonation : firebaseDonations) {
             boolean donationExists = false;
@@ -786,14 +802,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int deletedRows = db.delete(DONATIONS_TABLE_NAME, DONATIONS_COLUMN_ID + " = ?", new String[]{donationId});
         if (deletedRows > 0)
         {
-            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-            firestore.collection("Donations").document(donationId).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
 
-                }
-
-            });
             return true;
         }
         return false;

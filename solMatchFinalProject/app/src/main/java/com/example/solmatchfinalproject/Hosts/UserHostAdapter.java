@@ -170,6 +170,7 @@ public class UserHostAdapter extends RecyclerView.Adapter<UserHostAdapter.UserHo
                                         intent.putExtra("chatID", fullName);
                                         intent.putExtra("from", userToSendMessage);
                                         intent.putExtra("to",username);
+                                        intent.putExtra("userToPresent",username);
                                         intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                                         context.startActivity(intent);
                                         return;

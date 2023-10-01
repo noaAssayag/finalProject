@@ -137,15 +137,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
                             int position=getAdapterPosition();
                             if(position!=RecyclerView.NO_POSITION)
                             {
-                                recycleViewInterface.deleteItem(position);
-                                DatabaseHelper databaseHelper = new DatabaseHelper(context);
-                                if(databaseHelper.removeDonationById(FirebaseAuth.getInstance().getUid()))
-                                {
-                                    Toast.makeText(context,"host deleted succesfully", Toast.LENGTH_LONG).show();
-                                }
-                                else{
-                                    Toast.makeText(context,"Error deleting host", Toast.LENGTH_LONG).show();
-                                }
+                                recycleViewInterface.deleteDonation(position);
 
                             }
 
@@ -234,37 +226,7 @@ public class donationAdapter extends RecyclerView.Adapter<donationAdapter.donati
 
             // 2. Chain together various setter methods to set the dialog characteristics
 
-            removeDon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage(R.string.deleteMessage);
-                    builder.setTitle(R.string.dialog_title);
-                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-                            firestore.collection("Donations").document(FirebaseAuth.getInstance().getUid()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    DatabaseHelper databaseHelper = new DatabaseHelper(context);
-                                    databaseHelper.removeDonationById(FirebaseAuth.getInstance().getUid());
-                                }
-                            });
 
-                        }
-                    });
-                    builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                            Toast.makeText(context, "User cancelled the dialog", Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-            });
 
         }
 

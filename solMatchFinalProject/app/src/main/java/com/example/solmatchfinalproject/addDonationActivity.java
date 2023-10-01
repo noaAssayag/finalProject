@@ -127,7 +127,7 @@ public class addDonationActivity extends AppCompatActivity implements Navigation
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_gradient));
-            ab.setTitle(R.string.addDonation);
+            ab.setTitle(R.string.addDonationTitle);
             ab.setDisplayShowHomeEnabled(false); // Set this to false
             ab.setDisplayHomeAsUpEnabled(false);  // Set this to false
         }

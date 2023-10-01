@@ -186,7 +186,7 @@ public class AllProfessional extends AppCompatActivity implements RecycleViewInt
                 } else {
                     if (useCategory) {
                         for (Professional professional : allProfessionalList) {
-                            if (professional.getCategory().equals(filterByCategory)) {
+                            if (professional.getCategory().equals(filterByCategory.getSelectedItem().toString())) {
                                 filteredList.add(professional);
                             }
                         }
